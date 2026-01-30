@@ -32,3 +32,13 @@ yarn-error.log*
 # Typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Documentation & Internal Notes (mantener en hospedy-docs/)
+DEMO_*.md
+SETUP_*.sql
+MIGRATION_*.md
+OPTIMIZATION_*.md
+MEJORAS_*.sql
+*_CHECKLIST.md
+*_GUIDE.md
+*_REPORT.md
