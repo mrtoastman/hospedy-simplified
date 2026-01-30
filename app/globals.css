@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS crítico para performance móvil */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    font-feature-settings: normal;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+/* Optimizaciones para 3G */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Componentes esenciales */
+@layer components {
+  .btn-primary {
+    @apply bg-green-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-green-700 transition-colors;
+  }
+  
+  .card {
+    @apply bg-white rounded-lg shadow-md p-6;
+  }
+  
+  .input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500;
+  }
+}
+
+/* Utilidades custom mínimas */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
