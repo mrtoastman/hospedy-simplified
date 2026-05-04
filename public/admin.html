@@ -57,6 +57,35 @@ tr:hover{background:#f8f9fa}
 </style>
 </head>
 <body>
+<!-- Auth Gate -->
+<div id="auth-gate" style="position:fixed;inset:0;background:#f0f2f5;z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:white;border-radius:16px;padding:40px;max-width:380px;width:90%;box-shadow:0 8px 30px rgba(0,0,0,0.1);text-align:center">
+    <div style="font-size:24px;margin-bottom:8px">🔒</div>
+    <h2 style="font-size:18px;margin-bottom:4px;color:#1e2a3a">Hospedy Admin</h2>
+    <p style="font-size:13px;color:#888;margin-bottom:20px">Panel exclusivo para administrador</p>
+    <input id="admin-pass" type="password" placeholder="Contraseña de admin" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:8px;font-size:14px;margin-bottom:12px;text-align:center" onkeydown="if(event.key==='Enter')checkAdminPass()">
+    <button onclick="checkAdminPass()" style="width:100%;padding:12px;background:#1e2a3a;color:white;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Ingresar</button>
+    <p id="admin-error" style="color:#e94560;font-size:12px;margin-top:10px;display:none">Contraseña incorrecta</p>
+  </div>
+</div>
+<script>
+function checkAdminPass(){
+  // Password: hospedy-admin-2026 (change this)
+  var p=document.getElementById('admin-pass').value;
+  if(p==='hospedy-admin-2026'){
+    document.getElementById('auth-gate').style.display='none';
+    sessionStorage.setItem('hospedy_admin_auth','1');
+  }else{
+    document.getElementById('admin-error').style.display='block';
+    document.getElementById('admin-pass').value='';
+  }
+}
+// Auto-unlock if already authenticated in this session
+if(sessionStorage.getItem('hospedy_admin_auth')==='1'){
+  document.getElementById('auth-gate').style.display='none';
+}
+</script>
+
 <div class="admin-bar">
   <h1>🔒 Hospedy Admin</h1>
   <div><span class="badge">SUPERADMIN</span></div>
