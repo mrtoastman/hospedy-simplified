@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospedy — Gestiona tu negocio de alquiler sin complicaciones</title>
+  <meta name="description" content="Sistema de gestión para anfitriones de alquileres cortos en Colombia. Propiedades, reservaciones, finanzas y mensajes WhatsApp en un solo lugar. Desde $65.000 COP/mes.">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NNL4DXRC');</script>
+  <!-- End Google Tag Manager -->
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+  document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init','1326561165947277');
+  fbq('track','PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1326561165947277&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel -->
+  <style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',sans-serif;background:#faf8f5;color:#3d3225;line-height:1.6}
+.container{max-width:1100px;margin:0 auto;padding:0 20px}
+a{color:#2eaa7b;text-decoration:none}
+
+/* NAV */
+.nav-bar{position:sticky;top:0;background:rgba(250,248,245,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,0.05);z-index:100;padding:14px 0}
+.nav-inner{display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:22px;font-weight:bold;color:#2eaa7b}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:#3d3225;font-size:13px;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:#2eaa7b}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn-demo{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid #2eaa7b;color:#2eaa7b;background:transparent;cursor:pointer;transition:all 0.2s}
+.btn-demo:hover{background:#f0f8f4}
+.btn-access{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;background:#2eaa7b;color:white;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none}
+.btn-access:hover{background:#228559}
+.mobile-menu{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:#3d3225}
+.mobile-nav{display:none;flex-direction:column;gap:16px;padding:20px;background:#faf8f5;border-bottom:1px solid #e8e3db}
+.mobile-nav.open{display:flex}
+.mobile-nav a{font-size:15px;color:#3d3225;font-weight:500}
+
+/* HERO */
+#hero{padding:80px 0 60px;text-align:center}
+.hero-badge{display:inline-block;background:rgba(46,170,123,0.1);color:#2eaa7b;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:24px}
+#hero h1{font-size:44px;line-height:1.15;color:#1a1a1a;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
+#hero h1 span{color:#2eaa7b}
+.hero-sub{font-size:17px;color:#666;max-width:560px;margin:0 auto 36px;line-height:1.7}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
+.btn-lg{padding:15px 36px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-block;text-align:center;text-decoration:none;border:none}
+.btn-green{background:#2eaa7b;color:white}.btn-green:hover{background:#228559;transform:translateY(-2px)}
+.btn-outline{background:white;color:#2eaa7b;border:2px solid #2eaa7b}.btn-outline:hover{background:#f0f8f4}
+.hero-trust{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:#999;margin-top:20px}
+.hero-trust span{display:flex;align-items:center;gap:6px}
+
+/* COMPARISON */
+#comparison{padding:80px 0;background:white}
+.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:800px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid #e8e3db}
+.comp-col{padding:36px 32px}
+.comp-col.old{background:#fdf5f0}
+.comp-col.new{background:#f0f8f4}
+.comp-col h3{font-size:16px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.comp-col ul{list-style:none}
+.comp-col ul li{padding:10px 0;font-size:14px;color:#555;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(0,0,0,0.05)}
+.comp-col ul li:last-child{border:none}
+.comp-col.old li::before{content:"✕";color:#d35;font-weight:700;font-size:13px}
+.comp-col.new li::before{content:"✓";color:#2eaa7b;font-weight:700;font-size:15px}
+.comp-bottom{text-align:center;padding:24px;background:#faf8f5;border-top:1px solid #e8e3db}
+.comp-bottom p{font-size:15px;color:#3d3225;font-weight:500}
+
+/* FEATURES */
+#features{padding:80px 0;background:#faf8f5}
+.section-title{text-align:center;font-size:32px;color:#1a1a1a;margin-bottom:12px}
+.section-sub{text-align:center;font-size:15px;color:#888;margin-bottom:50px;max-width:500px;margin-left:auto;margin-right:auto}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.feature-card{background:white;padding:28px;border-radius:12px;border:1px solid #e8e3db;transition:transform 0.2s,box-shadow 0.2s}
+.feature-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(46,170,123,0.08)}
+.feature-card .fi{font-size:28px;margin-bottom:12px}
+.feature-card h3{font-size:16px;margin-bottom:8px;color:#1a1a1a}
+.feature-card p{font-size:13px;color:#777;line-height:1.7}
+.feature-new{display:inline-block;background:#2eaa7b;color:white;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:6px;vertical-align:middle}
+
+/* PREVIEW */
+#preview{padding:80px 0;background:white}
+.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.pv-card{background:#faf8f5;border-radius:12px;overflow:hidden;border:1px solid #e8e3db;transition:all 0.2s}
+.pv-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.06)}
+.pv-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.pv-img.dash{background:linear-gradient(135deg,#2eaa7b,#228559);color:white}
+.pv-img.prop{background:linear-gradient(135deg,#f0f8f4,#d8ede2);color:#2eaa7b}
+.pv-img.res{background:linear-gradient(135deg,#fff5f0,#fce0d6);color:#e05555}
+.pv-img.fin{background:linear-gradient(135deg,#f0f5ff,#dce8f8);color:#3b82f6}
+.pv-img.msg{background:linear-gradient(135deg,#f0fff4,#d5f5e3);color:#25D366}
+.pv-body{padding:18px}
+.pv-body h4{font-size:15px;margin-bottom:6px;color:#1a1a1a}
+.pv-body p{font-size:12px;color:#888;line-height:1.6;margin-bottom:14px}
+.pv-btn{display:block;text-align:center;padding:10px;border:1.5px solid #2eaa7b;color:#2eaa7b;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;width:100%;transition:all 0.2s}
+.pv-btn:hover{background:#f0f8f4}
+
+/* STATS */
+#stats{padding:80px 0;background:linear-gradient(135deg,#f5f3ef,#ebe5db)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:32px}
+.stat-card{background:white;padding:32px 24px;border-radius:12px;text-align:center;border:1px solid #d9cfc6}
+.stat-num{font-size:40px;font-weight:800;color:#2eaa7b}
+.stat-label{font-size:14px;color:#666;margin-top:6px}
+.stat-src{font-size:11px;color:#aaa;margin-top:8px}
+.stats-close{text-align:center;font-size:16px;color:#3d3225;font-weight:500;max-width:500px;margin:0 auto}
+
+/* PRICING */
+#pricing{padding:80px 0;background:white}
+.pricing-wrap{max-width:520px;margin:0 auto}
+.price-card{background:#faf8f5;border:2px solid #2eaa7b;border-radius:16px;padding:44px 36px;text-align:center;position:relative;overflow:hidden}
+.price-card::before{content:"Más popular";position:absolute;top:18px;right:-30px;background:#2eaa7b;color:white;font-size:11px;font-weight:700;padding:4px 40px;transform:rotate(45deg)}
+.price-name{font-size:20px;font-weight:600;margin-bottom:16px}
+.price-amount{font-size:48px;font-weight:800;color:#2eaa7b}
+.price-period{font-size:14px;color:#888;margin-bottom:24px}
+.price-roi{background:rgba(46,170,123,0.08);padding:14px;border-radius:10px;font-size:13px;color:#2eaa7b;font-weight:500;margin-bottom:24px;line-height:1.5}
+.price-list{text-align:left;margin-bottom:28px;border-top:1px solid #e8e3db;border-bottom:1px solid #e8e3db;padding:20px 0}
+.price-list li{list-style:none;padding:8px 0;font-size:14px;color:#3d3225;display:flex;align-items:center;gap:10px}
+.price-list li::before{content:"✓";color:#2eaa7b;font-weight:700;font-size:16px}
+.price-cta{margin-bottom:16px}
+.price-cta a{display:block;padding:16px;background:#2eaa7b;color:white;border-radius:10px;font-size:16px;font-weight:600;text-decoration:none;transition:all 0.2s}
+.price-cta a:hover{background:#228559;transform:translateY(-2px)}
+.price-note{font-size:12px;color:#999;line-height:1.6}
+
+/* SOCIAL PROOF */
+#proof{padding:60px 0;background:#faf8f5}
+.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.proof-card{background:white;padding:24px;border-radius:12px;border:1px solid #e8e3db}
+.proof-text{font-size:14px;color:#555;line-height:1.7;font-style:italic;margin-bottom:16px}
+.proof-author{font-size:13px;font-weight:600;color:#3d3225}
+.proof-role{font-size:12px;color:#999}
+
+/* FAQ */
+#faq{padding:80px 0;background:white}
+.faq-wrap{max-width:700px;margin:0 auto}
+.acc-item{background:#faf8f5;border:1px solid #e8e3db;border-radius:10px;margin-bottom:12px;overflow:hidden}
+.acc-head{padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;color:#1a1a1a;transition:background 0.2s}
+.acc-head:hover{background:#f0e8df}
+.acc-arrow{color:#2eaa7b;font-size:18px;transition:transform 0.3s}
+.acc-item.open .acc-arrow{transform:rotate(180deg)}
+.acc-body{max-height:0;overflow:hidden;transition:max-height 0.3s;padding:0 20px}
+.acc-item.open .acc-body{max-height:400px;padding:0 20px 18px}
+.acc-body p{color:#666;font-size:14px;line-height:1.8}
+
+/* CTA BAND */
+#cta-band{padding:60px 0;background:linear-gradient(135deg,#2eaa7b,#1f9268);text-align:center;color:white}
+#cta-band h2{font-size:28px;margin-bottom:12px}
+#cta-band p{font-size:15px;opacity:0.9;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-white{padding:14px 32px;background:white;color:#2eaa7b;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
+.btn-ghost{padding:14px 32px;background:transparent;color:white;border:2px solid rgba(255,255,255,0.5);border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:all 0.2s}
+.btn-ghost:hover{border-color:white;background:rgba(255,255,255,0.1)}
+
+/* FOOTER */
+footer{background:#1e2a3a;color:white;padding:40px 0 20px}
+.foot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-bottom:30px}
+.foot-col h4{font-size:14px;margin-bottom:12px;opacity:0.9}
+.foot-col p,.foot-col a{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.8;display:block}
+.foot-col a:hover{color:white}
+.foot-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;text-align:center;font-size:12px;color:rgba(255,255,255,0.5)}
+
+@media(max-width:768px){
+  .nav-links{display:none}.mobile-menu{display:block}.nav-cta{display:none}
+  #hero h1{font-size:30px}
+  .hero-sub{font-size:15px}
+  .hero-cta{flex-direction:column;align-items:center}
+  .btn-lg{width:100%;max-width:320px}
+  .comparison-grid{grid-template-columns:1fr}
+  .section-title{font-size:26px}
+  .stats-grid{grid-template-columns:1fr}
+  .price-amount{font-size:36px}
+  .foot-grid{grid-template-columns:1fr}
+  .proof-grid{grid-template-columns:1fr}
+  #cta-band h2{font-size:22px}
+  .cta-btns{flex-direction:column;align-items:center}
+}
+  </style>
+</head>
+<body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNL4DXRC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+
+<!-- NAV -->
+<header class="nav-bar">
+  <div class="container nav-inner">
+    <div class="logo">🏠 Hospedy</div>
+    <div class="nav-links">
+      <a href="#features">Funcionalidades</a>
+      <a href="#preview">Plataforma</a>
+      <a href="#pricing">Precios</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-cta">
+      <button class="btn-demo" onclick="window.open('demo.html','_blank')">Probar Demo</button>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-access">Obtener Acceso</a>
+    </div>
+    <button class="mobile-menu" onclick="document.getElementById('mob-nav').classList.toggle('open')">☰</button>
+  </div>
+  <div class="mobile-nav" id="mob-nav">
+    <a href="#features" onclick="this.parentElement.classList.remove('open')">Funcionalidades</a>
+    <a href="#pricing" onclick="this.parentElement.classList.remove('open')">Precios</a>
+    <a href="#faq" onclick="this.parentElement.classList.remove('open')">FAQ</a>
+    <a href="demo.html" target="_blank" style="color:#2eaa7b;font-weight:600">Probar Demo</a>
+    <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" style="background:#2eaa7b;color:white;padding:12px;border-radius:8px;text-align:center;font-weight:600">Obtener Acceso</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="container">
+    <div class="hero-badge">Hecho para anfitriones colombianos</div>
+    <h1>Deja de manejar tu alquiler con <span>WhatsApp y cuadernos</span></h1>
+    <p class="hero-sub">Gestiona propiedades, reservaciones, huéspedes y finanzas desde un solo lugar. Simple, organizado y hecho para ti.</p>
+    <div class="hero-cta">
+      <button class="btn-lg btn-green" onclick="window.open('demo.html','_blank')">Probar Demo Gratis</button>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-lg btn-outline">Obtener Acceso — $65.000/mes</a>
+    </div>
+    <div class="hero-trust">
+      <span>✓ Sin instalaciones</span>
+      <span>✓ Funciona en celular</span>
+      <span>✓ Pago por Bre-B</span>
+      <span>✓ Soporte WhatsApp</span>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON: Hospedy vs tu método actual -->
+<section id="comparison">
+  <div class="container">
+    <h2 class="section-title">Hospedy vs tu método actual</h2>
+    <p class="section-sub">Lo que cambias cuando dejas el Excel y los mensajes desordenados</p>
+    <div class="comparison-grid">
+      <div class="comp-col old">
+        <h3>Sin Hospedy</h3>
+        <ul>
+          <li>Buscando la clave WiFi en WhatsApp cada vez que llega alguien</li>
+          <li>Reservas cruzadas porque no actualizaste el calendario</li>
+          <li>Sumando ingresos y gastos a mano en Excel</li>
+          <li>Olvidando enviar la bienvenida al huésped</li>
+          <li>Sin saber cuánto ganas realmente por propiedad</li>
+        </ul>
+      </div>
+      <div class="comp-col new">
+        <h3>Con Hospedy</h3>
+        <ul>
+          <li>WiFi, código de puerta e instrucciones se envían con un clic</li>
+          <li>Validación anti-doble reserva + sincronización con Airbnb/Booking</li>
+          <li>Dashboard con ingresos, gastos y utilidad en tiempo real</li>
+          <li>Recordatorios automáticos de check-in con mensaje WhatsApp listo</li>
+          <li>Indicadores por propiedad: tarifa promedio, ocupación, huésped top</li>
+        </ul>
+      </div>
+    </div>
+    <div class="comp-bottom">
+      <p>Todo esto por <strong style="color:#2eaa7b">$65.000 COP/mes</strong> — menos de lo que cuesta una limpieza</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+  <div class="container">
+    <h2 class="section-title">Todo lo que necesitas, nada que no</h2>
+    <p class="section-sub">Funcionalidades prácticas para el día a día de tu negocio</p>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="fi">🏡</div>
+        <h3>Gestión de Propiedades</h3>
+        <p>WiFi, código de puerta, amenidades, instrucciones de check-in, y links directos a tus anuncios en Airbnb, Booking y más.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fi">📅</div>
+        <h3>Reservaciones Inteligentes</h3>
+        <p>Anti-doble reserva automática. El sistema bloquea fechas que se cruzan antes de que cometas un error costoso.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fi">🔄</div>
+        <h3>Sincronización iCal <span class="feature-new">NUEVO</span></h3>
+        <p>Conecta los calendarios de Airbnb y Booking. Las fechas bloqueadas se importan automáticamente cada hora.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fi">💬</div>
+        <h3>Mensajes WhatsApp</h3>
+        <p>Ficha de bienvenida con WiFi, dirección, código de puerta y amenidades. Un clic y se envía por WhatsApp.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fi">💰</div>
+        <h3>Control Financiero</h3>
+        <p>Ingresos, gastos y utilidad por propiedad. Exporta reportes CSV para tu contador con un clic.</p>
+      </div>
+      <div class="feature-card">
+        <div class="fi">🔔</div>
+        <h3>Recordatorios <span class="feature-new">NUEVO</span></h3>
+        <p>Alertas de check-in de hoy y mañana en tu dashboard. Nunca más olvidas enviar la bienvenida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PREVIEW -->
+<section id="preview">
+  <div class="container">
+    <h2 class="section-title">Conoce la plataforma</h2>
+    <p class="section-sub">Explora cada sección del demo interactivo</p>
+    <div class="preview-grid">
+      <div class="pv-card"><div class="pv-img dash">📊</div><div class="pv-body"><h4>Dashboard</h4><p>KPIs de ocupación, ingresos, pagos pendientes, alertas de check-in y gráfico de tendencia.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+      <div class="pv-card"><div class="pv-img prop">🏡</div><div class="pv-body"><h4>Propiedades</h4><p>Tarjetas con todos los detalles: WiFi, código puerta, amenidades, links a Airbnb/Booking, iCal.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+      <div class="pv-card"><div class="pv-img res">📅</div><div class="pv-body"><h4>Reservaciones</h4><p>Tabla con estados, filtros por propiedad y estado, validación anti-doble reserva automática.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+      <div class="pv-card"><div class="pv-img fin">💰</div><div class="pv-body"><h4>Finanzas</h4><p>Ingresos y gastos por propiedad, utilidad neta, filtros por fecha, exportación CSV.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+      <div class="pv-card"><div class="pv-img msg">💬</div><div class="pv-body"><h4>Mensajes</h4><p>Plantillas de bienvenida, confirmación, recordatorio y agradecimiento. Envío directo por WhatsApp.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="container">
+    <h2 class="section-title">El mejor momento para organizar tu negocio</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num">6.3M</div>
+        <div class="stat-label">Turistas internacionales llegaron a Colombia en 2025</div>
+        <div class="stat-src">Fuente: MinComercio</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">+25%</div>
+        <div class="stat-label">Creció el mercado de alojamientos de corta estancia</div>
+        <div class="stat-src">Fuente: DANE</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">$3.2M</div>
+        <div class="stat-label">Ingreso promedio mensual de un Airbnb en ciudades principales</div>
+        <div class="stat-src">Fuente: The Latin Investor</div>
+      </div>
+    </div>
+    <p class="stats-close">Con $3.2M de ingreso promedio, $65.000 en organización es el 2% de lo que ganas. La pregunta no es si puedes pagarlo, sino cuánto estás perdiendo sin organizarte.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="container">
+    <h2 class="section-title">Un precio justo para tu negocio</h2>
+    <p class="section-sub">Menos de lo que cuesta una limpieza. Todo incluido.</p>
+    <div class="pricing-wrap">
+      <div class="price-card">
+        <div class="price-name">Hospedy Completo</div>
+        <div class="price-amount">$65.000</div>
+        <div class="price-period">COP / mes</div>
+        <div class="price-roi">Una sola doble-reserva evitada te ahorra más de 10 meses de Hospedy</div>
+        <ul class="price-list">
+          <li>Propiedades ilimitadas</li>
+          <li>Huéspedes ilimitados</li>
+          <li>Anti-doble reserva + iCal sync</li>
+          <li>Finanzas con reportes CSV</li>
+          <li>Mensajes WhatsApp con un clic</li>
+          <li>Recordatorios de check-in</li>
+          <li>Indicadores de negocio</li>
+          <li>Soporte directo por WhatsApp</li>
+        </ul>
+        <div class="price-cta">
+          <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS.%20Mi%20nombre%20es%20">Obtener Acceso</a>
+        </div>
+        <p class="price-note">Pago mensual por Bre-B (Bancolombia). Te compartimos el QR por WhatsApp. Cancela cuando quieras, sin penalidades.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOCIAL PROOF -->
+<section id="proof">
+  <div class="container">
+    <h2 class="section-title">Lo que dicen nuestros primeros usuarios</h2>
+    <div class="proof-grid">
+      <div class="proof-card">
+        <p class="proof-text">"Antes manejaba todo por WhatsApp y me pasó dos veces que crucé reservas. Con Hospedy eso no vuelve a pasar."</p>
+        <div class="proof-author">Anfitrión en Medellín</div>
+        <div class="proof-role">2 propiedades en El Poblado</div>
+      </div>
+      <div class="proof-card">
+        <p class="proof-text">"Lo que más me gusta es enviar la bienvenida con WiFi y código de puerta en un solo clic. Mis huéspedes quedan encantados."</p>
+        <div class="proof-author">Anfitrión en Santa Marta</div>
+        <div class="proof-role">Casa vacacional en Rodadero</div>
+      </div>
+      <div class="proof-card">
+        <p class="proof-text">"Por fin sé cuánto gano realmente por cada propiedad. El reporte para mi contador lo descargo en 2 segundos."</p>
+        <div class="proof-author">Anfitrión en Cartagena</div>
+        <div class="proof-role">3 apartamentos en Bocagrande</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <h2 class="section-title">Preguntas Frecuentes</h2>
+    <div class="faq-wrap">
+      <div class="acc-item open">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Qué es Hospedy?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>Hospedy es un sistema de gestión diseñado para anfitriones de alquileres cortos en Colombia. Administra propiedades, huéspedes, reservaciones y finanzas desde un solo lugar, sin instalar nada.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Cuánto cuesta y cómo pago?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>$65.000 COP al mes. Pagas por Bre-B (Bancolombia): nos escribes por WhatsApp, te compartimos el QR, y listo. Cancela cuando quieras, sin penalidades ni contratos.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Mis datos están seguros?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>Sí. Usamos base de datos PostgreSQL con Row Level Security. Cada usuario solo ve sus propios datos. Nadie más — ni siquiera otros usuarios de Hospedy — puede acceder a tu información.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Puedo conectar mis calendarios de Airbnb y Booking?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>Sí. Hospedy importa calendarios iCal de Airbnb y Booking automáticamente. Las fechas bloqueadas en esas plataformas se reflejan en Hospedy para evitar dobles reservas.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Funciona en el celular?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>Sí. La interfaz es responsive y funciona en celular, tablet y computador. No necesitas descargar una app — todo en tu navegador.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Puedo probar antes de pagar?</span><span class="acc-arrow">▼</span></div>
+        <div class="acc-body"><p>Sí. Tenemos un demo interactivo donde puedes explorar todas las funcionalidades con datos de ejemplo. Pruébalo sin registro ni compromiso.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BAND -->
+<section id="cta-band">
+  <div class="container">
+    <h2>Organiza tu negocio hoy mismo</h2>
+    <p>Prueba el demo sin compromiso o escríbenos para obtener acceso completo</p>
+    <div class="cta-btns">
+      <button class="btn-white" onclick="window.open('demo.html','_blank')">Probar Demo Gratis</button>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-ghost">Obtener Acceso — $65.000/mes</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-col">
+        <h4>🏠 Hospedy</h4>
+        <p>Gestiona tu negocio de alquiler sin complicaciones. Hecho para anfitriones colombianos.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Producto</h4>
+        <a href="#features">Funcionalidades</a>
+        <a href="#pricing">Precios</a>
+        <a href="demo.html" target="_blank">Demo</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contacto</h4>
+        <p>soporte@hospedy.co</p>
+        <a href="https://wa.me/573113225050?text=Hola!%20Tengo%20una%20pregunta%20sobre%20Hospedy">WhatsApp: +57 311 322 5050</a>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Hospedy. Hecho con cariño en Colombia.</div>
+  </div>
+</footer>
+
+<!-- Conversion Event Tracking -->
+<script>
+// Track demo clicks
+document.querySelectorAll('[onclick*="demo.html"],.btn-demo,.pv-btn').forEach(function(el){
+  el.addEventListener('click',function(){
+    fbq('track','ViewContent',{content_name:'Demo',content_category:'engagement'});
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:'demo_click'});
+  });
+});
+// Track WhatsApp (purchase intent) clicks
+document.querySelectorAll('a[href*="wa.me/573113225050"],.btn-access').forEach(function(el){
+  el.addEventListener('click',function(){
+    fbq('track','Lead',{content_name:'WhatsApp Contact',value:65000,currency:'COP'});
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:'whatsapp_lead'});
+  });
+});
+// Track pricing section scroll
+var pricingTracked=false;
+var observer=new IntersectionObserver(function(entries){
+  entries.forEach(function(entry){
+    if(entry.isIntersecting&&!pricingTracked){
+      pricingTracked=true;
+      fbq('track','ViewContent',{content_name:'Pricing',content_category:'consideration'});
+      window.dataLayer.push({event:'pricing_viewed'});
+    }
+  });
+},{threshold:0.5});
+var pricingEl=document.getElementById('pricing');
+if(pricingEl)observer.observe(pricingEl);
+</script>
+</body>
+</html>

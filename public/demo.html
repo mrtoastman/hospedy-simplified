@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospedy PMS - Demo</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#f5f7fa;--card:#ffffff;--accent:#e8f4f0;--primary:#2eaa7b;--primary-dark:#25956b;
+  --text:#2c3e50;--muted:#7f8c9b;--success:#2eaa7b;--warning:#f0a030;--danger:#e05555;
+  --border:#e2e8f0;--sidebar-bg:#1e2a3a;--sidebar-text:#a8b8cc;--sidebar-active:#2eaa7b;
+  --shadow:0 1px 3px rgba(0,0,0,0.06);--shadow-md:0 4px 12px rgba(0,0,0,0.08)
+}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;padding-top:52px}
+a{color:var(--primary);text-decoration:none}
+.demo-banner{position:fixed;top:0;left:0;right:0;background:#fff9e6;border-bottom:2px solid #f0a030;padding:12px 20px;z-index:2001;text-align:center;font-size:0.95rem;font-weight:500;color:var(--text)}
+.demo-banner a{color:#e68a00;font-weight:600}
+.app{display:flex;min-height:100vh}
+.sidebar{width:240px;background:var(--sidebar-bg);padding:20px 0;display:flex;flex-direction:column;position:fixed;height:100vh;z-index:100;margin-top:52px;max-height:calc(100vh - 52px)}
+.sidebar .logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,0.08);margin-bottom:8px}
+.sidebar .logo h1{font-size:1.4rem;color:#fff;font-weight:700}
+.sidebar .logo small{color:var(--sidebar-text);font-size:0.7rem}
+.nav-item{display:flex;align-items:center;gap:12px;padding:11px 20px;cursor:pointer;transition:all 0.2s;color:var(--sidebar-text);font-size:0.9rem;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,0.05);color:#fff}
+.nav-item.active{background:rgba(46,170,123,0.12);color:var(--sidebar-active);border-left-color:var(--sidebar-active)}
+.nav-item .icon{font-size:1.1rem;width:22px;text-align:center}
+.main{margin-left:240px;flex:1;padding:24px 28px;min-height:100vh}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-header h2{font-size:1.4rem;font-weight:700;color:var(--text)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow);margin-bottom:16px}
+.card h3{font-size:1rem;font-weight:600;margin-bottom:12px;color:var(--text)}
+.btn{padding:10px 16px;border:none;border-radius:8px;cursor:pointer;font-weight:600;font-size:0.85rem;transition:all 0.2s;font-family:inherit}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-dark)}
+.btn-secondary{background:var(--border);color:var(--text)}
+.btn-secondary:hover{background:#d4dce6}
+.btn-wa{background:#25d366;color:#fff}
+.btn-wa:hover{background:#20ba5a}
+.btn-sm{padding:6px 12px;font-size:0.76rem}
+.btn-danger-sm{background:#fee;color:var(--danger);border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:0.7rem}
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;box-shadow:var(--shadow)}
+.kpi-card.green{border-left:4px solid var(--success)}
+.kpi-card.yellow{border-left:4px solid var(--warning)}
+.kpi-card.red{border-left:4px solid var(--danger)}
+.kpi-card .label{font-size:0.8rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.kpi-card .value{font-size:1.6rem;font-weight:700;color:var(--text);margin:8px 0}
+.kpi-card .sub{font-size:0.75rem;color:var(--muted)}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.chart-container{position:relative;height:240px;margin-top:12px}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;z-index:1000}
+.modal-overlay.active{display:flex}
+.modal{background:var(--card);border-radius:16px;padding:28px;max-width:480px;width:90%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-md)}
+.modal h3{font-size:1.15rem;font-weight:700;margin-bottom:20px;color:var(--text)}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem;font-family:inherit}
+.form-group textarea{resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-actions{display:flex;gap:10px;margin-top:20px}
+.modal-actions .btn{flex:1}
+.prop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.prop-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;box-shadow:var(--shadow);transition:all 0.2s}
+.prop-card:hover{box-shadow:var(--shadow-md)}
+.prop-img{font-size:2.5rem;margin-bottom:8px}
+.prop-body h4{font-size:0.95rem;font-weight:700;margin-bottom:6px}
+.prop-meta{font-size:0.78rem;color:var(--muted);margin-bottom:8px}
+.prop-price{font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:8px}
+.prop-info-row{display:flex;gap:12px;font-size:0.78rem;margin-bottom:8px;flex-wrap:wrap}
+.prop-amenities{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.prop-amenities span{background:var(--accent);color:var(--primary);padding:4px 10px;border-radius:12px;font-size:0.72rem;font-weight:600}
+.portal-links{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.portal-link{background:var(--bg);padding:6px 10px;border-radius:6px;font-size:0.75rem;color:var(--primary);text-decoration:none;border:1px solid var(--border);transition:all 0.2s}
+.portal-link:hover{background:var(--accent)}
+.prop-actions{display:flex;gap:6px;margin-top:12px}
+.badge{display:inline-block;padding:4px 10px;border-radius:6px;font-size:0.72rem;font-weight:600}
+.badge.pending{background:#fef3c7;color:#92400e}
+.badge.confirmed{background:#d1fae5;color:#065f46}
+.badge.checked_in{background:#dbeafe;color:#1e40af}
+.badge.checked_out{background:#fee2e2;color:#7f1d1d}
+.badge.completed{background:#d1fae5;color:#065f46}
+.badge.cancelled{background:#fecaca;color:#7f1d1d}
+.badge.income{background:#d1fae5;color:#065f46}
+.badge.expense{background:#fee2e2;color:#7f1d1d}
+table{width:100%;border-collapse:collapse}
+table th{background:var(--bg);padding:12px;text-align:left;font-weight:600;font-size:0.82rem;color:var(--text);border-bottom:2px solid var(--border)}
+table td{padding:12px;border-bottom:1px solid var(--border);font-size:0.85rem}
+table tr:hover{background:var(--bg)}
+.search-bar{margin-bottom:16px}
+.search-bar input{width:100%;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.85rem}
+.filter-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.filter-row select,.filter-row input{padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.82rem}
+.config-section{margin-bottom:20px}
+.config-section h4{margin-bottom:12px;color:var(--primary);font-weight:600;font-size:0.95rem}
+.config-field{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.config-field label{min-width:140px;color:var(--muted);font-size:0.82rem}
+.config-field input{flex:1;padding:8px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)}
+.msg-preview{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:16px;white-space:pre-wrap;font-size:0.88rem;line-height:1.6;min-height:100px;margin:12px 0}
+.msg-template-btn{padding:10px 14px;background:var(--card);border:1px solid var(--border);border-radius:10px;cursor:pointer;text-align:left;transition:all 0.2s;width:100%;margin-bottom:6px;color:var(--text)}
+.msg-template-btn:hover{border-color:var(--primary);background:var(--accent)}
+.msg-template-btn.active{border-color:var(--primary);background:var(--accent)}
+.msg-template-btn .t-name{font-weight:600;font-size:0.85rem}
+.msg-template-btn .t-desc{font-size:0.72rem;color:var(--muted);margin-top:2px}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;margin-top:12px}
+.news-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:var(--shadow);transition:all 0.2s}
+.news-card:hover{box-shadow:var(--shadow-md)}
+.news-card .news-tag{font-size:0.68rem;color:var(--primary);font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:6px}
+.news-card .news-title{font-size:0.88rem;font-weight:600;margin-bottom:6px;line-height:1.3}
+.news-card .news-excerpt{font-size:0.78rem;color:var(--muted);line-height:1.4;margin-bottom:8px}
+.news-card .news-source{font-size:0.7rem;color:var(--muted)}.news-card .news-source a{color:var(--primary)}
+.insight-card{background:var(--accent);border-radius:10px;padding:14px;border:1px solid rgba(46,170,123,0.15)}
+.insight-card .insight-icon{font-size:1.2rem;margin-bottom:6px}
+.insight-card .insight-title{font-size:0.78rem;font-weight:600;color:var(--text);margin-bottom:4px}
+.insight-card .insight-value{font-size:0.82rem;color:var(--muted);line-height:1.4}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--primary);color:#fff;padding:12px 20px;border-radius:10px;font-weight:600;font-size:0.85rem;z-index:2000;transform:translateY(100px);opacity:0;transition:all 0.3s;box-shadow:var(--shadow-md)}
+.toast.show{transform:translateY(0);opacity:1}.toast.error{background:var(--danger)}
+.mobile-toggle{display:none;position:fixed;top:12px;left:12px;z-index:200;background:var(--sidebar-bg);color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:1.2rem;cursor:pointer}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:99}
+.cta-banner{position:fixed;bottom:-200px;left:0;right:0;background:linear-gradient(135deg, #2eaa7b 0%, #25956b 100%);color:#fff;padding:20px;text-align:center;z-index:2000;transition:bottom 0.4s;box-shadow:var(--shadow-md);border-radius:12px 12px 0 0}
+.cta-banner.show{bottom:0}
+.cta-banner h3{font-size:1.1rem;margin-bottom:8px}
+.cta-banner p{margin-bottom:12px;font-size:0.9rem}
+.cta-banner .btn{margin:0 6px}
+.tour-modal{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border-radius:16px;padding:32px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:3000;text-align:center}
+.tour-modal h2{color:var(--text);margin-bottom:16px}
+.tour-modal p{color:var(--muted);margin-bottom:20px;line-height:1.6}
+.tour-modal .tour-buttons{display:flex;gap:12px;justify-content:center}
+.portal-row{display:grid;grid-template-columns:1fr 1fr 36px;gap:8px;align-items:center;margin-bottom:6px}
+.portal-row select,.portal-row input{padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.82rem}
+.phone-row{display:flex;gap:8px}
+.phone-row select{flex:0 0 120px}
+.phone-row input{flex:1}
+.ical-row{display:grid;grid-template-columns:1fr 36px;gap:8px;align-items:center;margin-bottom:6px;padding:8px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+@media(max-width:768px){
+  .mobile-toggle{display:block}.sidebar{transform:translateX(-100%);transition:transform 0.3s;z-index:150}
+  .sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}
+  .main{margin-left:0;padding:16px;padding-top:52px}
+  .kpi-grid{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}
+  .prop-grid{grid-template-columns:1fr}.grid-2{grid-template-columns:1fr}
+  .news-grid{grid-template-columns:1fr}.page-header{flex-direction:column;align-items:flex-start;gap:10px}
+}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.tab-content{animation:fadeIn 0.25s ease}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.alert-card{border-radius:12px;padding:16px;margin-bottom:12px;border-left:6px solid;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow)}
+.alert-card.success{background:#e8f5e9;border-left-color:#2eaa7b;color:#2e7d32}
+.alert-card.warning{background:#fff3e0;border-left-color:#f0a030;color:#e68a00}
+.alert-card.info{background:#e3f2fd;border-left-color:#1976d2;color:#1565c0}
+.alert-card.muted{background:#f5f5f5;border-left-color:#7f8c9b;color:#7f8c9b}
+.alert-card .alert-text{flex:1;font-weight:500}
+.alert-card .alert-actions{display:flex;gap:8px;margin-left:12px}
+</style>
+</head>
+<body>
+<div class="demo-banner">🔓 Modo Demo — Los datos son de ejemplo y no se guardan. <a href="landing.html">Volver a Hospedy</a></div>
+<button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="app">
+  <nav class="sidebar" id="sidebar">
+    <div class="logo"><h1>🏠 Hospedy</h1><small>Property Management System</small></div>
+    <div class="nav-item active" onclick="showTab('dashboard',this)"><span class="icon">📊</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="showTab('properties',this)"><span class="icon">🏡</span><span>Propiedades</span></div>
+    <div class="nav-item" onclick="showTab('guests',this)"><span class="icon">👥</span><span>Huéspedes</span></div>
+    <div class="nav-item" onclick="showTab('reservations',this)"><span class="icon">📅</span><span>Reservaciones</span></div>
+    <div class="nav-item" onclick="showTab('messages',this)"><span class="icon">💬</span><span>Mensajes</span></div>
+    <div class="nav-item" onclick="showTab('finances',this)"><span class="icon">💰</span><span>Finanzas</span></div>
+    <div class="nav-item" onclick="showTab('config',this)"><span class="icon">⚙️</span><span>Configuración</span></div>
+  </nav>
+  <main class="main">
+    <div id="tab-dashboard" class="tab-content">
+      <div class="page-header"><h2>Dashboard</h2><span id="dash-date" style="color:var(--muted);font-size:0.85rem"></span></div>
+      <div id="alerts-container"></div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+      <div class="grid-2">
+        <div class="card"><h3>Ingresos vs Gastos</h3><div class="chart-container"><canvas id="revenue-chart"></canvas></div></div>
+        <div><div class="card"><h3>Próximos Check-ins</h3><div id="upcoming-in"></div></div><div class="card"><h3>Próximos Check-outs</h3><div id="upcoming-out"></div></div></div>
+      </div>
+      <div class="card"><h3>Indicadores de Negocio</h3><div class="kpi-grid" id="biz-insights"></div></div>
+      <div class="card"><h3>Noticias Turísticas</h3><p style="color:var(--muted);font-size:0.8rem;margin-bottom:8px">Noticias relevantes para las zonas de tus propiedades</p><div class="news-grid" id="news-grid"></div></div>
+    </div>
+    <div id="tab-properties" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Propiedades</h2><button class="btn btn-primary" onclick="openNewProperty()">+ Nueva Propiedad</button></div>
+      <div class="prop-grid" id="prop-grid"></div>
+    </div>
+    <div id="tab-guests" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Huéspedes</h2><button class="btn btn-primary" onclick="openNewGuest()">+ Nuevo Huésped</button></div>
+      <div class="search-bar"><input type="text" id="guest-search" placeholder="Buscar por nombre, teléfono o email..." oninput="renderGuests()"></div>
+      <div class="card" style="overflow-x:auto"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Documento</th><th>Ciudad</th><th>Acciones</th></tr></thead><tbody id="guests-table"></tbody></table></div>
+    </div>
+    <div id="tab-reservations" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Reservaciones</h2><button class="btn btn-primary" onclick="openNewReservation()">+ Nueva Reservación</button></div>
+      <div class="filter-row">
+        <select id="res-filter-status" onchange="renderReservations()"><option value="">Todos los estados</option><option value="pending">Pendiente</option><option value="confirmed">Confirmada</option><option value="checked_in">Check-in</option><option value="checked_out">Check-out</option><option value="completed">Completada</option><option value="cancelled">Cancelada</option></select>
+        <select id="res-filter-prop" onchange="renderReservations()"><option value="">Todas las propiedades</option></select>
+      </div>
+      <div class="card" style="overflow-x:auto"><table><thead><tr><th>Propiedad</th><th>Huésped</th><th>Check-in</th><th>Check-out</th><th>Noches</th><th>Total</th><th>Estado</th><th>Pago</th><th>Acciones</th></tr></thead><tbody id="res-table"></tbody></table></div>
+    </div>
+    <div id="tab-messages" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Mensajes</h2></div>
+      <div class="grid-2">
+        <div>
+          <div class="card"><h3>1. Seleccionar Reservación</h3><select id="msg-reservation" onchange="updateMessagePreview()" style="width:100%;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text)"></select></div>
+          <div class="card"><h3>2. Tipo de Mensaje</h3>
+            <button class="msg-template-btn active" onclick="selectTemplate('welcome')" id="tpl-welcome"><div class="t-name">🏠 Ficha de Bienvenida</div><div class="t-desc">WiFi, dirección, check-in, amenidades, código puerta</div></button>
+            <button class="msg-template-btn" onclick="selectTemplate('confirmation')" id="tpl-confirmation"><div class="t-name">✅ Confirmación</div><div class="t-desc">Fechas, total, referencia</div></button>
+            <button class="msg-template-btn" onclick="selectTemplate('checkin_reminder')" id="tpl-checkin_reminder"><div class="t-name">🔑 Recordatorio Check-in</div><div class="t-desc">Dirección e instrucciones</div></button>
+            <button class="msg-template-btn" onclick="selectTemplate('payment')" id="tpl-payment"><div class="t-name">💰 Recordatorio Pago</div><div class="t-desc">Saldo pendiente</div></button>
+            <button class="msg-template-btn" onclick="selectTemplate('thankyou')" id="tpl-thankyou"><div class="t-name">⭐ Agradecimiento</div><div class="t-desc">Post-checkout, pedir reseña</div></button>
+          </div>
+        </div>
+        <div class="card"><h3>Vista Previa</h3><div class="msg-preview" id="msg-preview">Selecciona una reservación...</div>
+          <div style="display:flex;gap:10px;margin-top:12px"><button class="btn btn-wa" onclick="sendWhatsApp()" id="btn-send-wa" disabled>💬 WhatsApp</button><button class="btn btn-secondary" onclick="copyMessage()">📋 Copiar</button></div>
+        </div>
+      </div>
+    </div>
+    <div id="tab-finances" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Finanzas</h2><div style="display:flex;gap:10px"><button class="btn btn-primary" onclick="openModal('finance-modal')">+ Nuevo Movimiento</button><button class="btn btn-secondary" onclick="exportReportCSV()">📥 Descargar Reporte</button></div></div>
+      <div class="kpi-grid" id="fin-summary"></div>
+      <div class="filter-row">
+        <select id="fin-filter-type" onchange="renderFinances()"><option value="">Todos</option><option value="income">Ingresos</option><option value="expense">Gastos</option></select>
+        <select id="fin-filter-prop" onchange="renderFinances()"><option value="">Todas las propiedades</option></select>
+        <input type="date" id="fin-date-from" onchange="renderFinances()"><input type="date" id="fin-date-to" onchange="renderFinances()">
+      </div>
+      <div class="card" style="overflow-x:auto"><table><thead><tr><th>Fecha</th><th>Tipo</th><th>Categoría</th><th>Descripción</th><th>Propiedad</th><th>Monto</th></tr></thead><tbody id="fin-table"></tbody></table></div>
+    </div>
+    <div id="tab-config" class="tab-content" style="display:none">
+      <div class="page-header"><h2>Configuración</h2></div>
+      <div class="card">
+        <div class="config-section"><h4>Información del Negocio</h4>
+          <div class="config-field"><label>Nombre</label><input id="cfg-business" type="text"></div>
+          <div class="config-field"><label>Propietario</label><input id="cfg-owner" type="text"></div>
+          <div class="config-field"><label>Teléfono</label><input id="cfg-phone" type="text"></div>
+          <div class="config-field"><label>Email</label><input id="cfg-email" type="email"></div>
+        </div>
+        <div class="config-section"><h4>Integraciones</h4>
+          <div class="config-field"><label>WhatsApp</label><input id="cfg-whatsapp" type="url" placeholder="https://wa.me/573001234567"></div>
+        </div>
+        <div style="margin-top:16px"><button class="btn btn-primary" onclick="saveConfig()">Guardar</button></div>
+      </div>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- PROPERTY MODAL -->
+<div class="modal-overlay" id="property-modal"><div class="modal">
+  <h3 id="prop-modal-title">Nueva Propiedad</h3><input type="hidden" id="prop-edit-id">
+  <div class="form-row">
+    <div class="form-group"><label>Nombre *</label><input id="prop-name" required placeholder="Ej: Apartamento El Poblado"></div>
+    <div class="form-group"><label>Tipo</label><select id="prop-type"><option value="apartamento">Apartamento</option><option value="casa">Casa</option><option value="finca">Finca</option><option value="habitacion">Habitación</option><option value="cabaña">Cabaña</option><option value="hotel">Hotel</option><option value="hostal">Hostal</option></select></div>
+  </div>
+  <div class="form-group"><label>Dirección</label><input id="prop-address" placeholder="Cra 43A #7-50, El Poblado"></div>
+  <div class="form-row">
+    <div class="form-group"><label>Departamento *</label><select id="prop-dept" onchange="updateCities('prop-dept','prop-city')"><option value="">— Seleccionar —</option></select></div>
+    <div class="form-group"><label>Ciudad *</label><select id="prop-city"><option value="">— Primero seleccione depto —</option></select></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Precio/Noche (COP) *</label><input id="prop-price" type="number" min="0" placeholder="180000"></div>
+    <div class="form-group"><label>Estado</label><select id="prop-status"><option value="active">Activa</option><option value="inactive">Inactiva</option><option value="maintenance">Mantenimiento</option></select></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Habitaciones</label><input id="prop-rooms" type="number" min="1" max="50" value="1"></div>
+    <div class="form-group"><label>Baños</label><input id="prop-baths" type="number" min="1" max="20" value="1"></div>
+  </div>
+  <div class="form-group"><label>Máx. Huéspedes</label><input id="prop-maxguests" type="number" min="1" max="100" value="2"></div>
+  <div class="form-group"><label>Descripción</label><textarea id="prop-desc" rows="2"></textarea></div>
+  <div class="form-group"><label>Amenidades (separadas por coma)</label><input id="prop-amenities" placeholder="WiFi, A/C, Cocina, TV"></div>
+  <div class="form-row">
+    <div class="form-group"><label>📶 Red WiFi</label><input id="prop-wifi-name" placeholder="NombreRed"></div>
+    <div class="form-group"><label>🔐 Clave WiFi</label><input id="prop-wifi-pass" placeholder="clave123"></div>
+  </div>
+  <div class="form-group"><label>🚪 Código Puerta (cerradura digital)</label><input id="prop-door-code" placeholder="1234 (opcional)"></div>
+  <div class="form-group"><label>🔑 Instrucciones Check-in</label><textarea id="prop-checkin-instructions" rows="2" placeholder="Portería 24h, decir que viene al Apto 501..."></textarea></div>
+  <div class="form-group"><label>🔗 Portales</label><div id="portals-container"></div><button type="button" class="btn btn-sm btn-secondary" onclick="addPortalRow()" style="margin-top:4px">+ Agregar Portal</button></div>
+  <div class="form-group"><label>📅 Calendarios iCal</label><div id="ical-container"></div><div style="display:flex;gap:6px;margin-top:8px"><input type="text" id="ical-url-input" placeholder="https://..." style="flex:1;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:0.82rem"><button type="button" class="btn btn-sm btn-secondary" onclick="addIcalRow()">Agregar</button></div></div>
+  <div style="margin-top:12px"><button type="button" class="btn btn-sm btn-secondary" onclick="syncIcalNow()" id="btn-sync-ical">⟳ Sincronizar Ahora</button></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('property-modal')">Cancelar</button><button class="btn btn-primary" onclick="saveProperty()">Guardar</button></div>
+</div></div>
+
+<!-- GUEST MODAL -->
+<div class="modal-overlay" id="guest-modal"><div class="modal">
+  <h3 id="guest-modal-title">Nuevo Huésped</h3><input type="hidden" id="guest-edit-id">
+  <div class="form-group"><label>Nombre Completo *</label><input id="guest-name" required placeholder="Carlos Rodríguez" pattern="[A-Za-zÀ-ÿ\s\-'.]+" title="Solo letras y espacios"></div>
+  <div class="form-group"><label>Teléfono *</label>
+    <div class="phone-row"><select id="guest-phone-code"></select><input id="guest-phone-num" type="tel" placeholder="3001234567" pattern="[0-9]{7,15}" title="Solo números, 7-15 dígitos" oninput="this.value=this.value.replace(/[^0-9]/g,'')"></div>
+  </div>
+  <div class="form-group"><label>Email</label><input id="guest-email" type="email" placeholder="email@example.com"></div>
+  <div class="form-row">
+    <div class="form-group"><label>Tipo Documento</label><select id="guest-doctype" onchange="onDocTypeChange()"><option value="CC">Cédula de Ciudadanía (CC)</option><option value="CE">Cédula Extranjería (CE)</option><option value="PAS">Pasaporte (Extranjero)</option><option value="NIT">NIT</option><option value="TI">Tarjeta Identidad (TI)</option></select></div>
+    <div class="form-group"><label>Número Documento *</label><input id="guest-docnum" placeholder="1037456789" oninput="this.value=this.value.replace(/[^a-zA-Z0-9\-]/g,'')"></div>
+  </div>
+  <div id="guest-location-co" class="form-row">
+    <div class="form-group"><label>Departamento</label><select id="guest-dept" onchange="updateCities('guest-dept','guest-city')"><option value="">— Seleccionar —</option></select></div>
+    <div class="form-group"><label>Ciudad</label><select id="guest-city"><option value="">— Primero seleccione depto —</option></select></div>
+  </div>
+  <div id="guest-location-ext" class="form-group" style="display:none">
+    <label>País de Origen</label><select id="guest-country"><option value="">— Seleccionar país —</option></select>
+  </div>
+  <div class="form-group"><label>Notas</label><textarea id="guest-notes" rows="2"></textarea></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('guest-modal')">Cancelar</button><button class="btn btn-primary" onclick="saveGuest()">Guardar</button></div>
+</div></div>
+
+<!-- RESERVATION MODAL -->
+<div class="modal-overlay" id="reservation-modal"><div class="modal">
+  <h3 id="res-modal-title">Nueva Reservación</h3><input type="hidden" id="res-edit-id">
+  <div class="form-group"><label>Propiedad *</label><select id="res-property"><option value="">— Seleccionar —</option></select></div>
+  <div class="form-group"><label>Huésped *</label><select id="res-guest"><option value="">— Seleccionar —</option></select></div>
+  <div class="form-row">
+    <div class="form-group"><label>Check-in *</label><input id="res-checkin" type="date"></div>
+    <div class="form-group"><label>Check-out *</label><input id="res-checkout" type="date"></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Estado</label><select id="res-status"><option value="pending">Pendiente</option><option value="confirmed">Confirmada</option><option value="checked_in">Check-in</option><option value="checked_out">Check-out</option><option value="completed">Completada</option><option value="cancelled">Cancelada</option></select></div>
+    <div class="form-group"><label>Pago</label><select id="res-payment"><option value="pending">Pendiente</option><option value="partial">Parcial</option><option value="paid">Pagado</option></select></div>
+  </div>
+  <div class="form-group"><label>Notas</label><textarea id="res-notes" rows="2"></textarea></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('reservation-modal')">Cancelar</button><button class="btn btn-primary" onclick="saveReservation()">Guardar</button></div>
+</div></div>
+
+<!-- FINANCE MODAL -->
+<div class="modal-overlay" id="finance-modal"><div class="modal">
+  <h3>Nuevo Movimiento</h3>
+  <div class="form-row">
+    <div class="form-group"><label>Tipo *</label><select id="fin-type"><option value="income">Ingreso</option><option value="expense">Gasto</option></select></div>
+    <div class="form-group"><label>Categoría *</label><input id="fin-category" placeholder="Ej: Limpieza, Reparación..."></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group"><label>Monto *</label><input id="fin-amount" type="number" min="0" placeholder="0"></div>
+    <div class="form-group"><label>Fecha *</label><input id="fin-date" type="date"></div>
+  </div>
+  <div class="form-group"><label>Propiedad</label><select id="fin-property"><option value="">— Sin asignar —</option></select></div>
+  <div class="form-group"><label>Descripción</label><textarea id="fin-desc" rows="2"></textarea></div>
+  <div class="modal-actions"><button class="btn btn-secondary" onclick="closeModal('finance-modal')">Cancelar</button><button class="btn btn-primary" onclick="saveFinance()">Guardar</button></div>
+</div></div>
+
+<div class="cta-banner" id="cta-banner">
+  <h3>Te gusta el demo? Obtén acceso completo</h3>
+  <p>Gestiona todas tus propiedades por solo $65.000/mes</p>
+  <div class="cta-banner-buttons" style="display:flex;gap:12px;justify-content:center">
+    <a href="https://wa.me/573113225050?text=Hola%2C%20quiero%20acceso%20a%20Hospedy%20PMS" target="_blank" class="btn btn-primary">💬 WhatsApp</a>
+    <button onclick="closeCTA()" class="btn btn-secondary">Ahora no</button>
+  </div>
+</div>
+
+<div class="tour-modal" id="tour-modal" style="display:none">
+  <h2>Bienvenido a Hospedy! 🎉</h2>
+  <p>Este es un tour rápido de las funciones principales. ¿Quieres verlo?</p>
+  <div class="tour-buttons">
+    <button class="btn btn-primary" onclick="startTour()">Sí, guíame</button>
+    <button class="btn btn-secondary" onclick="skipTour()">No, gracias</button>
+  </div>
+</div>
+
+<script>
+let DATA={properties:[],guests:[],reservations:[],finances:[],config:{}};
+let revenueChart=null;
+let currentTemplate='welcome';
+let interactionCount=0;
+
+// ── REFERENCE DATA ──────────────────────────────────────
+const DEPTOS_CIUDADES={
+  'Amazonas':['Leticia','Puerto Nariño'],
+  'Antioquia':['Medellín','Bello','Envigado','Itagüí','Rionegro','Sabaneta','Apartadó','Turbo','Caucasia','Santa Fe de Antioquia','Guatapé','El Retiro','La Ceja','Marinilla','El Carmen de Viboral','Copacabana','Caldas','La Estrella','Barbosa','Girardota','El Peñol','Jericó','Jardín','Ciudad Bolívar','Necoclí','Carepa','Chigorodó','Puerto Berrío','Yarumal','Andes','Sonsón','Amalfi','Támesis','Santa Rosa de Osos'],
+  'Arauca':['Arauca','Saravena','Tame','Arauquita','Fortul'],
+  'Atlántico':['Barranquilla','Soledad','Malambo','Puerto Colombia','Juan de Acosta','Sabanalarga','Galapa','Baranoa','Campo de la Cruz','Luruaco','Repelón','Tubará'],
+  'Bogotá D.C.':['Bogotá'],
+  'Bolívar':['Cartagena','Magangué','Turbaco','Arjona','San Jacinto','Santa Rosa de Lima','El Carmen de Bolívar','Mompox','San Juan Nepomuceno','Simití','Pinillos','Mahates','Clemencia','Santa Catalina','Islas del Rosario','Barú'],
+  'Boyacá':['Tunja','Duitama','Sogamoso','Chiquinquirá','Villa de Leyva','Paipa','Monguí','Ráquira','Puerto Boyacá','Samacá','Nobsa','Tibasosa','Tenza','Garagoa','Guateque','Muzo','Tota','Playa de Belén'],
+  'Caldas':['Manizales','La Dorada','Chinchiná','Villamaría','Salamina','Neira','Supía','Riosucio','Anserma','Aguadas','Pácora','Pensilvania','Manzanares','Marquetalia','Samaná'],
+  'Caquetá':['Florencia','San Vicente del Caguán','Puerto Rico','El Doncello','Belén de los Andaquíes','Cartagena del Chairá','Albania'],
+  'Casanare':['Yopal','Aguazul','Villanueva','Tauramena','Paz de Ariporo','Monterrey','Maní','Hato Corozal','Nunchía','Orocué'],
+  'Cauca':['Popayán','Santander de Quilichao','Puerto Tejada','Piendamó','El Tambo','Patía','Guapi','Timbío','Miranda','Corinto','Silvia','Coconuco'],
+  'Cesar':['Valledupar','Aguachica','Bosconia','La Paz','Codazzi','Chiriguaná','Curumaní','El Copey','Pelaya','San Alberto','San Martín','Río de Oro'],
+  'Chocó':['Quibdó','Nuquí','Bahía Solano','Istmina','Tadó','Condoto','El Carmen de Atrato','Acandí','Capurganá','Sapzurro','Unguía','Riosucio','Lloró'],
+  'Córdoba':['Montería','Cereté','Lorica','Sahagún','Planeta Rica','Montelíbano','Tierralta','Puerto Escondido','San Pelayo','Ciénaga de Oro','San Andrés de Sotavento','Ayapel','Chinú','San Bernardo del Viento','Moñitos','Coveñas'],
+  'Cundinamarca':['Soacha','Zipaquirá','Facatativá','Chía','Fusagasugá','Girardot','Cajicá','La Calera','Cota','Tabio','Anapoima','Villeta','Melgar','Madrid','Mosquera','Funza','Tenjo','Sopó','Tocancipá','Gachancipá','Nemocón','Guatavita','Ubaté','Pacho','La Mesa','Ricaurte','Nilo','Agua de Dios','Choachí','La Vega','Simijaca','Suesca','Sesquilé'],
+  'Guainía':['Inírida','Barranco Minas'],
+  'Guaviare':['San José del Guaviare','Calamar','El Retorno','Miraflores'],
+  'Huila':['Neiva','Pitalito','Garzón','San Agustín','La Plata','Campoalegre','Isnos','Timaná','Acevedo','Rivera','Algeciras','Gigante','Aipe','Palermo','Yaguará','Villavieja (Desierto de la Tatacoa)'],
+  'La Guajira':['Riohacha','Maicao','Uribia','Manaure','San Juan del Cesar','Fonseca','Dibulla','Palomino','Cabo de la Vela','Punta Gallinas','Albania','Barrancas','Hatonuevo','Villanueva'],
+  'Magdalena':['Santa Marta','Ciénaga','Fundación','Aracataca','Plato','El Banco','El Retén','Zona Bananera','Puebloviejo','Taganga','Minca','Palomino','Buritaca'],
+  'Meta':['Villavicencio','Acacías','Granada','Puerto López','Restrepo','Cumaral','San Martín','Puerto Gaitán','La Macarena (Caño Cristales)','El Castillo','Lejanías','Guamal','Barranca de Upía','San Juan de Arama'],
+  'Nariño':['Pasto','Ipiales','Tumaco','La Unión','Túquerres','Samaniego','Barbacoas','Sandoná','El Tambo','La Cruz','Cumbal','Las Lajas (Santuario)','Chachagüí','Consacá','Buesaco','Tangua'],
+  'Norte de Santander':['Cúcuta','Ocaña','Pamplona','Villa del Rosario','Los Patios','El Zulia','Chinácota','Ábrego','Convención','Tibú','Sardinata','San Cayetano'],
+  'Putumayo':['Mocoa','Puerto Asís','Villagarzón','Orito','Puerto Caicedo','Puerto Guzmán','San Miguel','Valle del Guamuez','Sibundoy','Santiago','Colón','San Francisco'],
+  'Quindío':['Armenia','Calarcá','Montenegro','Salento','Filandia','Circasia','La Tebaida','Quimbaya','Córdoba','Pijao','Buenavista','Génova'],
+  'Risaralda':['Pereira','Dosquebradas','Santa Rosa de Cabal','La Virginia','Marsella','Belén de Umbría','Quinchía','Mistrató','Pueblo Rico','Guática','Apía','Santuario'],
+  'San Andrés y Providencia':['San Andrés','Providencia','Santa Catalina'],
+  'Santander':['Bucaramanga','Floridablanca','Girón','Piedecuesta','Barrancabermeja','San Gil','Socorro','Barbosa','Vélez','Lebrija','Málaga','Zapatoca','Barichara','Cabrera','Villanueva','El Playón','Charalá','Pinchote','Curití','Páramo','Mesa de los Santos','Jordán (Chicamocha)'],
+  'Sucre':['Sincelejo','Corozal','Santiago de Tolú','Coveñas','San Marcos','San Onofre','Sampués','Los Palmitos','Ovejas','Galeras','Majagual','Guaranda','San Juan de Betulia','Morroa','Rincón del Mar'],
+  'Tolima':['Ibagué','Espinal','Melgar','Honda','Mariquita','Chaparral','Líbano','Purificación','Guamo','Lérida','Flandes','Cajamarca','Armero','Fresno','Herveo','Murillo','Villahermosa','San Sebastián de Mariquita','Carmen de Apicalá'],
+  'Valle del Cauca':['Cali','Buenaventura','Palmira','Tuluá','Buga','Cartago','Yumbo','Jamundí','Candelaria','Florida','Pradera','Roldanillo','Zarzal','Caicedonia','Sevilla','Dagua','La Cumbre','Ginebra','El Cerrito','Guacarí','La Unión','Restrepo','Darién','San Cipriano'],
+  'Vaupés':['Mitú','Taraira','Carurú'],
+  'Vichada':['Puerto Carreño','La Primavera','Santa Rosalía','Cumaribo']
+};
+
+const PHONE_CODES=[
+  {code:'+57',name:'Colombia'},
+  {code:'+1',name:'Estados Unidos'},
+  {code:'+1',name:'Canadá'},
+  {code:'+52',name:'México'},
+  {code:'+54',name:'Argentina'},
+  {code:'+55',name:'Brasil'},
+  {code:'+56',name:'Chile'},
+  {code:'+51',name:'Perú'},
+  {code:'+593',name:'Ecuador'},
+  {code:'+58',name:'Venezuela'},
+  {code:'+507',name:'Panamá'},
+  {code:'+506',name:'Costa Rica'},
+  {code:'+503',name:'El Salvador'},
+  {code:'+502',name:'Guatemala'},
+  {code:'+504',name:'Honduras'},
+  {code:'+505',name:'Nicaragua'},
+  {code:'+591',name:'Bolivia'},
+  {code:'+595',name:'Paraguay'},
+  {code:'+598',name:'Uruguay'},
+  {code:'+53',name:'Cuba'},
+  {code:'+1809',name:'Rep. Dominicana'},
+  {code:'+34',name:'España'},
+  {code:'+44',name:'Reino Unido'},
+  {code:'+33',name:'Francia'},
+  {code:'+49',name:'Alemania'},
+  {code:'+39',name:'Italia'},
+  {code:'+351',name:'Portugal'},
+  {code:'+31',name:'Países Bajos'},
+  {code:'+41',name:'Suiza'},
+  {code:'+61',name:'Australia'},
+  {code:'+81',name:'Japón'},
+  {code:'+82',name:'Corea del Sur'},
+  {code:'+86',name:'China'},
+  {code:'+972',name:'Israel'},
+];
+
+const COUNTRIES=[
+  'Estados Unidos','Canadá','México','Argentina','Brasil','Chile','Perú','Ecuador','Venezuela',
+  'Panamá','Costa Rica','Guatemala','Rep. Dominicana','Cuba','Bolivia','Paraguay','Uruguay',
+  'España','Francia','Alemania','Italia','Reino Unido','Portugal','Países Bajos','Suiza',
+  'Australia','Japón','Corea del Sur','China','Israel','India','Rusia','Sudáfrica','Otro'
+];
+
+const PORTALS=['Airbnb','Booking.com','VRBO','Despegar','TripAdvisor','Google Hotels','Expedia','Hotels.com','Otro'];
+const PORTAL_ICONS={airbnb:'🏠','booking.com':'🔵',vrbo:'🟢',despegar:'✈️',tripadvisor:'🦉','google hotels':'🔍',expedia:'🟡','hotels.com':'🔴',otro:'🔗'};
+
+const STATUS_LABELS={pending:'Pendiente',confirmed:'Confirmada',checked_in:'Check-in',checked_out:'Check-out',completed:'Completada',cancelled:'Cancelada'};
+const PAYMENT_LABELS={pending:'Pendiente',partial:'Parcial',paid:'Pagado'};
+
+// ── HELPERS ─────────────────────────────────────────────
+function fmt(n){return'$'+(n||0).toLocaleString('es-CO')}
+function fmtDate(d){if(!d)return'—';const p=d.split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d}
+function propName(id){return(DATA.properties.find(p=>p.id===id)||{}).name||'—'}
+function propObj(id){return DATA.properties.find(p=>p.id===id)||{}}
+function guestName(id){return(DATA.guests.find(g=>g.id===id)||{}).name||'—'}
+function guestObj(id){return DATA.guests.find(g=>g.id===id)||{}}
+function showToast(msg,err=false){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show'+(err?' error':'');setTimeout(()=>t.className='toast',3000)}
+
+function getTodayDate(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function getTomorrowDate(){const d=new Date();d.setDate(d.getDate()+1);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+
+function recordInteraction(){interactionCount++;if(interactionCount===3)showCTA()}
+
+function loadAll(){
+  populateSelects();
+  renderDashboard();
+}
+
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebar-overlay').classList.toggle('open')}
+
+function showTab(name,el){
+  document.querySelectorAll('.tab-content').forEach(t=>t.style.display='none');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+name).style.display='block';
+  if(el)el.classList.add('active');
+  if(window.innerWidth<769){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebar-overlay').classList.remove('open')}
+  if(name==='dashboard')renderDashboard();else if(name==='properties')renderProperties();else if(name==='guests')renderGuests();else if(name==='reservations')renderReservations();else if(name==='messages')renderMessages();else if(name==='finances')renderFinances();else if(name==='config')renderConfig();
+}
+
+function openModal(id){document.getElementById(id).classList.add('active')}
+function closeModal(id){document.getElementById(id).classList.remove('active')}
+
+// ── DEPT/CITY HELPERS ───────────────────────────────────
+function populateDeptSelect(selectId){
+  const sel=document.getElementById(selectId);
+  sel.innerHTML='<option value="">— Departamento —</option>'+Object.keys(DEPTOS_CIUDADES).sort().map(d=>`<option value="${d}">${d}</option>`).join('');
+}
+
+function updateCities(deptId,cityId){
+  const dept=document.getElementById(deptId).value;
+  const citySel=document.getElementById(cityId);
+  if(!dept){citySel.innerHTML='<option value="">— Primero seleccione depto —</option>';return}
+  const cities=DEPTOS_CIUDADES[dept]||[];
+  citySel.innerHTML='<option value="">— Ciudad —</option>'+cities.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function setDeptCity(deptId,cityId,cityValue){
+  if(!cityValue){document.getElementById(deptId).value='';updateCities(deptId,cityId);return}
+  for(const[dept,cities] of Object.entries(DEPTOS_CIUDADES)){
+    if(cities.includes(cityValue)){
+      document.getElementById(deptId).value=dept;
+      updateCities(deptId,cityId);
+      document.getElementById(cityId).value=cityValue;
+      return;
+    }
+  }
+  document.getElementById(deptId).value='';
+  updateCities(deptId,cityId);
+}
+
+// ── PHONE CODE HELPER ───────────────────────────────────
+function populatePhoneCodes(){
+  document.getElementById('guest-phone-code').innerHTML=PHONE_CODES.map(p=>`<option value="${p.code}">${p.name} (${p.code})</option>`).join('');
+}
+
+function parsePhone(fullPhone){
+  if(!fullPhone)return{code:'+57',num:''};
+  const clean=fullPhone.replace(/\s/g,'');
+  for(const p of PHONE_CODES){
+    if(clean.startsWith(p.code))return{code:p.code,num:clean.slice(p.code.length)};
+  }
+  if(clean.startsWith('+'))return{code:clean.slice(0,clean.length>3?4:3),num:clean.slice(clean.length>3?4:3)};
+  return{code:'+57',num:clean.replace(/\D/g,'')};
+}
+
+// ── PORTAL ROW HELPERS ──────────────────────────────────
+function addPortalRow(name='',url=''){
+  const container=document.getElementById('portals-container');
+  const row=document.createElement('div');
+  row.className='portal-row';
+  row.innerHTML=`<select>${PORTALS.map(p=>`<option value="${p}"${p===name?' selected':''}>${p}</option>`).join('')}</select><input type="url" value="${url}" placeholder="https://..."><button type="button" class="btn-danger-sm" onclick="this.parentElement.remove()">✕</button>`;
+  container.appendChild(row);
+}
+
+function getPortalLinks(){
+  const rows=document.querySelectorAll('#portals-container .portal-row');
+  const links={};
+  rows.forEach(row=>{
+    const name=row.querySelector('select').value;
+    const url=row.querySelector('input').value.trim();
+    if(name&&url)links[name]=url;
+  });
+  return links;
+}
+
+function setPortalRows(links){
+  document.getElementById('portals-container').innerHTML='';
+  if(!links||!Object.keys(links).length)return;
+  Object.entries(links).forEach(([name,url])=>addPortalRow(name,url));
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────
+function renderDashboard(){
+  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const d=calculateDashboardStats();
+  renderAlertsCards(d);
+  document.getElementById('kpi-grid').innerHTML=`
+    <div class="kpi-card"><div class="label">Ocupación</div><div class="value">${d.occupancy}%</div><div class="sub">${d.total_properties} propiedades activas</div></div>
+    <div class="kpi-card green"><div class="label">Ingresos del Mes</div><div class="value">${fmt(d.month_income)}</div><div class="sub">Utilidad: ${fmt(d.month_profit)}</div></div>
+    <div class="kpi-card yellow"><div class="label">Pagos Pendientes</div><div class="value">${d.pending_payments}</div><div class="sub">${fmt(d.pending_amount)} por cobrar</div></div>
+    <div class="kpi-card"><div class="label">Reservaciones Activas</div><div class="value">${d.active_reservations}</div><div class="sub">${d.total_guests} huéspedes registrados</div></div>`;
+  const renderUp=(list,type)=>{if(!list||!list.length)return`<p style="color:var(--muted);font-size:0.82rem">No hay próximos ${type}</p>`;return list.map(r=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div><strong>${guestName(r.guest_id)}</strong><br><span style="color:var(--muted);font-size:0.78rem">${propName(r.property_id)}</span></div><div style="text-align:right"><span style="font-weight:600;font-size:0.85rem">${fmtDate(type==='check-ins'?r.check_in:r.check_out)}</span><br><span class="badge ${r.status}">${STATUS_LABELS[r.status]||r.status}</span></div></div>`).join('')};
+  document.getElementById('upcoming-in').innerHTML=renderUp(d.upcoming_checkins,'check-ins');
+  document.getElementById('upcoming-out').innerHTML=renderUp(d.upcoming_checkouts,'check-outs');
+  const ctx=document.getElementById('revenue-chart');
+  if(revenueChart)revenueChart.destroy();
+  revenueChart=new Chart(ctx,{type:'bar',data:{labels:d.monthly_chart.map(m=>m.month),datasets:[{label:'Ingresos',data:d.monthly_chart.map(m=>m.income),backgroundColor:'rgba(46,170,123,0.7)',borderRadius:6},{label:'Gastos',data:d.monthly_chart.map(m=>m.expense),backgroundColor:'rgba(224,85,85,0.6)',borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#7f8c9b',font:{size:11}}}},scales:{x:{ticks:{color:'#7f8c9b'},grid:{display:false}},y:{ticks:{color:'#7f8c9b',callback:v=>'$'+(v/1000)+'k'},grid:{color:'rgba(226,232,240,0.5)'}}}}});
+  // Insights
+  const avgRate=DATA.reservations.filter(r=>r.total&&r.nights).length?Math.round(DATA.reservations.filter(r=>r.total&&r.nights).reduce((s,r)=>s+r.total/r.nights,0)/DATA.reservations.filter(r=>r.total&&r.nights).length):0;
+  const totalNights=DATA.reservations.filter(r=>r.nights).reduce((s,r)=>s+(r.nights||0),0);
+  const avgNights=DATA.reservations.filter(r=>r.nights).length?Math.round(totalNights/DATA.reservations.filter(r=>r.nights).length*10)/10:0;
+  const gc={};DATA.reservations.forEach(r=>{gc[r.guest_id]=(gc[r.guest_id]||0)+1});const repeat=Object.values(gc).filter(c=>c>1).length;
+  const topProp=DATA.properties.map(p=>({name:p.name,rev:DATA.finances.filter(f=>f.type==='income'&&f.property_id===p.id).reduce((s,f)=>s+f.amount,0)})).sort((a,b)=>b.rev-a.rev)[0];
+  document.getElementById('biz-insights').innerHTML=`
+    <div class="insight-card"><div class="insight-icon">📊</div><div class="insight-title">Tarifa Promedio/Noche</div><div class="insight-value">${fmt(avgRate)}</div></div>
+    <div class="insight-card"><div class="insight-icon">🌙</div><div class="insight-title">Estadía Promedio</div><div class="insight-value">${avgNights} noches</div></div>
+    <div class="insight-card"><div class="insight-icon">🔄</div><div class="insight-title">Huéspedes Recurrentes</div><div class="insight-value">${repeat} de ${DATA.guests.length}</div></div>
+    <div class="insight-card"><div class="insight-icon">⭐</div><div class="insight-title">Propiedad Top</div><div class="insight-value">${topProp?topProp.name+' ('+fmt(topProp.rev)+')':'—'}</div></div>`;
+  // News
+  const cities=[...new Set(DATA.properties.map(p=>p.city).filter(Boolean))];
+  const news=getTourismNews(cities);
+  document.getElementById('news-grid').innerHTML=news.map(n=>`<div class="news-card"><div class="news-tag">${n.tag}</div><div class="news-title">${n.title}</div><div class="news-excerpt">${n.excerpt}</div><div class="news-source">Fuente: <a href="${n.url}" target="_blank">${n.source}</a></div></div>`).join('');
+}
+
+function calculateDashboardStats(){
+  const today=getTodayDate();
+  const tomorrow=getTomorrowDate();
+  const thisMonth=today.substring(0,7);
+  const activePropIds=DATA.properties.filter(p=>p.status==='active').map(p=>p.id);
+  const todayCheckins=DATA.reservations.filter(r=>r.check_in===today&&activePropIds.includes(r.property_id));
+  const todayCheckouts=DATA.reservations.filter(r=>r.check_out===today&&activePropIds.includes(r.property_id));
+  const tomorrowCheckins=DATA.reservations.filter(r=>r.check_in===tomorrow&&activePropIds.includes(r.property_id));
+  const tomorrowCheckouts=DATA.reservations.filter(r=>r.check_out===tomorrow&&activePropIds.includes(r.property_id));
+  const activeRes=DATA.reservations.filter(r=>['pending','confirmed','checked_in'].includes(r.status)&&activePropIds.includes(r.property_id));
+  const monthIncome=DATA.finances.filter(f=>f.type==='income'&&f.date.startsWith(thisMonth)).reduce((s,f)=>s+f.amount,0);
+  const monthExpense=DATA.finances.filter(f=>f.type==='expense'&&f.date.startsWith(thisMonth)).reduce((s,f)=>s+f.amount,0);
+  const pendingPayRes=DATA.reservations.filter(r=>r.payment_status==='pending'&&activePropIds.includes(r.property_id));
+  const pendingAmount=pendingPayRes.reduce((s,r)=>s+(r.total||0),0);
+  const monthlyChart=[];
+  for(let m=11;m>=0;m--){const d=new Date();d.setMonth(d.getMonth()-m);const ym=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');const mInc=DATA.finances.filter(f=>f.type==='income'&&f.date.startsWith(ym)).reduce((s,f)=>s+f.amount,0);const mExp=DATA.finances.filter(f=>f.type==='expense'&&f.date.startsWith(ym)).reduce((s,f)=>s+f.amount,0);monthlyChart.push({month:d.toLocaleDateString('es-CO',{month:'short',year:'2-digit'}),income:mInc,expense:mExp});}
+  const bookedNights=activeRes.reduce((s,r)=>{if(r.check_in&&r.check_out){const ci=new Date(r.check_in);const co=new Date(r.check_out);const nights=Math.ceil((co-ci)/(1000*60*60*24));return s+nights;}return s;},0);
+  const totalDaysMonth=new Date(today.substring(0,4),parseInt(today.substring(5,7)),0).getDate();
+  const totalPossibleNights=activePropIds.length*totalDaysMonth;
+  const occupancy=totalPossibleNights>0?Math.round(bookedNights/totalPossibleNights*100):0;
+  return{occupancy,total_properties:activePropIds.length,month_income:monthIncome,month_profit:monthIncome-monthExpense,pending_payments:pendingPayRes.length,pending_amount:pendingAmount,active_reservations:activeRes.length,total_guests:DATA.guests.length,upcoming_checkins:DATA.reservations.filter(r=>r.check_in>today&&activePropIds.includes(r.property_id)).slice(0,5),upcoming_checkouts:DATA.reservations.filter(r=>r.check_out>today&&activePropIds.includes(r.property_id)).slice(0,5),today_checkins:todayCheckins,today_checkouts:todayCheckouts,tomorrow_checkins:tomorrowCheckins,tomorrow_checkouts:tomorrowCheckouts,monthly_chart:monthlyChart};
+}
+
+function getTourismNews(cities){
+  const news=[];const has=c=>cities.some(x=>x.toLowerCase().includes(c.toLowerCase()));
+  news.push({tag:'Colombia',title:'Colombia supera 6 millones de turistas internacionales en 2025',excerpt:'Crecimiento del 12% en llegadas internacionales.',source:'MinComercio',url:'https://www.mincit.gov.co/prensa/noticias/turismo'});
+  if(has('medellín')||has('medellin'))news.push({tag:'Medellín',title:'Medellín lidera ocupación hotelera en Colombia',excerpt:'Ocupación promedio del 72% en alojamientos cortos Q1 2026.',source:'Cotelco',url:'https://www.cotelco.org/'});
+  if(has('santa marta')||has('taganga'))news.push({tag:'Santa Marta',title:'Temporada alta en Santa Marta y Tayrona',excerpt:'Máxima ocupación en playas. Reservar con anticipación.',source:'ProColombia',url:'https://www.colombia.travel/es'});
+  if(has('cartagena'))news.push({tag:'Cartagena',title:'Cartagena diversifica turismo más allá del centro histórico',excerpt:'Getsemaní y Bocagrande atraen con experiencias gastronómicas.',source:'ProColombia',url:'https://www.colombia.travel/es'});
+  if(has('bogotá')||has('bogota'))news.push({tag:'Bogotá',title:'Bogotá impulsa turismo de negocios',excerpt:'Infraestructura renovada y conexiones aéreas ampliadas.',source:'IDT',url:'https://www.idt.gov.co/'});
+  if(news.length<4)news.push({tag:'Tendencia',title:'Short-term rentals crecen 25% en Colombia',excerpt:'Mercado impulsado por plataformas digitales y turismo experiencial.',source:'DANE',url:'https://www.dane.gov.co/'});
+  return news.slice(0,4);
+}
+
+// ── PROPERTIES ──────────────────────────────────────────
+function renderProperties(){
+  const icons={apartamento:'🏢',casa:'🏠',finca:'🌾',habitacion:'🛏️','cabaña':'🏔️',hotel:'🏨',hostal:'🛏️'};
+  document.getElementById('prop-grid').innerHTML=DATA.properties.map(p=>{
+    const links=p.portal_links||{};
+    const portal=Object.entries(links).map(([n,u])=>`<a class="portal-link" href="${u}" target="_blank">${PORTAL_ICONS[n.toLowerCase()]||'🔗'} ${n}</a>`).join('');
+    return`<div class="prop-card"><div class="prop-img">${icons[p.type]||'🏠'}</div><div class="prop-body">
+      <h4>${p.name}</h4><div class="prop-meta">📍 ${p.address||''} ${p.city||''} · ${p.rooms} hab · ${p.bathrooms} baños · Max ${p.max_guests}</div>
+      <div class="prop-price">${fmt(p.price_per_night)} <span style="font-size:0.75rem;font-weight:400;color:var(--muted)">/noche</span></div>
+      <div class="prop-info-row">${p.wifi_name?`<span>📶 ${p.wifi_name}</span>`:''} ${p.wifi_password?`<span>🔐 ${p.wifi_password}</span>`:''} ${p.door_code?`<span>🚪 ${p.door_code}</span>`:''}</div>
+      <div class="prop-amenities">${(p.amenities||[]).map(a=>'<span>'+a+'</span>').join('')}</div>
+      ${portal?`<div class="portal-links">${portal}</div>`:''}
+      <div class="prop-actions"><button class="btn btn-sm btn-secondary" onclick="editPropertyWithIcal('${p.id}')">✏️ Editar</button><button class="btn btn-sm btn-secondary" onclick="deleteItem('properties','${p.id}')">🗑️</button></div>
+    </div></div>`}).join('');
+}
+
+function clearPropertyForm(){
+  document.getElementById('prop-edit-id').value='';
+  document.getElementById('prop-modal-title').textContent='Nueva Propiedad';
+  document.getElementById('prop-name').value='';
+  document.getElementById('prop-type').value='apartamento';
+  document.getElementById('prop-address').value='';
+  document.getElementById('prop-dept').value='';
+  updateCities('prop-dept','prop-city');
+  document.getElementById('prop-price').value='';
+  document.getElementById('prop-status').value='active';
+  document.getElementById('prop-rooms').value='1';
+  document.getElementById('prop-baths').value='1';
+  document.getElementById('prop-maxguests').value='2';
+  document.getElementById('prop-desc').value='';
+  document.getElementById('prop-amenities').value='';
+  document.getElementById('prop-wifi-name').value='';
+  document.getElementById('prop-wifi-pass').value='';
+  document.getElementById('prop-door-code').value='';
+  document.getElementById('prop-checkin-instructions').value='';
+  document.getElementById('portals-container').innerHTML='';
+  document.getElementById('ical-container').innerHTML='';
+  document.getElementById('ical-url-input').value='';
+}
+
+function openNewProperty(){
+  clearPropertyForm();
+  openModal('property-modal');
+}
+
+function editProperty(id){
+  const p=DATA.properties.find(x=>x.id===id);if(!p)return;
+  document.getElementById('prop-modal-title').textContent='Editar Propiedad';
+  document.getElementById('prop-edit-id').value=id;
+  document.getElementById('prop-name').value=p.name||'';
+  document.getElementById('prop-type').value=p.type||'apartamento';
+  document.getElementById('prop-address').value=p.address||'';
+  setDeptCity('prop-dept','prop-city',p.city||'');
+  document.getElementById('prop-price').value=p.price_per_night||'';
+  document.getElementById('prop-status').value=p.status||'active';
+  document.getElementById('prop-rooms').value=p.rooms||1;
+  document.getElementById('prop-baths').value=p.bathrooms||1;
+  document.getElementById('prop-maxguests').value=p.max_guests||2;
+  document.getElementById('prop-desc').value=p.description||'';
+  document.getElementById('prop-amenities').value=(p.amenities||[]).join(', ');
+  document.getElementById('prop-wifi-name').value=p.wifi_name||'';
+  document.getElementById('prop-wifi-pass').value=p.wifi_password||'';
+  document.getElementById('prop-door-code').value=p.door_code||'';
+  document.getElementById('prop-checkin-instructions').value=p.check_in_instructions||'';
+  setPortalRows(p.portal_links);
+  openModal('property-modal');
+}
+
+function saveProperty(){
+  const name=document.getElementById('prop-name').value.trim();
+  const city=document.getElementById('prop-city').value;
+  const price=parseInt(document.getElementById('prop-price').value);
+  if(!name){showToast('El nombre es obligatorio',true);return}
+  if(!city){showToast('Seleccione departamento y ciudad',true);return}
+  if(!price||price<=0){showToast('Ingrese un precio válido',true);return}
+
+  const id=document.getElementById('prop-edit-id').value;
+  const body={
+    id:id||'prop_'+Date.now(),
+    name:name,type:document.getElementById('prop-type').value,
+    address:document.getElementById('prop-address').value.trim(),
+    city:city,
+    price_per_night:price,
+    rooms:parseInt(document.getElementById('prop-rooms').value)||1,
+    bathrooms:parseInt(document.getElementById('prop-baths').value)||1,
+    max_guests:parseInt(document.getElementById('prop-maxguests').value)||2,
+    status:document.getElementById('prop-status').value,
+    description:document.getElementById('prop-desc').value.trim(),
+    amenities:document.getElementById('prop-amenities').value.split(',').map(s=>s.trim()).filter(Boolean),
+    wifi_name:document.getElementById('prop-wifi-name').value.trim(),
+    wifi_password:document.getElementById('prop-wifi-pass').value.trim(),
+    door_code:document.getElementById('prop-door-code').value.trim(),
+    check_in_instructions:document.getElementById('prop-checkin-instructions').value.trim(),
+    portal_links:getPortalLinks(),
+    ical_urls:getIcalUrls()
+  };
+  if(id){
+    const idx=DATA.properties.findIndex(p=>p.id===id);
+    if(idx>=0)DATA.properties[idx]=body;
+  }else{
+    DATA.properties.push(body);
+  }
+  closeModal('property-modal');
+  populateSelects();renderProperties();showToast('Propiedad guardada');recordInteraction();
+}
+
+// ── GUESTS ──────────────────────────────────────────────
+function renderGuests(){
+  const q=(document.getElementById('guest-search').value||'').toLowerCase();
+  const list=DATA.guests.filter(g=>!q||g.name.toLowerCase().includes(q)||(g.phone||'').includes(q)||(g.email||'').toLowerCase().includes(q));
+  document.getElementById('guests-table').innerHTML=list.map(g=>{
+    const isExt=g.document_type==='PAS';
+    const loc=isExt?(g.country||'Extranjero'):(g.city||'—');
+    const extBadge=isExt?'<br><span style="font-size:0.68rem;color:var(--warning);font-weight:600">Extranjero</span>':'';
+    return`<tr>
+    <td><strong>${g.name}</strong>${extBadge}</td><td>${g.phone||'—'}</td><td>${g.email||'—'}</td>
+    <td>${g.document_type} ${g.document_number}</td><td>${loc}</td>
+    <td><button class="btn btn-sm btn-secondary" onclick="editGuest('${g.id}')">✏️</button> ${g.phone?`<a class="btn btn-sm btn-wa" href="https://wa.me/${g.phone.replace(/[^0-9]/g,'')}" target="_blank">💬</a>`:''} <button class="btn btn-sm btn-secondary" onclick="deleteItem('guests','${g.id}')">🗑️</button></td>
+  </tr>`}).join('');
+}
+
+function onDocTypeChange(){
+  const dt=document.getElementById('guest-doctype').value;
+  const isExtranjero=(dt==='PAS');
+  document.getElementById('guest-location-co').style.display=isExtranjero?'none':'grid';
+  document.getElementById('guest-location-ext').style.display=isExtranjero?'block':'none';
+}
+
+function populateCountries(){
+  document.getElementById('guest-country').innerHTML='<option value="">— Seleccionar país —</option>'+COUNTRIES.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+
+function clearGuestForm(){
+  document.getElementById('guest-edit-id').value='';
+  document.getElementById('guest-modal-title').textContent='Nuevo Huésped';
+  document.getElementById('guest-name').value='';
+  document.getElementById('guest-phone-code').value='+57';
+  document.getElementById('guest-phone-num').value='';
+  document.getElementById('guest-email').value='';
+  document.getElementById('guest-doctype').value='CC';
+  document.getElementById('guest-docnum').value='';
+  document.getElementById('guest-dept').value='';
+  updateCities('guest-dept','guest-city');
+  document.getElementById('guest-country').value='';
+  document.getElementById('guest-notes').value='';
+  onDocTypeChange();
+}
+
+function openNewGuest(){
+  clearGuestForm();
+  openModal('guest-modal');
+}
+
+function editGuest(id){
+  const g=DATA.guests.find(x=>x.id===id);if(!g)return;
+  document.getElementById('guest-modal-title').textContent='Editar Huésped';
+  document.getElementById('guest-edit-id').value=id;
+  document.getElementById('guest-name').value=g.name||'';
+  const ph=parsePhone(g.phone);
+  document.getElementById('guest-phone-code').value=ph.code;
+  document.getElementById('guest-phone-num').value=ph.num;
+  document.getElementById('guest-email').value=g.email||'';
+  document.getElementById('guest-doctype').value=g.document_type||'CC';
+  document.getElementById('guest-docnum').value=g.document_number||'';
+  onDocTypeChange();
+  if(g.document_type==='PAS'){
+    document.getElementById('guest-country').value=g.country||'';
+  } else {
+    setDeptCity('guest-dept','guest-city',g.city||'');
+  }
+  document.getElementById('guest-notes').value=g.notes||'';
+  openModal('guest-modal');
+}
+
+function saveGuest(){
+  const name=document.getElementById('guest-name').value.trim();
+  const phoneNum=document.getElementById('guest-phone-num').value.trim();
+  const docNum=document.getElementById('guest-docnum').value.trim();
+  if(!name){showToast('El nombre es obligatorio',true);return}
+  if(!docNum){showToast('El número de documento es obligatorio',true);return}
+  const email=document.getElementById('guest-email').value.trim();
+  if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showToast('Email inválido',true);return}
+  if(phoneNum&&phoneNum.length<7){showToast('Teléfono debe tener al menos 7 dígitos',true);return}
+
+  const id=document.getElementById('guest-edit-id').value;
+  const phoneCode=document.getElementById('guest-phone-code').value;
+  const fullPhone=phoneNum?phoneCode+phoneNum:'';
+  const docType=document.getElementById('guest-doctype').value;
+  const isExtranjero=(docType==='PAS');
+  const body={
+    id:id||'guest_'+Date.now(),
+    name:name,phone:fullPhone,email:email,
+    document_type:docType,
+    document_number:docNum,
+    city:isExtranjero?'':document.getElementById('guest-city').value,
+    country:isExtranjero?document.getElementById('guest-country').value:'Colombia',
+    notes:document.getElementById('guest-notes').value.trim()
+  };
+  if(id){
+    const idx=DATA.guests.findIndex(g=>g.id===id);
+    if(idx>=0)DATA.guests[idx]=body;
+  }else{
+    DATA.guests.push(body);
+  }
+  closeModal('guest-modal');
+  populateSelects();renderGuests();showToast('Huésped guardado');recordInteraction();
+}
+
+// ── RESERVATIONS ────────────────────────────────────────
+function populateSelects(){
+  const po=DATA.properties.map(p=>`<option value="${p.id}">${p.name}</option>`).join('');
+  document.getElementById('res-property').innerHTML='<option value="">— Seleccionar —</option>'+po;
+  document.getElementById('res-filter-prop').innerHTML='<option value="">Todas</option>'+po;
+  document.getElementById('fin-property').innerHTML='<option value="">— Sin asignar —</option>'+po;
+  document.getElementById('fin-filter-prop').innerHTML='<option value="">Todas</option>'+po;
+  document.getElementById('res-guest').innerHTML='<option value="">— Seleccionar —</option>'+DATA.guests.map(g=>`<option value="${g.id}">${g.name}</option>`).join('');
+  document.getElementById('msg-reservation').innerHTML='<option value="">— Seleccionar —</option>'+DATA.reservations.map(r=>`<option value="${r.id}">${guestName(r.guest_id)} — ${propName(r.property_id)} (${fmtDate(r.check_in)}) [${STATUS_LABELS[r.status]||r.status}]</option>`).join('');
+}
+
+function openNewReservation(){
+  document.getElementById('res-modal-title').textContent='Nueva Reservación';
+  document.getElementById('res-edit-id').value='';
+  document.getElementById('res-property').value='';
+  document.getElementById('res-guest').value='';
+  document.getElementById('res-checkin').value='';
+  document.getElementById('res-checkout').value='';
+  document.getElementById('res-status').value='pending';
+  document.getElementById('res-payment').value='pending';
+  document.getElementById('res-notes').value='';
+  openModal('reservation-modal');
+}
+
+function renderReservations(){
+  const sf=document.getElementById('res-filter-status').value,pf=document.getElementById('res-filter-prop').value;
+  let list=DATA.reservations;if(sf)list=list.filter(r=>r.status===sf);if(pf)list=list.filter(r=>r.property_id===pf);
+  list.sort((a,b)=>(b.check_in||'').localeCompare(a.check_in||''));
+  document.getElementById('res-table').innerHTML=list.map(r=>{
+    const g=guestObj(r.guest_id);
+    const wa=g.phone?`<button class="btn btn-sm btn-wa" onclick="quickMessage('${r.id}')">💬</button>`:'';
+    const nights=r.check_out&&r.check_in?Math.ceil((new Date(r.check_out)-new Date(r.check_in))/(1000*60*60*24)):0;
+    const total=nights*((propObj(r.property_id)||{}).price_per_night||0);
+    return`<tr><td>${propName(r.property_id)}</td><td>${guestName(r.guest_id)}</td><td>${fmtDate(r.check_in)}</td><td>${fmtDate(r.check_out)}</td><td>${nights}</td><td><strong>${fmt(total)}</strong></td><td><span class="badge ${r.status}">${STATUS_LABELS[r.status]||r.status}</span></td><td><span class="badge ${r.payment_status}">${PAYMENT_LABELS[r.payment_status]||r.payment_status}</span></td><td>${wa} <button class="btn btn-sm btn-secondary" onclick="editReservation('${r.id}')">✏️ Editar</button></td></tr>`}).join('');
+}
+
+function editReservation(id){
+  const r=DATA.reservations.find(x=>x.id===id);if(!r)return;
+  document.getElementById('res-modal-title').textContent='Editar Reservación';
+  document.getElementById('res-edit-id').value=id;
+  document.getElementById('res-property').value=r.property_id||'';
+  document.getElementById('res-guest').value=r.guest_id||'';
+  document.getElementById('res-checkin').value=r.check_in||'';
+  document.getElementById('res-checkout').value=r.check_out||'';
+  document.getElementById('res-status').value=r.status||'pending';
+  document.getElementById('res-payment').value=r.payment_status||'pending';
+  document.getElementById('res-notes').value=r.notes||'';
+  openModal('reservation-modal');
+}
+
+function saveReservation(){
+  const propId=document.getElementById('res-property').value;
+  const guestId=document.getElementById('res-guest').value;
+  const ci=document.getElementById('res-checkin').value;
+  const co=document.getElementById('res-checkout').value;
+  if(!propId||!guestId){showToast('Seleccione propiedad y huésped',true);return}
+  if(!ci||!co){showToast('Seleccione fechas de check-in y check-out',true);return}
+  if(ci>=co){showToast('Check-out debe ser posterior al check-in',true);return}
+
+  const id=document.getElementById('res-edit-id').value;
+  const nights=Math.ceil((new Date(co)-new Date(ci))/(1000*60*60*24));
+  const prop=propObj(propId);
+  const body={
+    id:id||'res_'+Date.now(),
+    property_id:propId,
+    guest_id:guestId,
+    check_in:ci,
+    check_out:co,
+    nights:nights,
+    total:nights*(prop.price_per_night||0),
+    status:document.getElementById('res-status').value,
+    payment_status:document.getElementById('res-payment').value,
+    notes:document.getElementById('res-notes').value.trim()
+  };
+  if(id){
+    const idx=DATA.reservations.findIndex(r=>r.id===id);
+    if(idx>=0)DATA.reservations[idx]=body;
+  }else{
+    DATA.reservations.push(body);
+  }
+  closeModal('reservation-modal');
+  populateSelects();renderReservations();showToast('Reservación guardada');recordInteraction();
+}
+
+function quickMessage(resId){document.getElementById('msg-reservation').value=resId;document.querySelectorAll('.nav-item')[4].click();updateMessagePreview()}
+
+// ── MESSAGES ────────────────────────────────────────────
+function renderMessages(){updateMessagePreview()}
+function selectTemplate(t){currentTemplate=t;document.querySelectorAll('.msg-template-btn').forEach(b=>b.classList.remove('active'));document.getElementById('tpl-'+t).classList.add('active');updateMessagePreview()}
+
+function getMessageText(resId,tpl){
+  const r=DATA.reservations.find(x=>x.id===resId);if(!r)return'';
+  const g=guestObj(r.guest_id),p=propObj(r.property_id),host=DATA.config.owner_name||'Tu anfitrión';
+  if(tpl==='welcome'){let m=`Hola ${g.name||'Huésped'}! 🏠\n\n¡Bienvenido/a a *${p.name}*!\n\n📅 Check-in: ${fmtDate(r.check_in)}\n📅 Check-out: ${fmtDate(r.check_out)}\n🌙 ${r.nights||'—'} noches\n`;if(p.address)m+=`\n📍 ${p.address}\n`;if(p.check_in_instructions)m+=`\n🔑 Instrucciones:\n${p.check_in_instructions}\n`;if(p.door_code)m+=`\n🚪 Código puerta: ${p.door_code}\n`;if(p.wifi_name)m+=`\n📶 WiFi: ${p.wifi_name}\n🔐 Clave: ${p.wifi_password||''}\n`;if(p.amenities&&p.amenities.length)m+=`\n✨ ${p.amenities.join(', ')}\n`;m+=`\nSoy ${host}. Cualquier cosa, escríbeme. ¡Disfruta! 😊`;return m}
+  if(tpl==='confirmation')return`Hola ${g.name}! 👋\n\nTu reserva en *${p.name}* está confirmada:\n\n📅 Entrada: ${fmtDate(r.check_in)}\n📅 Salida: ${fmtDate(r.check_out)}\n🌙 ${r.nights} noche${r.nights!==1?'s':''}\n💰 Total: ${fmt(r.total)}\n\nSoy ${host}. ¿Alguna pregunta?`;
+  if(tpl==='checkin_reminder'){let m=`Hola ${g.name}! 🏠\n\nMañana es tu check-in en *${p.name}*.\n\n📅 ${fmtDate(r.check_in)}`;if(p.address)m+=`\n📍 ${p.address}`;m+='\n\nCheck-in desde las 3:00 PM.';if(p.check_in_instructions)m+=`\n\n🔑 ${p.check_in_instructions}`;if(p.door_code)m+=`\n🚪 Código: ${p.door_code}`;m+='\n\n¡Te esperamos! 😊';return m}
+  if(tpl==='payment')return`Hola ${g.name} 👋\n\nRecordatorio de tu reserva en *${p.name}*:\n\n💰 Total: ${fmt(r.total)}\n⏳ Estado: ${PAYMENT_LABELS[r.payment_status]||r.payment_status}\n\nPor favor realiza la transferencia. ¿Dudas? Escríbeme.`;
+  if(tpl==='thankyou')return`Hola ${g.name}! 😊\n\nGracias por hospedarte en *${p.name}*.\n\n¿Nos dejas una reseña? ⭐\n\n¡Hasta la próxima! 👋`;
+  return'';
+}
+
+function updateMessagePreview(){const id=document.getElementById('msg-reservation').value,pre=document.getElementById('msg-preview'),btn=document.getElementById('btn-send-wa');if(!id){pre.textContent='Selecciona una reservación...';btn.disabled=true;return}pre.textContent=getMessageText(id,currentTemplate);const r=DATA.reservations.find(x=>x.id===id),g=r?guestObj(r.guest_id):{};btn.disabled=!g.phone}
+function sendWhatsApp(){const id=document.getElementById('msg-reservation').value;if(!id)return;const r=DATA.reservations.find(x=>x.id===id),g=r?guestObj(r.guest_id):{};if(!g.phone)return;const ph=g.phone.replace(/\D/g,''),full=ph.startsWith('57')?ph:'57'+ph;window.open(`https://wa.me/${full}?text=${encodeURIComponent(getMessageText(id,currentTemplate))}`,'_blank')}
+function copyMessage(){navigator.clipboard.writeText(document.getElementById('msg-preview').textContent).then(()=>showToast('Copiado'))}
+
+// ── FINANCES ────────────────────────────────────────────
+function renderFinances(){
+  const tf=document.getElementById('fin-filter-type').value,pf=document.getElementById('fin-filter-prop').value,df=document.getElementById('fin-date-from').value,dt=document.getElementById('fin-date-to').value;
+  let list=DATA.finances;if(tf)list=list.filter(f=>f.type===tf);if(pf)list=list.filter(f=>f.property_id===pf);if(df)list=list.filter(f=>f.date>=df);if(dt)list=list.filter(f=>f.date<=dt);
+  list.sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const ti=list.filter(f=>f.type==='income').reduce((s,f)=>s+f.amount,0),to=list.filter(f=>f.type==='expense').reduce((s,f)=>s+f.amount,0);
+  document.getElementById('fin-summary').innerHTML=`<div class="kpi-card green"><div class="label">Ingresos</div><div class="value">${fmt(ti)}</div></div><div class="kpi-card red"><div class="label">Gastos</div><div class="value">${fmt(to)}</div></div><div class="kpi-card"><div class="label">Utilidad</div><div class="value" style="color:${ti-to>=0?'var(--success)':'var(--danger)'}">${fmt(ti-to)}</div></div>`;
+  document.getElementById('fin-table').innerHTML=list.map(f=>`<tr><td>${fmtDate(f.date)}</td><td><span class="badge ${f.type}">${f.type==='income'?'Ingreso':'Gasto'}</span></td><td>${(f.category||'').charAt(0).toUpperCase()+(f.category||'').slice(1)}</td><td>${f.description||'—'}</td><td>${propName(f.property_id)}</td><td style="font-weight:600;color:${f.type==='income'?'var(--success)':'var(--danger)'}">${f.type==='income'?'+':'−'}${fmt(f.amount)}</td></tr>`).join('');
+}
+function saveFinance(){
+  const amount=parseInt(document.getElementById('fin-amount').value);
+  const date=document.getElementById('fin-date').value;
+  if(!amount||amount<=0){showToast('Ingrese un monto válido',true);return}
+  if(!date){showToast('Seleccione una fecha',true);return}
+  const body={
+    id:'fin_'+Date.now(),
+    type:document.getElementById('fin-type').value,
+    category:document.getElementById('fin-category').value,
+    amount:amount,
+    date:date,
+    property_id:document.getElementById('fin-property').value||null,
+    description:document.getElementById('fin-desc').value.trim()
+  };
+  DATA.finances.push(body);
+  document.getElementById('fin-amount').value='';
+  document.getElementById('fin-category').value='';
+  document.getElementById('fin-date').value='';
+  document.getElementById('fin-property').value='';
+  document.getElementById('fin-desc').value='';
+  closeModal('finance-modal');renderFinances();showToast('Movimiento guardado');recordInteraction();
+}
+
+// ── CONFIG ──────────────────────────────────────────────
+function renderConfig(){const c=DATA.config||{};document.getElementById('cfg-business').value=c.business_name||'';document.getElementById('cfg-owner').value=c.owner_name||'';document.getElementById('cfg-phone').value=c.phone||'';document.getElementById('cfg-email').value=c.email||'';document.getElementById('cfg-whatsapp').value=c.whatsapp_link||''}
+function saveConfig(){DATA.config={business_name:document.getElementById('cfg-business').value.trim(),owner_name:document.getElementById('cfg-owner').value.trim(),phone:document.getElementById('cfg-phone').value.trim(),email:document.getElementById('cfg-email').value.trim(),whatsapp_link:document.getElementById('cfg-whatsapp').value.trim()};showToast('Configuración guardada');recordInteraction()}
+
+function deleteItem(c,id){if(!confirm('¿Eliminar este registro?'))return;if(c==='properties')DATA.properties=DATA.properties.filter(p=>p.id!==id);if(c==='guests')DATA.guests=DATA.guests.filter(g=>g.id!==id);if(c==='reservations')DATA.reservations=DATA.reservations.filter(r=>r.id!==id);populateSelects();const a=document.querySelector('.nav-item.active');if(a){const idx=[...document.querySelectorAll('.nav-item')].indexOf(a);const names=['dashboard','properties','guests','reservations','messages','finances','config'];showTab(names[idx],a)}}
+
+// ── ALERTS & REMINDERS ──────────────────────────────────
+function renderAlertsCards(d){
+  const alerts=[];
+  if(d.today_checkins&&d.today_checkins.length){
+    d.today_checkins.forEach(r=>{
+      alerts.push(`<div class="alert-card success"><div class="alert-text">✅ Hoy llega <strong>${guestName(r.guest_id)}</strong> a <strong>${propName(r.property_id)}</strong></div><div class="alert-actions"><button class="btn btn-sm btn-wa" onclick="sendWelcomeWhatsApp('${r.guest_id}','${r.property_id}')">💬 Bienvenida</button></div></div>`);
+    });
+  }
+  if(d.today_checkouts&&d.today_checkouts.length){
+    d.today_checkouts.forEach(r=>{
+      alerts.push(`<div class="alert-card warning"><div class="alert-text">🔔 Hoy sale <strong>${guestName(r.guest_id)}</strong> de <strong>${propName(r.property_id)}</strong></div></div>`);
+    });
+  }
+  if(d.tomorrow_checkins&&d.tomorrow_checkins.length){
+    d.tomorrow_checkins.forEach(r=>{
+      alerts.push(`<div class="alert-card info"><div class="alert-text">ℹ️ Mañana llega <strong>${guestName(r.guest_id)}</strong> a <strong>${propName(r.property_id)}</strong> — Preparar bienvenida</div><div class="alert-actions"><button class="btn btn-sm btn-wa" onclick="sendWelcomeWhatsApp('${r.guest_id}','${r.property_id}')">💬 Enviar</button></div></div>`);
+    });
+  }
+  if(d.tomorrow_checkouts&&d.tomorrow_checkouts.length){
+    d.tomorrow_checkouts.forEach(r=>{
+      alerts.push(`<div class="alert-card muted"><div class="alert-text">📋 Mañana sale <strong>${guestName(r.guest_id)}</strong> de <strong>${propName(r.property_id)}</strong></div></div>`);
+    });
+  }
+  document.getElementById('alerts-container').innerHTML=alerts.length?alerts.join(''):'';
+}
+
+function sendWelcomeWhatsApp(guestId,propertyId){
+  const g=guestObj(guestId);const p=DATA.properties.find(x=>x.id===propertyId);
+  if(!g||!g.phone){showToast('Huésped sin número de teléfono',true);return}
+  const wa=g.phone.startsWith('+')?g.phone:(g.phone.startsWith('57')?'+'+g.phone:'+57'+g.phone);
+  const msg=`Hola ${g.name},\n\n¡Bienvenido a ${p.name}!\n\nDirección: ${p.address}\nWiFi: ${p.wifi_name}\nContraseña: ${p.wifi_password}\nCódigo Puerta: ${p.door_code}\n\nInstrucciones: ${p.check_in_instructions}\n\n¡Que disfrutes tu estadía!`;
+  const encoded=encodeURIComponent(msg);
+  window.open(`https://wa.me/${wa.replace(/[^0-9]/g,'')}?text=${encoded}`,'_blank');
+}
+
+// ── ICAL MANAGEMENT ────────────────────────────────────────
+function addIcalRow(url='',index=null){
+  const row=document.createElement('div');row.className='ical-row';
+  const urlVal=url||document.getElementById('ical-url-input').value.trim();
+  if(!urlVal){showToast('Ingrese una URL válida',true);return}
+  row.innerHTML=`<input type="text" value="${urlVal}" class="ical-url" style="padding:6px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:0.78rem"><button type="button" class="btn-danger-sm" onclick="this.parentElement.remove()">✕</button>`;
+  document.getElementById('ical-container').appendChild(row);
+  document.getElementById('ical-url-input').value='';}
+
+function getIcalUrls(){
+  const rows=document.querySelectorAll('.ical-url');
+  return Array.from(rows).map(r=>r.value).filter(Boolean);}
+
+function syncIcalNow(){
+  showToast('iCal sync no disponible en modo demo');
+}
+
+function loadIcalUrls(urls){
+  document.getElementById('ical-container').innerHTML='';
+  if(urls&&urls.length){urls.forEach(u=>addIcalRow(u));}
+}
+
+// ── PROPERTY UPDATES ──────────────────────────────────────
+function editPropertyWithIcal(id){
+  const p=DATA.properties.find(x=>x.id===id);if(!p)return;
+  document.getElementById('prop-modal-title').textContent='Editar Propiedad';
+  document.getElementById('prop-edit-id').value=id;
+  document.getElementById('prop-name').value=p.name||'';
+  document.getElementById('prop-type').value=p.type||'apartamento';
+  document.getElementById('prop-address').value=p.address||'';
+  setDeptCity('prop-dept','prop-city',p.city||'');
+  document.getElementById('prop-price').value=p.price_per_night||'';
+  document.getElementById('prop-status').value=p.status||'active';
+  document.getElementById('prop-rooms').value=p.rooms||1;
+  document.getElementById('prop-baths').value=p.bathrooms||1;
+  document.getElementById('prop-maxguests').value=p.max_guests||2;
+  document.getElementById('prop-desc').value=p.description||'';
+  document.getElementById('prop-amenities').value=(p.amenities||[]).join(', ');
+  document.getElementById('prop-wifi-name').value=p.wifi_name||'';
+  document.getElementById('prop-wifi-pass').value=p.wifi_password||'';
+  document.getElementById('prop-door-code').value=p.door_code||'';
+  document.getElementById('prop-checkin-instructions').value=p.check_in_instructions||'';
+  setPortalRows(p.portal_links);
+  loadIcalUrls(p.ical_urls);
+  openModal('property-modal');
+}
+
+// ── REPORT EXPORT ──────────────────────────────────────────
+function exportReportCSV(){
+  const tf=document.getElementById('fin-filter-type').value,pf=document.getElementById('fin-filter-prop').value,df=document.getElementById('fin-date-from').value,dt=document.getElementById('fin-date-to').value;
+  let list=DATA.finances;if(tf)list=list.filter(f=>f.type===tf);if(pf)list=list.filter(f=>f.property_id===pf);if(df)list=list.filter(f=>f.date>=df);if(dt)list=list.filter(f=>f.date<=dt);
+  let csv='Fecha,Tipo,Categoría,Descripción,Propiedad,Monto\n';
+  list.forEach(f=>{
+    const type=f.type==='income'?'Ingreso':'Gasto';
+    const prop=propName(f.property_id);
+    csv+=`"${fmtDate(f.date)}","${type}","${f.category}","${f.description}","${prop}","${fmt(f.amount)}"\n`;
+  });
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const link=document.createElement('a');
+  link.href=URL.createObjectURL(blob);
+  link.download='reporte_finanzas_'+getTodayDate()+'.csv';
+  link.click();
+  showToast('Reporte descargado');
+}
+
+// ── TOUR & CTA ──────────────────────────────────────────────
+function showCTA(){
+  document.getElementById('cta-banner').classList.add('show');
+}
+
+function closeCTA(){
+  document.getElementById('cta-banner').classList.remove('show');
+}
+
+function showTourPrompt(){
+  document.getElementById('tour-modal').style.display='flex';
+}
+
+function startTour(){
+  document.getElementById('tour-modal').style.display='none';
+  showToast('Tour en progreso...');
+  setTimeout(()=>{
+    document.querySelectorAll('.nav-item')[0].click();
+    showToast('Tip: El Dashboard muestra ocupación y próximos check-ins');
+  },500);
+}
+
+function skipTour(){
+  document.getElementById('tour-modal').style.display='none';
+}
+
+// ── INIT ────────────────────────────────────────────────
+function initSampleData(){
+  const today=getTodayDate();
+  const tomorrow=getTomorrowDate();
+  
+  DATA.properties=[
+    {id:'prop_1',name:'Apartamento El Poblado',type:'apartamento',address:'Cra 43A #7-50',city:'Medellín',rooms:2,bathrooms:1,max_guests:4,price_per_night:180000,status:'active',description:'Apartamento moderno en El Poblado',amenities:['WiFi','A/C','Cocina','TV'],wifi_name:'ElPoblado-WiFi',wifi_password:'hospedy123',door_code:'4521',check_in_instructions:'Portería 24h, mencionar Apto 501',portal_links:{airbnb:'https://airbnb.com/rooms/123',booking:'https://booking.com/h/456'},ical_urls:['https://calendar.google.com/calendar/ical/example1']},
+    {id:'prop_2',name:'Casa Frente al Mar - Santa Marta',type:'casa',address:'Calle 1 #2-3',city:'Santa Marta',rooms:3,bathrooms:2,max_guests:6,price_per_night:250000,status:'active',description:'Casa con vista al mar',amenities:['WiFi','Piscina','Cocina','TV','Hamaca'],wifi_name:'SantaMarta-Playa',wifi_password:'beach2024',door_code:'9999',check_in_instructions:'Llave en caja de seguridad,combo 5555',portal_links:{vrbo:'https://vrbo.com/property/789'},ical_urls:[]}
+  ];
+  
+  DATA.guests=[
+    {id:'guest_1',name:'Miguel Rodríguez',phone:'+573001234567',email:'miguel@example.com',document_type:'CC',document_number:'1037456789',city:'Medellín',country:'Colombia',notes:'Cliente frecuente'},
+    {id:'guest_2',name:'Juan García López',phone:'+573105678901',email:'juan@example.com',document_type:'CC',document_number:'1045123456',city:'Cali',country:'Colombia',notes:''},
+    {id:'guest_3',name:'María Martínez',phone:'+573212345678',email:'maria@example.com',document_type:'CC',document_number:'1052789012',city:'Bogotá',country:'Colombia',notes:'Prefiere check-in tarde'},
+    {id:'guest_4',name:'Sarah Johnson',phone:'+14155551234',email:'sarah@example.com',document_type:'PAS',document_number:'AB12345678',city:'',country:'Estados Unidos',notes:'Viajera de negocios'},
+    {id:'guest_5',name:'Carlos Pérez Sánchez',phone:'+573216789012',email:'carlos@example.com',document_type:'CE',document_number:'EX987654321',city:'Santa Marta',country:'Venezuela',notes:''}
+  ];
+  
+  DATA.reservations=[
+    {id:'res_1',property_id:'prop_1',guest_id:'guest_1',check_in:'2026-05-05',check_out:'2026-05-08',nights:3,total:540000,status:'confirmed',payment_status:'paid',notes:''},
+    {id:'res_2',property_id:'prop_2',guest_id:'guest_2',check_in:tomorrow,check_out:'2026-05-10',nights:5,total:1250000,status:'pending',payment_status:'partial',notes:'Ya pagó 500.000'},
+    {id:'res_3',property_id:'prop_1',guest_id:'guest_3',check_in:'2026-05-12',check_out:'2026-05-15',nights:3,total:540000,status:'pending',payment_status:'pending',notes:''},
+    {id:'res_4',property_id:'prop_2',guest_id:'guest_4',check_in:'2026-05-18',check_out:'2026-05-23',nights:5,total:1250000,status:'pending',payment_status:'pending',notes:''},
+    {id:'res_5',property_id:'prop_1',guest_id:'guest_5',check_in:'2026-05-25',check_out:'2026-05-30',nights:5,total:900000,status:'pending',payment_status:'pending',notes:''}
+  ];
+  
+  DATA.finances=[
+    {id:'fin_1',type:'income',category:'Reservación',amount:540000,date:'2026-05-01',property_id:'prop_1',description:'Apartamento El Poblado'},
+    {id:'fin_2',type:'expense',category:'Limpieza',amount:120000,date:'2026-05-02',property_id:'prop_1',description:'Limpieza profunda'},
+    {id:'fin_3',type:'income',category:'Reservación',amount:750000,date:'2026-05-03',property_id:'prop_2',description:'Casa Santa Marta'},
+    {id:'fin_4',type:'expense',category:'Mantenimiento',amount:250000,date:'2026-05-03',property_id:'prop_2',description:'Reparación de puerta'},
+    {id:'fin_5',type:'income',category:'Reservación',amount:360000,date:'2026-04-28',property_id:'prop_1',description:'Apartamento El Poblado'},
+    {id:'fin_6',type:'expense',category:'Servicios',amount:80000,date:'2026-04-20',property_id:'prop_1',description:'Agua y electricidad'},
+    {id:'fin_7',type:'income',category:'Reservación',amount:500000,date:'2026-04-15',property_id:'prop_2',description:'Casa Santa Marta'},
+    {id:'fin_8',type:'expense',category:'Limpieza',amount:100000,date:'2026-04-15',property_id:'prop_2',description:'Limpieza'},
+    {id:'fin_9',type:'income',category:'Reservación',amount:540000,date:'2026-04-10',property_id:'prop_1',description:'Apartamento El Poblado'},
+    {id:'fin_10',type:'expense',category:'Marketing',amount:50000,date:'2026-04-05',property_id:'prop_1',description:'Publicidad en redes'}
+  ];
+  
+  DATA.config={business_name:'Mi Negocio de Hospedaje',owner_name:'Juan Empresario',phone:'+573001234567',email:'contacto@example.com',whatsapp_link:'https://wa.me/573001234567'};
+}
+
+(async()=>{
+  populateDeptSelect('prop-dept');
+  populateDeptSelect('guest-dept');
+  populatePhoneCodes();
+  populateCountries();
+  initSampleData();
+  loadAll();
+  renderDashboard();
+  setTimeout(showTourPrompt, 2000);
+})();
+</script>
+</body>
+</html>

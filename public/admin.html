@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospedy Admin — Panel de Administración</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f2f5;color:#1a1a2e;font-size:14px}
+.admin-bar{background:#1e2a3a;color:white;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
+.admin-bar h1{font-size:18px;font-weight:700}
+.admin-bar .badge{background:#e94560;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.main{max-width:1100px;margin:24px auto;padding:0 20px}
+.card{background:white;border-radius:12px;padding:24px;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,0.06);border:1px solid #e2e8f0}
+.card h2{font-size:16px;margin-bottom:16px;color:#1e2a3a;display:flex;align-items:center;gap:8px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px}
+.kpi{background:white;border-radius:10px;padding:18px;text-align:center;border:1px solid #e2e8f0;box-shadow:0 1px 3px rgba(0,0,0,0.04)}
+.kpi .num{font-size:28px;font-weight:800;color:#2eaa7b}
+.kpi .num.warn{color:#f0a030}
+.kpi .num.danger{color:#e94560}
+.kpi .lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-top:4px}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:10px 12px;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:#888;border-bottom:2px solid #e2e8f0}
+td{padding:10px 12px;border-bottom:1px solid #f0f2f5;font-size:13px}
+tr:hover{background:#f8f9fa}
+.badge-status{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600}
+.badge-active{background:#e8f5e9;color:#2e7d32}
+.badge-trial{background:#e3f2fd;color:#1565c0}
+.badge-suspended{background:#ffebee;color:#c62828}
+.badge-cancelled{background:#f5f5f5;color:#999}
+.badge-expiring{background:#fff3e0;color:#e68a00}
+.btn{padding:6px 14px;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:600;transition:all 0.2s}
+.btn-sm{padding:4px 10px;font-size:11px}
+.btn-green{background:#2eaa7b;color:white}.btn-green:hover{background:#228559}
+.btn-red{background:#e94560;color:white}.btn-red:hover{background:#d43d56}
+.btn-blue{background:#3b82f6;color:white}.btn-blue:hover{background:#2563eb}
+.btn-gray{background:#e2e8f0;color:#555}.btn-gray:hover{background:#d1d5db}
+.btn-wa{background:#25D366;color:white}.btn-wa:hover{background:#1fb855}
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;justify-content:center;align-items:center}
+.modal-bg.open{display:flex}
+.modal{background:white;border-radius:14px;padding:28px;width:90%;max-width:500px;max-height:80vh;overflow-y:auto}
+.modal h3{margin-bottom:16px;font-size:16px}
+.modal label{display:block;font-size:12px;color:#888;margin-bottom:4px;font-weight:600;text-transform:uppercase}
+.modal input,.modal select,.modal textarea{width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:12px;font-size:13px}
+.modal textarea{min-height:60px;resize:vertical}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:12px}
+.alert-row{display:flex;align-items:center;gap:12px;padding:10px 14px;background:#fff3e0;border-radius:8px;margin-bottom:8px;border-left:4px solid #f0a030}
+.alert-row.urgent{background:#ffebee;border-left-color:#e94560}
+.alert-row .alert-text{flex:1;font-size:13px}
+.alert-row .alert-date{font-size:12px;color:#999;white-space:nowrap}
+.empty{text-align:center;padding:32px;color:#aaa;font-size:14px}
+.search-input{padding:10px 14px;border:1px solid #e2e8f0;border-radius:8px;width:100%;max-width:300px;font-size:13px;margin-bottom:16px}
+@media(max-width:768px){
+  .kpi-row{grid-template-columns:1fr 1fr}
+  td:nth-child(n+5){display:none}th:nth-child(n+5){display:none}
+}
+</style>
+</head>
+<body>
+<div class="admin-bar">
+  <h1>🔒 Hospedy Admin</h1>
+  <div><span class="badge">SUPERADMIN</span></div>
+</div>
+
+<div class="main">
+  <!-- KPIs -->
+  <div class="kpi-row" id="kpis"></div>
+
+  <!-- Alerts -->
+  <div class="card" id="alerts-card" style="display:none">
+    <h2>🔔 Alertas de Vencimiento</h2>
+    <div id="alerts-list"></div>
+  </div>
+
+  <!-- Subscribers -->
+  <div class="card">
+    <h2>👥 Suscriptores
+      <button class="btn btn-green" onclick="openNewSub()" style="margin-left:auto">+ Nuevo Suscriptor</button>
+    </h2>
+    <input type="text" class="search-input" id="search" placeholder="Buscar por nombre, email o negocio..." oninput="render()">
+    <div style="overflow-x:auto">
+      <table>
+        <thead><tr><th>Nombre</th><th>Email</th><th>Negocio</th><th>WhatsApp</th><th>Estado</th><th>Vence</th><th>Ref. Pago</th><th>Acciones</th></tr></thead>
+        <tbody id="subs-table"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Log -->
+  <div class="card">
+    <h2>📋 Historial de Acciones</h2>
+    <div id="log-list"></div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-bg" id="sub-modal">
+  <div class="modal">
+    <h3 id="modal-title">Nuevo Suscriptor</h3>
+    <input type="hidden" id="edit-id">
+    <label>Nombre completo *</label>
+    <input id="f-name" placeholder="Juan García">
+    <label>Email *</label>
+    <input id="f-email" type="email" placeholder="email@ejemplo.com">
+    <label>WhatsApp *</label>
+    <input id="f-phone" placeholder="3113225050" oninput="this.value=this.value.replace(/[^0-9]/g,'')">
+    <label>Nombre del negocio</label>
+    <input id="f-business" placeholder="Mi Hospedaje">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div><label>Estado</label><select id="f-status"><option value="trial">Trial</option><option value="active">Activo</option><option value="suspended">Suspendido</option><option value="cancelled">Cancelado</option></select></div>
+      <div><label>Vence el</label><input id="f-expires" type="date"></div>
+    </div>
+    <label>Referencia de pago Bre-B</label>
+    <input id="f-payref" placeholder="Ref. transferencia">
+    <label>Notas internas</label>
+    <textarea id="f-notes" placeholder="Notas sobre este suscriptor..."></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-gray" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-green" onclick="saveSub()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- WhatsApp Message Modal -->
+<div class="modal-bg" id="wa-modal">
+  <div class="modal">
+    <h3>Enviar Mensaje WhatsApp</h3>
+    <label>Mensaje preconstruido</label>
+    <textarea id="wa-msg" rows="5"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-gray" onclick="document.getElementById('wa-modal').classList.remove('open')">Cancelar</button>
+      <button class="btn btn-wa" onclick="sendWA()">Enviar por WhatsApp</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA_KEY = 'hospedy_admin_data';
+let waTargetPhone = '';
+
+// ── Data persistence (localStorage) ─────────────────────
+function loadData() {
+  const raw = localStorage.getItem(DATA_KEY);
+  if (raw) return JSON.parse(raw);
+  return { subscribers: [], log: [] };
+}
+
+function saveData(data) {
+  localStorage.setItem(DATA_KEY, JSON.stringify(data));
+}
+
+function genId() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 8); }
+
+// ── Render ──────────────────────────────────────────────
+function render() {
+  const data = loadData();
+  const q = (document.getElementById('search').value || '').toLowerCase();
+  const subs = data.subscribers.filter(s =>
+    !q || s.name.toLowerCase().includes(q) || s.email.toLowerCase().includes(q) || (s.business||'').toLowerCase().includes(q)
+  );
+
+  // KPIs
+  const total = data.subscribers.length;
+  const active = data.subscribers.filter(s => s.status === 'active').length;
+  const trial = data.subscribers.filter(s => s.status === 'trial').length;
+  const suspended = data.subscribers.filter(s => s.status === 'suspended').length;
+  const mrr = active * 65000;
+  document.getElementById('kpis').innerHTML = `
+    <div class="kpi"><div class="num">${total}</div><div class="lbl">Total Suscriptores</div></div>
+    <div class="kpi"><div class="num">${active}</div><div class="lbl">Activos</div></div>
+    <div class="kpi"><div class="num">${trial}</div><div class="lbl">En Trial</div></div>
+    <div class="kpi"><div class="num ${suspended?'danger':''}">${suspended}</div><div class="lbl">Suspendidos</div></div>
+    <div class="kpi"><div class="num">$${mrr.toLocaleString('es-CO')}</div><div class="lbl">MRR (Ingreso Mensual)</div></div>
+  `;
+
+  // Alerts (vencimientos)
+  const today = new Date();
+  const in5days = new Date(today);
+  in5days.setDate(in5days.getDate() + 5);
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const todayStr = today.toISOString().split('T')[0];
+  const tomorrowStr = tomorrow.toISOString().split('T')[0];
+  const in5Str = in5days.toISOString().split('T')[0];
+
+  const expiringSoon = data.subscribers.filter(s =>
+    s.status !== 'cancelled' && s.expires && s.expires <= in5Str && s.expires >= todayStr
+  ).sort((a, b) => a.expires.localeCompare(b.expires));
+
+  const alertsCard = document.getElementById('alerts-card');
+  const alertsList = document.getElementById('alerts-list');
+  if (expiringSoon.length > 0) {
+    alertsCard.style.display = 'block';
+    alertsList.innerHTML = expiringSoon.map(s => {
+      const isUrgent = s.expires <= tomorrowStr;
+      const daysLeft = Math.ceil((new Date(s.expires) - today) / 86400000);
+      const label = daysLeft <= 0 ? 'Vence HOY' : daysLeft === 1 ? 'Vence MAÑANA' : `Vence en ${daysLeft} días`;
+      return `<div class="alert-row ${isUrgent ? 'urgent' : ''}">
+        <div class="alert-text"><strong>${s.name}</strong> — ${s.business || s.email} · ${s.status === 'trial' ? 'Trial' : 'Suscripción'}</div>
+        <div class="alert-date">${label} (${fmtDate(s.expires)})</div>
+        <button class="btn btn-sm btn-wa" onclick="openRenewalMsg('${s.id}')">💬</button>
+      </div>`;
+    }).join('');
+  } else {
+    alertsCard.style.display = 'none';
+  }
+
+  // Subscribers table
+  const statusBadge = s => {
+    const cls = { active: 'badge-active', trial: 'badge-trial', suspended: 'badge-suspended', cancelled: 'badge-cancelled' };
+    const lbl = { active: 'Activo', trial: 'Trial', suspended: 'Suspendido', cancelled: 'Cancelado' };
+    // Check if expiring soon
+    if (s.expires && s.expires <= in5Str && s.expires >= todayStr && s.status !== 'cancelled') {
+      return `<span class="badge-status badge-expiring">${lbl[s.status] || s.status} ⚠️</span>`;
+    }
+    return `<span class="badge-status ${cls[s.status] || ''}">${lbl[s.status] || s.status}</span>`;
+  };
+
+  document.getElementById('subs-table').innerHTML = subs.length === 0
+    ? '<tr><td colspan="8" class="empty">No hay suscriptores registrados</td></tr>'
+    : subs.map(s => `<tr>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.email}</td>
+      <td>${s.business || '—'}</td>
+      <td>${s.phone ? `<a href="https://wa.me/57${s.phone}" target="_blank" style="color:#25D366">${s.phone}</a>` : '—'}</td>
+      <td>${statusBadge(s)}</td>
+      <td>${s.expires ? fmtDate(s.expires) : '—'}</td>
+      <td>${s.payref || '—'}</td>
+      <td>
+        <button class="btn btn-sm btn-blue" onclick="editSub('${s.id}')">✏️</button>
+        <button class="btn btn-sm btn-wa" onclick="openCustomMsg('${s.id}')">💬</button>
+        ${s.status==='active'?`<button class="btn btn-sm btn-red" onclick="toggleStatus('${s.id}','suspended')">⏸️</button>`:''}
+        ${s.status==='suspended'?`<button class="btn btn-sm btn-green" onclick="toggleStatus('${s.id}','active')">▶️</button>`:''}
+        ${s.status==='trial'?`<button class="btn btn-sm btn-green" onclick="toggleStatus('${s.id}','active')">Activar</button>`:''}
+      </td>
+    </tr>`).join('');
+
+  // Log
+  const logList = document.getElementById('log-list');
+  if (data.log.length === 0) {
+    logList.innerHTML = '<div class="empty">Sin acciones registradas</div>';
+  } else {
+    logList.innerHTML = data.log.slice(-20).reverse().map(l =>
+      `<div style="padding:6px 0;border-bottom:1px solid #f0f2f5;font-size:13px">
+        <span style="color:#888;font-size:11px">${fmtDateTime(l.date)}</span> — ${l.action}
+      </div>`
+    ).join('');
+  }
+}
+
+function fmtDate(d) {
+  if (!d) return '—';
+  const p = d.split('-');
+  return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : d;
+}
+function fmtDateTime(d) {
+  if (!d) return '';
+  try { return new Date(d).toLocaleString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }); }
+  catch (e) { return d; }
+}
+
+function addLog(action) {
+  const data = loadData();
+  data.log.push({ date: new Date().toISOString(), action });
+  saveData(data);
+}
+
+// ── CRUD ────────────────────────────────────────────────
+function openNewSub() {
+  document.getElementById('modal-title').textContent = 'Nuevo Suscriptor';
+  document.getElementById('edit-id').value = '';
+  document.getElementById('f-name').value = '';
+  document.getElementById('f-email').value = '';
+  document.getElementById('f-phone').value = '';
+  document.getElementById('f-business').value = '';
+  document.getElementById('f-status').value = 'trial';
+  // Default expiry: 14 days from now
+  const exp = new Date();
+  exp.setDate(exp.getDate() + 14);
+  document.getElementById('f-expires').value = exp.toISOString().split('T')[0];
+  document.getElementById('f-payref').value = '';
+  document.getElementById('f-notes').value = '';
+  document.getElementById('sub-modal').classList.add('open');
+}
+
+function editSub(id) {
+  const data = loadData();
+  const s = data.subscribers.find(x => x.id === id);
+  if (!s) return;
+  document.getElementById('modal-title').textContent = 'Editar Suscriptor';
+  document.getElementById('edit-id').value = id;
+  document.getElementById('f-name').value = s.name || '';
+  document.getElementById('f-email').value = s.email || '';
+  document.getElementById('f-phone').value = s.phone || '';
+  document.getElementById('f-business').value = s.business || '';
+  document.getElementById('f-status').value = s.status || 'trial';
+  document.getElementById('f-expires').value = s.expires || '';
+  document.getElementById('f-payref').value = s.payref || '';
+  document.getElementById('f-notes').value = s.notes || '';
+  document.getElementById('sub-modal').classList.add('open');
+}
+
+function saveSub() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  if (!name || !email) { alert('Nombre y email son obligatorios'); return; }
+
+  const data = loadData();
+  const id = document.getElementById('edit-id').value;
+  const sub = {
+    name, email,
+    phone: document.getElementById('f-phone').value.trim(),
+    business: document.getElementById('f-business').value.trim(),
+    status: document.getElementById('f-status').value,
+    expires: document.getElementById('f-expires').value,
+    payref: document.getElementById('f-payref').value.trim(),
+    notes: document.getElementById('f-notes').value.trim(),
+  };
+
+  if (id) {
+    const idx = data.subscribers.findIndex(x => x.id === id);
+    if (idx >= 0) {
+      data.subscribers[idx] = { ...data.subscribers[idx], ...sub };
+      addLog(`Editado: ${name} (${email})`);
+    }
+  } else {
+    sub.id = genId();
+    sub.created_at = new Date().toISOString();
+    data.subscribers.push(sub);
+    addLog(`Nuevo suscriptor: ${name} (${email})`);
+  }
+  saveData(data);
+  closeModal();
+  render();
+}
+
+function toggleStatus(id, newStatus) {
+  const data = loadData();
+  const s = data.subscribers.find(x => x.id === id);
+  if (!s) return;
+  const oldStatus = s.status;
+  s.status = newStatus;
+  if (newStatus === 'active' && oldStatus === 'trial') {
+    // Extend 30 days from today
+    const exp = new Date();
+    exp.setDate(exp.getDate() + 30);
+    s.expires = exp.toISOString().split('T')[0];
+  }
+  saveData(data);
+  addLog(`${s.name}: ${oldStatus} → ${newStatus}`);
+  render();
+}
+
+function closeModal() {
+  document.getElementById('sub-modal').classList.remove('open');
+}
+
+// ── WhatsApp Messages ───────────────────────────────────
+function openRenewalMsg(id) {
+  const data = loadData();
+  const s = data.subscribers.find(x => x.id === id);
+  if (!s) return;
+  waTargetPhone = s.phone;
+  const daysLeft = Math.ceil((new Date(s.expires) - new Date()) / 86400000);
+  let msg = '';
+  if (daysLeft <= 1) {
+    msg = `Hola ${s.name}! Tu ${s.status === 'trial' ? 'período de prueba' : 'suscripción'} de Hospedy vence hoy. Para continuar usando la plataforma, puedes renovar con una transferencia de $65.000 COP por Bre-B.\n\n¿Te comparto el QR de pago?`;
+  } else {
+    msg = `Hola ${s.name}! Te recordamos que tu ${s.status === 'trial' ? 'período de prueba' : 'suscripción'} de Hospedy vence en ${daysLeft} días (${fmtDate(s.expires)}).\n\nPara renovar son $65.000 COP mensuales por Bre-B. ¿Te comparto el QR?`;
+  }
+  document.getElementById('wa-msg').value = msg;
+  document.getElementById('wa-modal').classList.add('open');
+}
+
+function openCustomMsg(id) {
+  const data = loadData();
+  const s = data.subscribers.find(x => x.id === id);
+  if (!s) return;
+  waTargetPhone = s.phone;
+  document.getElementById('wa-msg').value = `Hola ${s.name}! `;
+  document.getElementById('wa-modal').classList.add('open');
+}
+
+function sendWA() {
+  const msg = document.getElementById('wa-msg').value;
+  if (!waTargetPhone) { alert('Sin número de WhatsApp'); return; }
+  const phone = waTargetPhone.startsWith('57') ? waTargetPhone : '57' + waTargetPhone;
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, '_blank');
+  document.getElementById('wa-modal').classList.remove('open');
+  addLog(`WhatsApp enviado a ${waTargetPhone}`);
+  render();
+}
+
+// ── Init ────────────────────────────────────────────────
+render();
+</script>
+</body>
+</html>
