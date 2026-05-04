@@ -46,7 +46,7 @@ export default function DashboardContent({ user }: { user: any }) {
   const [loading, setLoading] = useState(true);
   const [showNewPropertyModal, setShowNewPropertyModal] = useState(false);
   const [showNewReservationModal, setShowNewReservationModal] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null); // eslint-disable-line @typescript-eslint/no-unused-vars
 
   // New property form
   const [newProperty, setNewProperty] = useState({
