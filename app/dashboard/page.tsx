@@ -1,24 +1,32 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import DashboardContent from '@/components/dashboard';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadUser = async () => {
       const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
+        data: { session },
+      } = await supabase.auth.getSession();
+
+      if (!session) {
+        router.push('/auth/login');
+        return;
+      }
+
+      setUser(session.user);
       setLoading(false);
     };
 
     loadUser();
-  }, []);
+  }, [router]);
 
   if (loading) {
     return (
@@ -32,7 +40,7 @@ export default function DashboardPage() {
           color: '#666',
         }}
       >
-        Cargando dashboard...
+        Cargando...
       </div>
     );
   }
