@@ -158,6 +158,26 @@ table tr:hover{background:var(--bg)}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .tab-content{animation:fadeIn 0.25s ease}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+/* Locked overlay for premium tabs */
+.locked-overlay{position:absolute;inset:0;background:rgba(255,255,255,0.92);backdrop-filter:blur(6px);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px}
+.locked-overlay h3{font-size:1.3rem;color:var(--text);margin-bottom:8px}
+.locked-overlay p{color:var(--muted);font-size:0.9rem;margin-bottom:20px;max-width:360px;line-height:1.6}
+.locked-overlay .lock-icon{font-size:3rem;margin-bottom:16px}
+.locked-overlay .btn-unlock{padding:14px 28px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s}
+.locked-overlay .btn-unlock:hover{background:#1fb855;transform:translateY(-2px)}
+.locked-overlay .price-tag{font-size:0.82rem;color:var(--muted);margin-top:12px}
+.tab-premium{position:relative;min-height:400px}
+/* Floating WhatsApp button */
+.wa-float{position:fixed;bottom:24px;right:24px;background:#25D366;color:#fff;width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 4px 16px rgba(37,211,102,0.4);z-index:1500;text-decoration:none;transition:all 0.3s;cursor:pointer}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,0.5)}
+.wa-float-label{position:fixed;bottom:32px;right:88px;background:#fff;color:#333;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 2px 12px rgba(0,0,0,0.12);z-index:1500;white-space:nowrap;animation:fadeIn 0.3s}
+/* Timed modal */
+.timed-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:3000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s}
+.timed-modal-content{background:#fff;border-radius:16px;padding:36px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.2)}
+.timed-modal-content h3{font-size:1.3rem;margin-bottom:8px;color:var(--text)}
+.timed-modal-content p{font-size:0.9rem;color:var(--muted);margin-bottom:20px;line-height:1.6}
+.timed-modal-content .btn-wa{padding:14px 28px;background:#25D366;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block;transition:all 0.2s}
+.timed-modal-content .btn-close{margin-top:12px;background:none;border:none;color:var(--muted);font-size:13px;cursor:pointer}
 .alert-card{border-radius:12px;padding:16px;margin-bottom:12px;border-left:6px solid;display:flex;justify-content:space-between;align-items:center;box-shadow:var(--shadow)}
 .alert-card.success{background:#e8f5e9;border-left-color:#2eaa7b;color:#2e7d32}
 .alert-card.warning{background:#fff3e0;border-left-color:#f0a030;color:#e68a00}
@@ -203,7 +223,14 @@ table tr:hover{background:var(--bg)}
       <div class="search-bar"><input type="text" id="guest-search" placeholder="Buscar por nombre, teléfono o email..." oninput="renderGuests()"></div>
       <div class="card" style="overflow-x:auto"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Documento</th><th>Ciudad</th><th>Acciones</th></tr></thead><tbody id="guests-table"></tbody></table></div>
     </div>
-    <div id="tab-reservations" class="tab-content" style="display:none">
+    <div id="tab-reservations" class="tab-content tab-premium" style="display:none">
+      <div class="locked-overlay" id="lock-reservations">
+        <div class="lock-icon">📅</div>
+        <h3>Reservaciones Inteligentes</h3>
+        <p>Anti-doble reserva automática, sincronización con Airbnb y Booking, gestión de estados y pagos. Todo en un solo lugar.</p>
+        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20gestionar%20mis%20reservaciones" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
+        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
+      </div>
       <div class="page-header"><h2>Reservaciones</h2><button class="btn btn-primary" onclick="openNewReservation()">+ Nueva Reservación</button></div>
       <div class="filter-row">
         <select id="res-filter-status" onchange="renderReservations()"><option value="">Todos los estados</option><option value="pending">Pendiente</option><option value="confirmed">Confirmada</option><option value="checked_in">Check-in</option><option value="checked_out">Check-out</option><option value="completed">Completada</option><option value="cancelled">Cancelada</option></select>
@@ -211,7 +238,14 @@ table tr:hover{background:var(--bg)}
       </div>
       <div class="card" style="overflow-x:auto"><table><thead><tr><th>Propiedad</th><th>Huésped</th><th>Check-in</th><th>Check-out</th><th>Noches</th><th>Total</th><th>Estado</th><th>Pago</th><th>Acciones</th></tr></thead><tbody id="res-table"></tbody></table></div>
     </div>
-    <div id="tab-messages" class="tab-content" style="display:none">
+    <div id="tab-messages" class="tab-content tab-premium" style="display:none">
+      <div class="locked-overlay" id="lock-messages">
+        <div class="lock-icon">💬</div>
+        <h3>Mensajes WhatsApp Automáticos</h3>
+        <p>Ficha de bienvenida con WiFi, código de puerta e instrucciones. Confirmación, recordatorio de pago y agradecimiento. Un clic y se envía.</p>
+        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20enviar%20mensajes%20automáticos" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
+        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
+      </div>
       <div class="page-header"><h2>Mensajes</h2></div>
       <div class="grid-2">
         <div>
@@ -229,7 +263,14 @@ table tr:hover{background:var(--bg)}
         </div>
       </div>
     </div>
-    <div id="tab-finances" class="tab-content" style="display:none">
+    <div id="tab-finances" class="tab-content tab-premium" style="display:none">
+      <div class="locked-overlay" id="lock-finances">
+        <div class="lock-icon">💰</div>
+        <h3>Control Financiero Completo</h3>
+        <p>Ingresos, gastos y utilidad por propiedad. Reportes CSV para tu contador con un clic. Tu P&L siempre al día.</p>
+        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20controlar%20mis%20finanzas" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
+        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
+      </div>
       <div class="page-header"><h2>Finanzas</h2><div style="display:flex;gap:10px"><button class="btn btn-primary" onclick="openModal('finance-modal')">+ Nuevo Movimiento</button><button class="btn btn-secondary" onclick="exportReportCSV()">📥 Descargar Reporte</button></div></div>
       <div class="kpi-grid" id="fin-summary"></div>
       <div class="filter-row">
@@ -1157,6 +1198,46 @@ function initSampleData(){
   loadAll();
   renderDashboard();
   setTimeout(showTourPrompt, 2000);
+
+  // ── CONVERSION OPTIMIZATIONS ────────────────────────────
+  // 1. Timed popup after 90 seconds
+  setTimeout(function(){
+    if(document.getElementById('timed-popup'))return;
+    var popup=document.createElement('div');
+    popup.id='timed-popup';
+    popup.className='timed-modal';
+    popup.innerHTML='<div class="timed-modal-content"><h3>Te gusta lo que ves?</h3><p>Obtén acceso completo a Hospedy para gestionar tus propiedades, reservaciones y finanzas. Todo por $65.000/mes.</p><a href="https://wa.me/573113225050?text=Hola!%20Probé%20el%20demo%20de%20Hospedy%20y%20quiero%20obtener%20acceso" target="_blank" class="btn-wa">💬 Escribir por WhatsApp</a><br><button class="btn-close" onclick="this.closest(\'.timed-modal\').remove()">Seguir explorando</button></div>';
+    document.body.appendChild(popup);
+    popup.addEventListener('click',function(e){if(e.target===popup)popup.remove();});
+  },90000);
+
+  // 2. Show CTA faster (after 1 interaction instead of 3)
+  interactionCount=2;
+
+  // 3. Floating WhatsApp button (appears after 10 seconds)
+  setTimeout(function(){
+    var waBtn=document.createElement('a');
+    waBtn.className='wa-float';
+    waBtn.href='https://wa.me/573113225050?text=Hola!%20Estoy%20probando%20el%20demo%20de%20Hospedy%20y%20quiero%20más%20información';
+    waBtn.target='_blank';
+    waBtn.innerHTML='💬';
+    waBtn.title='Escríbenos por WhatsApp';
+    document.body.appendChild(waBtn);
+    // Label that disappears after 5 seconds
+    var label=document.createElement('div');
+    label.className='wa-float-label';
+    label.textContent='¿Quieres acceso? Escríbenos';
+    document.body.appendChild(label);
+    setTimeout(function(){label.remove()},5000);
+  },10000);
+
+  // 4. Track premium tab clicks for GA4
+  document.querySelectorAll('.locked-overlay .btn-unlock').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(typeof gtag==='function')gtag('event','premium_tab_click',{event_category:'conversion',event_label:btn.closest('.tab-premium').id});
+      if(typeof fbq==='function')fbq('track','Lead',{content_name:'Demo Premium Tab',value:65000,currency:'COP'});
+    });
+  });
 })();
 </script>
 </body>
