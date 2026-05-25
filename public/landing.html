@@ -306,6 +306,62 @@ footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;
 .foot-tag{font-size:13px;line-height:1.6;color:oklch(70% 0.01 240);max-width:280px}
 .foot-bottom{border-top:1px solid oklch(28% 0.02 240);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:oklch(60% 0.01 240)}
 
+/* === CALCULATOR === */
+#calculator{padding:104px 0;background:var(--bg)}
+.calc-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:24px;max-width:1080px;margin:0 auto;align-items:stretch}
+.calc-inputs{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px;box-shadow:var(--shadow-card)}
+.calc-inputs h3{font-family:var(--font-display);font-size:20px;font-weight:600;letter-spacing:-0.015em;margin-bottom:6px;color:var(--fg)}
+.calc-inputs .calc-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+.calc-field{margin-bottom:20px}
+.calc-field label{display:flex;justify-content:space-between;align-items:baseline;font-size:13px;font-weight:600;color:var(--fg);margin-bottom:8px}
+.calc-field label .calc-val{font-family:var(--font-display);font-size:18px;font-weight:600;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.calc-field input[type=range]{-webkit-appearance:none;width:100%;height:6px;background:var(--border);border-radius:3px;outline:none}
+.calc-field input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border-radius:50%;cursor:pointer;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent),0 1px 4px oklch(20% 0.02 60 / .2);transition:transform .15s}
+.calc-field input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.1)}
+.calc-field input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--accent);border-radius:50%;cursor:pointer;border:3px solid var(--surface);box-shadow:0 0 0 1px var(--accent)}
+.calc-field .calc-hint{font-size:11px;color:var(--muted);margin-top:6px}
+.calc-results{background:var(--ink-dark);color:#fff;border-radius:var(--r-xl);padding:32px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden}
+.calc-results::before{content:"";position:absolute;top:-40%;right:-20%;width:60%;height:120%;background:radial-gradient(circle,oklch(58% 0.13 155 / .25),transparent 70%);pointer-events:none}
+.calc-results-head{position:relative;z-index:1}
+.calc-results-head .calc-tag{font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:oklch(80% 0.06 155);margin-bottom:14px;display:inline-block}
+.calc-results-head h3{font-family:var(--font-display);font-size:22px;font-weight:500;letter-spacing:-0.015em;line-height:1.2;color:#fff;margin-bottom:24px}
+.calc-row{display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid oklch(28% 0.02 240);position:relative;z-index:1}
+.calc-row .calc-row-label{font-size:13px;color:oklch(75% 0.012 240)}
+.calc-row .calc-row-value{font-family:var(--font-display);font-size:18px;font-weight:600;color:#fff;font-variant-numeric:tabular-nums}
+.calc-row.danger .calc-row-value{color:oklch(72% 0.14 38)}
+.calc-row.win{padding-top:16px;border-bottom:none;margin-top:6px}
+.calc-row.win .calc-row-label{font-size:14px;color:#fff;font-weight:600}
+.calc-row.win .calc-row-value{font-family:var(--font-display);font-size:32px;font-weight:600;color:oklch(82% 0.14 155);letter-spacing:-0.02em}
+.calc-roi-pill{margin-top:18px;display:inline-flex;align-items:center;gap:8px;background:oklch(58% 0.13 155 / .2);color:oklch(85% 0.08 155);padding:8px 14px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid oklch(58% 0.13 155 / .35);position:relative;z-index:1}
+.calc-cta{margin-top:22px;position:relative;z-index:1}
+.calc-cta .btn{width:100%;justify-content:center;background:#fff;color:var(--accent-ink)}
+.calc-cta .btn:hover{background:oklch(96% 0.018 70)}
+.calc-foot{font-size:11px;color:var(--muted);text-align:center;margin-top:18px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.5}
+
+/* === COMPETITORS === */
+#competitors{padding:104px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.comp-table-wrap{max-width:1080px;margin:0 auto;overflow-x:auto;background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);box-shadow:var(--shadow-card)}
+.comp-table{width:100%;border-collapse:collapse;font-size:14px;min-width:720px}
+.comp-table thead th{text-align:left;padding:18px 20px;font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border);background:var(--bg)}
+.comp-table thead th.is-us{background:var(--accent-tint);color:var(--accent-ink)}
+.comp-table tbody td{padding:16px 20px;border-bottom:1px solid var(--border);vertical-align:middle}
+.comp-table tbody tr:last-child td{border-bottom:none}
+.comp-table tbody tr td.is-us{background:oklch(94% 0.04 155 / .35)}
+.comp-row-name{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;color:var(--fg);display:flex;align-items:center;gap:10px}
+.comp-row-name .comp-mark{width:24px;height:24px;border-radius:6px;background:var(--accent);display:grid;place-items:center;color:var(--accent-ink);font-family:var(--font-body);font-size:11px;font-weight:700;flex:none}
+.comp-row-name.is-us .comp-mark{background:var(--accent);color:#fff}
+.comp-cell-yes{color:var(--accent-ink);font-weight:500}
+.comp-cell-yes::before{content:"✓ ";font-weight:700}
+.comp-cell-no{color:var(--muted)}
+.comp-cell-no::before{content:"— ";color:var(--muted)}
+.comp-cell-warn{color:oklch(45% 0.12 38)}
+.comp-cell-warn::before{content:"× ";font-weight:700}
+.comp-price{font-family:var(--font-display);font-weight:600;font-size:14px;font-variant-numeric:tabular-nums;color:var(--fg)}
+.comp-price.is-us{color:var(--accent-ink)}
+.comp-price small{display:block;font-size:11px;color:var(--muted);font-family:var(--font-body);font-weight:400;margin-top:2px}
+.comp-foot{font-size:12px;color:var(--muted);text-align:center;margin-top:20px;max-width:680px;margin-left:auto;margin-right:auto;line-height:1.5}
+.comp-foot a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+
 /* === RESPONSIVE === */
 @media (max-width:980px){
   .hero-grid{grid-template-columns:1fr;gap:36px}
@@ -317,6 +373,7 @@ footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;
   .stat-card{padding:24px}
   .stat-num{font-size:44px}
   .price-grid{grid-template-columns:1fr}
+  .calc-grid{grid-template-columns:1fr;gap:16px}
   .foot-grid{grid-template-columns:1fr 1fr;gap:24px}
 }
 @media (max-width:680px){
@@ -333,7 +390,10 @@ footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;
   .pm-grid{grid-template-columns:1fr}
   .pr-table{font-size:11.5px}
   .pr-table th:nth-child(3),.pr-table td:nth-child(3){display:none}
-  #problem,#features,#preview,#stats,#pricing,#faq,#cta-band{padding:72px 0}
+  #problem,#features,#preview,#stats,#calculator,#competitors,#pricing,#faq,#cta-band{padding:72px 0}
+  .calc-inputs,.calc-results{padding:22px}
+  .comp-table thead th,.comp-table tbody td{padding:12px 14px;font-size:12px}
+  .comp-row-name{font-size:13px}
   .foot-grid{grid-template-columns:1fr}
 }
 
@@ -733,6 +793,143 @@ Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
   </div>
 </section>
 
+<!-- =============== CALCULATOR =============== -->
+<section id="calculator">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Tu caso, tus números</span>
+      <h2>¿Cuánto te ahorras<br>con Hospedy?</h2>
+      <p>Mueve los deslizadores con tu situación real. Calculamos lo que estás dejando sobre la mesa hoy y lo que te ahorras al organizarte.</p>
+    </div>
+    <div class="calc-grid">
+      <div class="calc-inputs">
+        <h3>Tu operación actual</h3>
+        <p class="calc-sub">Solo necesitamos tres datos para hacer la cuenta.</p>
+
+        <div class="calc-field">
+          <label for="calc-props"><span>Propiedades que administras</span><span class="calc-val" id="calc-props-val">3</span></label>
+          <input type="range" id="calc-props" min="1" max="15" value="3" step="1">
+          <div class="calc-hint">Hospedy es ilimitado — esto solo afecta tu cálculo</div>
+        </div>
+
+        <div class="calc-field">
+          <label for="calc-rate"><span>Tarifa promedio por noche</span><span class="calc-val" id="calc-rate-val">$220.000</span></label>
+          <input type="range" id="calc-rate" min="80000" max="600000" value="220000" step="10000">
+          <div class="calc-hint">El precio promedio que cobras por noche en COP</div>
+        </div>
+
+        <div class="calc-field">
+          <label for="calc-occ"><span>Ocupación esperada</span><span class="calc-val" id="calc-occ-val">65%</span></label>
+          <input type="range" id="calc-occ" min="20" max="95" value="65" step="5">
+          <div class="calc-hint">Porcentaje de noches ocupadas al mes (promedio anual)</div>
+        </div>
+      </div>
+
+      <div class="calc-results" aria-live="polite">
+        <div class="calc-results-head">
+          <span class="calc-tag">Tu cuenta al año</span>
+          <h3>Esto es lo que se mueve en tu negocio.</h3>
+        </div>
+
+        <div class="calc-row">
+          <span class="calc-row-label">Ingresos brutos estimados</span>
+          <span class="calc-row-value" id="calc-revenue">$57.8M</span>
+        </div>
+        <div class="calc-row danger">
+          <span class="calc-row-label">Costo oculto sin Hospedy</span>
+          <span class="calc-row-value" id="calc-loss">$2.6M</span>
+        </div>
+        <div class="calc-row">
+          <span class="calc-row-label">Hospedy ($65.000 × 12)</span>
+          <span class="calc-row-value" id="calc-cost">$780.000</span>
+        </div>
+        <div class="calc-row win">
+          <span class="calc-row-label">Tu ahorro neto en el año</span>
+          <span class="calc-row-value" id="calc-savings">$1.8M</span>
+        </div>
+        <div>
+          <span class="calc-roi-pill" id="calc-roi">ROI: 234% · se paga en 5 meses</span>
+        </div>
+        <div class="calc-cta">
+          <a href="https://wa.me/573113225050?text=Hola!%20Hice%20el%20c%C3%A1lculo%20en%20la%20landing%20y%20quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-lg" id="calc-cta-btn">
+            Obtener acceso a Hospedy
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+    <p class="calc-foot">Costo oculto = ~4.5% de tus ingresos brutos: estimación basada en doble-reserva ocasional, reservas perdidas por respuesta lenta, horas administrativas y reseñas menores por mala recepción. Más conservador con menos propiedades.</p>
+  </div>
+</section>
+
+<!-- =============== COMPETITORS =============== -->
+<section id="competitors">
+  <div class="container">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Comparado con otras opciones</span>
+      <h2>Por qué Hospedy<br>y no las demás.</h2>
+      <p>Las otras herramientas están hechas para anfitriones gringos, hoteleros profesionales o cadenas. Hospedy está hecho para ti.</p>
+    </div>
+    <div class="comp-table-wrap">
+      <table class="comp-table">
+        <thead>
+          <tr>
+            <th>Herramienta</th>
+            <th>Precio mensual</th>
+            <th>Pago en Colombia</th>
+            <th>Soporte en español</th>
+            <th>Contrato mínimo</th>
+            <th class="is-us">Hecho para LatAm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="comp-row-name is-us"><span class="comp-mark">H</span>Hospedy</div></td>
+            <td><span class="comp-price is-us">$65.000 COP<small>≈ USD $15</small></span></td>
+            <td class="is-us"><span class="comp-cell-yes">Bre-B (Bancolombia)</span></td>
+            <td class="is-us"><span class="comp-cell-yes">WhatsApp directo</span></td>
+            <td class="is-us"><span class="comp-cell-yes">Ninguno — mensual</span></td>
+            <td class="is-us"><span class="comp-cell-yes">Sí, Colombia</span></td>
+          </tr>
+          <tr>
+            <td><div class="comp-row-name"><span class="comp-mark">G</span>Guesty Lite</div></td>
+            <td><span class="comp-price">USD $34<small>≈ $145.000 COP</small></span></td>
+            <td><span class="comp-cell-warn">Tarjeta USD</span></td>
+            <td><span class="comp-cell-no">Inglés primero</span></td>
+            <td><span class="comp-cell-warn">12 meses</span></td>
+            <td><span class="comp-cell-no">No, EE.UU.</span></td>
+          </tr>
+          <tr>
+            <td><div class="comp-row-name"><span class="comp-mark">L</span>Lodgify</div></td>
+            <td><span class="comp-price">USD $13–89<small>según plan</small></span></td>
+            <td><span class="comp-cell-warn">Tarjeta USD</span></td>
+            <td><span class="comp-cell-yes">Sí (España)</span></td>
+            <td><span class="comp-cell-warn">Anual con descuento</span></td>
+            <td><span class="comp-cell-no">No, España/EE.UU.</span></td>
+          </tr>
+          <tr>
+            <td><div class="comp-row-name"><span class="comp-mark">H</span>Hostfully</div></td>
+            <td><span class="comp-price">USD $129+<small>≈ $550.000 COP</small></span></td>
+            <td><span class="comp-cell-warn">Tarjeta USD</span></td>
+            <td><span class="comp-cell-no">Inglés</span></td>
+            <td><span class="comp-cell-warn">Anual</span></td>
+            <td><span class="comp-cell-no">No, EE.UU.</span></td>
+          </tr>
+          <tr>
+            <td><div class="comp-row-name"><span class="comp-mark">S</span>Smoobu</div></td>
+            <td><span class="comp-price">USD $25<small>≈ $107.000 COP</small></span></td>
+            <td><span class="comp-cell-warn">Tarjeta EUR</span></td>
+            <td><span class="comp-cell-yes">Sí (Alemania)</span></td>
+            <td><span class="comp-cell-yes">Mensual</span></td>
+            <td><span class="comp-cell-no">No, Alemania</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="comp-foot">Precios públicos consultados en los sitios oficiales de cada herramienta. Las funcionalidades core (anti-doble reserva, sync iCal, mensajes a huéspedes) son comparables — la diferencia real está en moneda, idioma y compromiso.</p>
+  </div>
+</section>
+
 <!-- =============== PRICING =============== -->
 <section id="pricing">
   <div class="container">
@@ -931,6 +1128,111 @@ Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
     },{threshold:0.45});
     var pricingEl=document.getElementById('pricing');
     if(pricingEl)obs.observe(pricingEl);
+  }
+})();
+
+// ROI Calculator
+(function(){
+  var $props=document.getElementById('calc-props');
+  var $rate=document.getElementById('calc-rate');
+  var $occ=document.getElementById('calc-occ');
+  if(!$props||!$rate||!$occ)return;
+  var $propsV=document.getElementById('calc-props-val');
+  var $rateV=document.getElementById('calc-rate-val');
+  var $occV=document.getElementById('calc-occ-val');
+  var $rev=document.getElementById('calc-revenue');
+  var $loss=document.getElementById('calc-loss');
+  var $cost=document.getElementById('calc-cost');
+  var $sav=document.getElementById('calc-savings');
+  var $roi=document.getElementById('calc-roi');
+
+  function fmt(n){
+    if(n>=1000000)return '$'+(n/1000000).toFixed(n>=10000000?0:1).replace('.0','')+'M';
+    if(n>=1000)return '$'+Math.round(n/1000).toLocaleString('es-CO')+'k';
+    return '$'+Math.round(n).toLocaleString('es-CO');
+  }
+  function fmtPct(n){return Math.round(n).toLocaleString('es-CO')+'%';}
+
+  // Hidden cost scales with operation size — roughly 4.5% of revenue, but
+  // capped/floored so 1-property hosts don't see absurd numbers and 15-property
+  // hosts don't see unrealistic linear growth.
+  function calcHiddenCost(revenue, props){
+    var pct=0.045; // 4.5% baseline
+    if(props<=1)pct=0.025;
+    else if(props<=2)pct=0.035;
+    else if(props>=10)pct=0.055;
+    return revenue*pct;
+  }
+
+  var $cta=document.getElementById('calc-cta-btn');
+  var pushDebounced=null;
+  function pushCalcLead(roiVal,savings){
+    clearTimeout(pushDebounced);
+    pushDebounced=setTimeout(function(){
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'calc_updated',roi:roiVal,savings:Math.round(savings)});
+    },800);
+  }
+
+  function recalc(){
+    var props=parseInt($props.value,10);
+    var rate=parseInt($rate.value,10);
+    var occ=parseInt($occ.value,10);
+    $propsV.textContent=props;
+    $rateV.textContent='$'+rate.toLocaleString('es-CO');
+    $occV.textContent=occ+'%';
+
+    var nightsYear=365*(occ/100);
+    var revenue=props*rate*nightsYear;
+    var hidden=calcHiddenCost(revenue,props);
+    var hospedy=65000*12; // 780.000
+    var net=hidden-hospedy;
+    var roi=hospedy>0?((net/hospedy)*100):0;
+    var monthsBack=hidden>0?(hospedy/(hidden/12)):0;
+
+    $rev.textContent=fmt(revenue);
+    $loss.textContent=fmt(hidden);
+    $cost.textContent=fmt(hospedy);
+    $sav.textContent=fmt(net);
+    if(net<=0){
+      $roi.textContent='Mejor ROI con más operación';
+    } else if(monthsBack<=2){
+      $roi.textContent='ROI: '+fmtPct(roi)+' · se paga en el primer mes';
+    } else {
+      $roi.textContent='ROI: '+fmtPct(roi)+' · se paga en '+Math.max(1,Math.round(monthsBack))+' meses';
+    }
+    pushCalcLead(roi,net);
+  }
+
+  [$props,$rate,$occ].forEach(function(el){el.addEventListener('input',recalc)});
+  recalc();
+
+  if($cta){
+    $cta.addEventListener('click',function(){
+      var props=parseInt($props.value,10);
+      var rate=parseInt($rate.value,10);
+      var occ=parseInt($occ.value,10);
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'calc_cta_click',props:props,rate:rate,occ:occ});
+      if(typeof gtag==='function')gtag('event','calc_cta_click',{event_category:'conversion',props:props,rate:rate,occ:occ});
+      if(typeof fbq==='function')fbq('track','Lead',{content_name:'ROI Calculator CTA',value:65000,currency:'COP'});
+    });
+  }
+
+  // Track when calculator scrolls into view
+  if('IntersectionObserver' in window){
+    var seen=false;
+    var co=new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if(e.isIntersecting&&!seen){
+          seen=true;
+          window.dataLayer=window.dataLayer||[];
+          window.dataLayer.push({event:'calculator_viewed'});
+          if(typeof gtag==='function')gtag('event','calculator_viewed',{event_category:'engagement'});
+        }
+      });
+    },{threshold:0.4});
+    co.observe(document.getElementById('calculator'));
   }
 })();
 </script>
