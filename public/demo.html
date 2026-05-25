@@ -10,6 +10,13 @@
 window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());gtag('config','G-B4KQMPSFXC');
 </script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NNL4DXRC');</script>
+<!-- End Google Tag Manager -->
 <script>
 !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
 n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -190,6 +197,9 @@ table tr:hover{background:var(--bg)}
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNL4DXRC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="demo-banner">🔓 Modo Demo — Los datos son de ejemplo y no se guardan. <a href="landing.html">Volver a Hospedy</a></div>
 <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
 <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
@@ -1239,6 +1249,120 @@ function initSampleData(){
       if(typeof fbq==='function')fbq('track','Lead',{content_name:'Demo Premium Tab',value:65000,currency:'COP'});
     });
   });
+})();
+</script>
+
+<!-- Hospedy Demo — Conversion Tracking (dataLayer events for GTM/GA4) -->
+<script>
+(function(){
+  window.dataLayer = window.dataLayer || [];
+  function push(event, params){
+    var payload = Object.assign({event:event}, params||{});
+    window.dataLayer.push(payload);
+    if(typeof fbq === 'function' && payload.fbq){
+      try{ fbq.apply(null, payload.fbq); }catch(e){}
+    }
+  }
+
+  // 1. Section navigation
+  if(typeof window.showTab === 'function'){
+    var _showTab = window.showTab;
+    window.showTab = function(name, el){
+      push('demo_section_view', {
+        section: name,
+        fbq: ['trackCustom', 'DemoSectionView', {section: name}]
+      });
+      return _showTab(name, el);
+    };
+  }
+
+  // 2. CRUD actions
+  ['saveProperty','saveGuest','saveReservation','saveFinance'].forEach(function(fn){
+    if(typeof window[fn] === 'function'){
+      var orig = window[fn];
+      window[fn] = function(){
+        var result = orig.apply(this, arguments);
+        push('demo_action', {
+          action: fn,
+          fbq: ['trackCustom', 'DemoAction', {action: fn}]
+        });
+        return result;
+      };
+    }
+  });
+
+  // 3. WhatsApp message template
+  if(typeof window.sendWhatsApp === 'function'){
+    var _sendWA = window.sendWhatsApp;
+    window.sendWhatsApp = function(){
+      push('demo_send_whatsapp_template', {
+        fbq: ['trackCustom', 'DemoSendWhatsAppTemplate']
+      });
+      return _sendWA.apply(this, arguments);
+    };
+  }
+
+  // 4. CTA banner visibility
+  if(typeof window.showCTA === 'function'){
+    var _showCTA = window.showCTA;
+    window.showCTA = function(){
+      push('demo_cta_shown', {fbq: ['trackCustom', 'DemoCTAShown']});
+      return _showCTA();
+    };
+  }
+  if(typeof window.closeCTA === 'function'){
+    var _closeCTA = window.closeCTA;
+    window.closeCTA = function(){
+      push('demo_cta_dismissed', {fbq: ['trackCustom', 'DemoCTADismissed']});
+      return _closeCTA();
+    };
+  }
+
+  // 5. Tour engagement
+  ['startTour','skipTour'].forEach(function(fn){
+    if(typeof window[fn] === 'function'){
+      var orig = window[fn];
+      window[fn] = function(){
+        push('demo_tour_' + (fn === 'startTour' ? 'started' : 'skipped'), {
+          fbq: ['trackCustom', fn === 'startTour' ? 'DemoTourStarted' : 'DemoTourSkipped']
+        });
+        return orig.apply(this, arguments);
+      };
+    }
+  });
+
+  // 6. Lead — any click to business WhatsApp counts as conversion intent
+  document.addEventListener('click', function(e){
+    var a = e.target.closest('a[href*="wa.me/573113225050"]');
+    if(a){
+      push('whatsapp_lead', {
+        source: 'demo',
+        link_text: (a.textContent || '').trim().slice(0, 60),
+        fbq: ['track', 'Lead', {content_name:'WhatsApp Contact', content_category:'demo', value:65000, currency:'COP'}]
+      });
+    }
+  }, true);
+
+  // 7. Engagement heartbeat
+  var heartbeats = [30, 60, 120, 300];
+  var startedAt = Date.now();
+  var firedFlags = {};
+  function checkHeartbeat(){
+    var seconds = Math.floor((Date.now() - startedAt) / 1000);
+    heartbeats.forEach(function(t){
+      if(seconds >= t && !firedFlags[t]){
+        firedFlags[t] = true;
+        push('demo_engaged_time', {
+          seconds: t,
+          fbq: ['trackCustom', 'DemoEngagedTime', {seconds: t}]
+        });
+      }
+    });
+  }
+  setInterval(checkHeartbeat, 10000);
+
+  // 8. Demo ready
+  push('demo_ready', {});
 })();
 </script>
 </body>
