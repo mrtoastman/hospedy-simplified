@@ -1319,12 +1319,15 @@ Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
   </div>
 </div>
 
+<!-- Supabase public config (anon key — safe client-side, RLS protects DB) -->
+<script>
+  window.HOSPEDY_SUPABASE_URL = 'https://kiuueazcdbfqfetirlqn.supabase.co';
+  window.HOSPEDY_SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpdXVlYXpjZGJmcWZldGlybHFuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njk3MTUwNzUsImV4cCI6MjA4NTI5MTA3NX0.PNaKQz2IGQ9ncWRdqmk1rXN0OU7k8QYsmFHMymVCNzg';
+</script>
+
 <!-- Lead capture script -->
 <script>
 (function(){
-  // === Supabase config — replace with your project values ===
-  // The anon key is safe to expose client-side: it only allows the INSERT
-  // operation enforced by the RLS policy on landing_leads.
   var SUPABASE_URL = window.HOSPEDY_SUPABASE_URL || '';
   var SUPABASE_KEY = window.HOSPEDY_SUPABASE_KEY || '';
 
