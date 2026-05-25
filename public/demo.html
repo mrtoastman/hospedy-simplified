@@ -242,14 +242,7 @@ table tr:hover{background:var(--bg)}
       <div class="search-bar"><input type="text" id="guest-search" placeholder="Buscar por nombre, teléfono o email..." oninput="renderGuests()"></div>
       <div class="card" style="overflow-x:auto"><table><thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Documento</th><th>Ciudad</th><th>Acciones</th></tr></thead><tbody id="guests-table"></tbody></table></div>
     </div>
-    <div id="tab-reservations" class="tab-content tab-premium" style="display:none">
-      <div class="locked-overlay" id="lock-reservations">
-        <div class="lock-icon">📅</div>
-        <h3>Reservaciones Inteligentes</h3>
-        <p>Anti-doble reserva automática, sincronización con Airbnb y Booking, gestión de estados y pagos. Todo en un solo lugar.</p>
-        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20gestionar%20mis%20reservaciones" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
-        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
-      </div>
+    <div id="tab-reservations" class="tab-content" style="display:none">
       <div class="page-header"><h2>Reservaciones</h2><button class="btn btn-primary" onclick="openNewReservation()">+ Nueva Reservación</button></div>
       <div class="filter-row">
         <select id="res-filter-status" onchange="renderReservations()"><option value="">Todos los estados</option><option value="pending">Pendiente</option><option value="confirmed">Confirmada</option><option value="checked_in">Check-in</option><option value="checked_out">Check-out</option><option value="completed">Completada</option><option value="cancelled">Cancelada</option></select>
@@ -257,14 +250,7 @@ table tr:hover{background:var(--bg)}
       </div>
       <div class="card" style="overflow-x:auto"><table><thead><tr><th>Propiedad</th><th>Huésped</th><th>Check-in</th><th>Check-out</th><th>Noches</th><th>Total</th><th>Estado</th><th>Pago</th><th>Acciones</th></tr></thead><tbody id="res-table"></tbody></table></div>
     </div>
-    <div id="tab-messages" class="tab-content tab-premium" style="display:none">
-      <div class="locked-overlay" id="lock-messages">
-        <div class="lock-icon">💬</div>
-        <h3>Mensajes WhatsApp Automáticos</h3>
-        <p>Ficha de bienvenida con WiFi, código de puerta e instrucciones. Confirmación, recordatorio de pago y agradecimiento. Un clic y se envía.</p>
-        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20enviar%20mensajes%20automáticos" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
-        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
-      </div>
+    <div id="tab-messages" class="tab-content" style="display:none">
       <div class="page-header"><h2>Mensajes</h2></div>
       <div class="grid-2">
         <div>
@@ -282,14 +268,7 @@ table tr:hover{background:var(--bg)}
         </div>
       </div>
     </div>
-    <div id="tab-finances" class="tab-content tab-premium" style="display:none">
-      <div class="locked-overlay" id="lock-finances">
-        <div class="lock-icon">💰</div>
-        <h3>Control Financiero Completo</h3>
-        <p>Ingresos, gastos y utilidad por propiedad. Reportes CSV para tu contador con un clic. Tu P&L siempre al día.</p>
-        <a href="https://wa.me/573113225050?text=Hola!%20Vi%20el%20demo%20de%20Hospedy%20y%20quiero%20acceso%20para%20controlar%20mis%20finanzas" target="_blank" class="btn-unlock">💬 Obtener Acceso por WhatsApp</a>
-        <div class="price-tag">$65.000 COP/mes — Sin contratos, cancela cuando quieras</div>
-      </div>
+    <div id="tab-finances" class="tab-content" style="display:none">
       <div class="page-header"><h2>Finanzas</h2><div style="display:flex;gap:10px"><button class="btn btn-primary" onclick="openModal('finance-modal')">+ Nuevo Movimiento</button><button class="btn btn-secondary" onclick="exportReportCSV()">📥 Descargar Reporte</button></div></div>
       <div class="kpi-grid" id="fin-summary"></div>
       <div class="filter-row">
@@ -671,10 +650,24 @@ function calculateDashboardStats(){
   const pendingAmount=pendingPayRes.reduce((s,r)=>s+(r.total||0),0);
   const monthlyChart=[];
   for(let m=11;m>=0;m--){const d=new Date();d.setMonth(d.getMonth()-m);const ym=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');const mInc=DATA.finances.filter(f=>f.type==='income'&&f.date.startsWith(ym)).reduce((s,f)=>s+f.amount,0);const mExp=DATA.finances.filter(f=>f.type==='expense'&&f.date.startsWith(ym)).reduce((s,f)=>s+f.amount,0);monthlyChart.push({month:d.toLocaleDateString('es-CO',{month:'short',year:'2-digit'}),income:mInc,expense:mExp});}
-  const bookedNights=activeRes.reduce((s,r)=>{if(r.check_in&&r.check_out){const ci=new Date(r.check_in);const co=new Date(r.check_out);const nights=Math.ceil((co-ci)/(1000*60*60*24));return s+nights;}return s;},0);
-  const totalDaysMonth=new Date(today.substring(0,4),parseInt(today.substring(5,7)),0).getDate();
+  // Occupancy: count nights that fall WITHIN the current calendar month
+  // across all non-cancelled reservations of active properties.
+  const year=parseInt(today.substring(0,4));
+  const monthIdx=parseInt(today.substring(5,7))-1;
+  const monthStart=new Date(year,monthIdx,1);
+  const monthEnd=new Date(year,monthIdx+1,1); // exclusive
+  const bookedNights=DATA.reservations.filter(r=>r.status!=='cancelled'&&activePropIds.includes(r.property_id)).reduce((s,r)=>{
+    if(!r.check_in||!r.check_out)return s;
+    const ci=new Date(r.check_in);
+    const co=new Date(r.check_out);
+    const start=ci>monthStart?ci:monthStart;
+    const end=co<monthEnd?co:monthEnd;
+    if(end<=start)return s;
+    return s+Math.round((end-start)/(1000*60*60*24));
+  },0);
+  const totalDaysMonth=new Date(year,monthIdx+1,0).getDate();
   const totalPossibleNights=activePropIds.length*totalDaysMonth;
-  const occupancy=totalPossibleNights>0?Math.round(bookedNights/totalPossibleNights*100):0;
+  const occupancy=totalPossibleNights>0?Math.min(100,Math.round(bookedNights/totalPossibleNights*100)):0;
   return{occupancy,total_properties:activePropIds.length,month_income:monthIncome,month_profit:monthIncome-monthExpense,pending_payments:pendingPayRes.length,pending_amount:pendingAmount,active_reservations:activeRes.length,total_guests:DATA.guests.length,upcoming_checkins:DATA.reservations.filter(r=>r.check_in>today&&activePropIds.includes(r.property_id)).slice(0,5),upcoming_checkouts:DATA.reservations.filter(r=>r.check_out>today&&activePropIds.includes(r.property_id)).slice(0,5),today_checkins:todayCheckins,today_checkouts:todayCheckouts,tomorrow_checkins:tomorrowCheckins,tomorrow_checkouts:tomorrowCheckouts,monthly_chart:monthlyChart};
 }
 
@@ -1168,43 +1161,88 @@ function skipTour(){
 
 // ── INIT ────────────────────────────────────────────────
 function initSampleData(){
-  const today=getTodayDate();
-  const tomorrow=getTomorrowDate();
-  
+  // Helper: produce an ISO date (YYYY-MM-DD) offset by N days from today.
+  // Using a relative-to-today base means the demo always looks "alive"
+  // regardless of when the visitor opens it.
+  const offsetDate=function(days){
+    const d=new Date();
+    d.setDate(d.getDate()+days);
+    return d.toISOString().substring(0,10);
+  };
+  // Helper: same as above but only month precision (YYYY-MM-01)
+  const offsetMonth=function(monthsAgo){
+    const d=new Date();
+    d.setMonth(d.getMonth()-monthsAgo);
+    d.setDate(1+Math.floor(Math.random()*25));
+    return d.toISOString().substring(0,10);
+  };
+
   DATA.properties=[
     {id:'prop_1',name:'Apartamento El Poblado',type:'apartamento',address:'Cra 43A #7-50',city:'Medellín',rooms:2,bathrooms:1,max_guests:4,price_per_night:180000,status:'active',description:'Apartamento moderno en El Poblado',amenities:['WiFi','A/C','Cocina','TV'],wifi_name:'ElPoblado-WiFi',wifi_password:'hospedy123',door_code:'4521',check_in_instructions:'Portería 24h, mencionar Apto 501',portal_links:{airbnb:'https://airbnb.com/rooms/123',booking:'https://booking.com/h/456'},ical_urls:['https://calendar.google.com/calendar/ical/example1']},
-    {id:'prop_2',name:'Casa Frente al Mar - Santa Marta',type:'casa',address:'Calle 1 #2-3',city:'Santa Marta',rooms:3,bathrooms:2,max_guests:6,price_per_night:250000,status:'active',description:'Casa con vista al mar',amenities:['WiFi','Piscina','Cocina','TV','Hamaca'],wifi_name:'SantaMarta-Playa',wifi_password:'beach2024',door_code:'9999',check_in_instructions:'Llave en caja de seguridad,combo 5555',portal_links:{vrbo:'https://vrbo.com/property/789'},ical_urls:[]}
+    {id:'prop_2',name:'Casa Frente al Mar - Santa Marta',type:'casa',address:'Calle 1 #2-3',city:'Santa Marta',rooms:3,bathrooms:2,max_guests:6,price_per_night:250000,status:'active',description:'Casa con vista al mar',amenities:['WiFi','Piscina','Cocina','TV','Hamaca'],wifi_name:'SantaMarta-Playa',wifi_password:'beach2024',door_code:'9999',check_in_instructions:'Llave en caja de seguridad, combo 5555',portal_links:{vrbo:'https://vrbo.com/property/789'},ical_urls:[]},
+    {id:'prop_3',name:'Loft Centro Histórico - Cartagena',type:'loft',address:'Calle del Estanco del Aguardiente #5-15',city:'Cartagena',rooms:1,bathrooms:1,max_guests:2,price_per_night:320000,status:'active',description:'Loft colonial restaurado en Ciudad Amurallada',amenities:['WiFi','A/C','Cocina','TV','Balcón'],wifi_name:'LoftCartagena',wifi_password:'caribe2026',door_code:'1521',check_in_instructions:'Recibe Doña Marta, planta baja. Llave del balcón en cajón superior.',portal_links:{airbnb:'https://airbnb.com/rooms/cartagena-loft',booking:'https://booking.com/h/cartagena'},ical_urls:[]},
+    {id:'prop_4',name:'Finca con Piscina - Quindío',type:'finca',address:'Vereda La Cristalina, Vía Pijao',city:'Salento',rooms:4,bathrooms:3,max_guests:10,price_per_night:480000,status:'active',description:'Finca cafetera con piscina, jacuzzi y vista a la cordillera',amenities:['WiFi','Piscina','Jacuzzi','Cocina','BBQ','Parqueadero'],wifi_name:'FincaCristalina',wifi_password:'cafetera2026',door_code:'7788',check_in_instructions:'Don Jaime espera en la portería. Coordenadas GPS en el correo.',portal_links:{airbnb:'https://airbnb.com/rooms/finca-quindio'},ical_urls:[]},
+    {id:'prop_5',name:'Apartaestudio Chapinero',type:'apartaestudio',address:'Cra 13 #62-29 Apto 401',city:'Bogotá',rooms:1,bathrooms:1,max_guests:2,price_per_night:140000,status:'active',description:'Estudio cerca de la 7ma. Ideal para viajeros de negocios.',amenities:['WiFi','Calefacción','Cocina','Escritorio'],wifi_name:'Chapi-401',wifi_password:'bogota2026',door_code:'3344',check_in_instructions:'Acceso por torniquete, tarjeta en recepción.',portal_links:{airbnb:'https://airbnb.com/rooms/chapinero-studio',booking:'https://booking.com/h/bogota-studio'},ical_urls:[]}
   ];
-  
+
   DATA.guests=[
     {id:'guest_1',name:'Miguel Rodríguez',phone:'+573001234567',email:'miguel@example.com',document_type:'CC',document_number:'1037456789',city:'Medellín',country:'Colombia',notes:'Cliente frecuente'},
     {id:'guest_2',name:'Juan García López',phone:'+573105678901',email:'juan@example.com',document_type:'CC',document_number:'1045123456',city:'Cali',country:'Colombia',notes:''},
     {id:'guest_3',name:'María Martínez',phone:'+573212345678',email:'maria@example.com',document_type:'CC',document_number:'1052789012',city:'Bogotá',country:'Colombia',notes:'Prefiere check-in tarde'},
     {id:'guest_4',name:'Sarah Johnson',phone:'+14155551234',email:'sarah@example.com',document_type:'PAS',document_number:'AB12345678',city:'',country:'Estados Unidos',notes:'Viajera de negocios'},
-    {id:'guest_5',name:'Carlos Pérez Sánchez',phone:'+573216789012',email:'carlos@example.com',document_type:'CE',document_number:'EX987654321',city:'Santa Marta',country:'Venezuela',notes:''}
+    {id:'guest_5',name:'Carlos Pérez Sánchez',phone:'+573216789012',email:'carlos@example.com',document_type:'CE',document_number:'EX987654321',city:'Santa Marta',country:'Venezuela',notes:''},
+    {id:'guest_6',name:'Andrea Lopera',phone:'+573009998877',email:'andrea.lopera@example.com',document_type:'CC',document_number:'1029384756',city:'Armenia',country:'Colombia',notes:'Familia con 2 niños'},
+    {id:'guest_7',name:'Thomas Müller',phone:'+4915223344556',email:'thomas.muller@example.de',document_type:'PAS',document_number:'DE9988776',city:'',country:'Alemania',notes:'Llega en moto'}
   ];
-  
+
+  // Reservations: relative to today so the demo "lives" no matter when opened
   DATA.reservations=[
-    {id:'res_1',property_id:'prop_1',guest_id:'guest_1',check_in:'2026-05-05',check_out:'2026-05-08',nights:3,total:540000,status:'confirmed',payment_status:'paid',notes:''},
-    {id:'res_2',property_id:'prop_2',guest_id:'guest_2',check_in:tomorrow,check_out:'2026-05-10',nights:5,total:1250000,status:'pending',payment_status:'partial',notes:'Ya pagó 500.000'},
-    {id:'res_3',property_id:'prop_1',guest_id:'guest_3',check_in:'2026-05-12',check_out:'2026-05-15',nights:3,total:540000,status:'pending',payment_status:'pending',notes:''},
-    {id:'res_4',property_id:'prop_2',guest_id:'guest_4',check_in:'2026-05-18',check_out:'2026-05-23',nights:5,total:1250000,status:'pending',payment_status:'pending',notes:''},
-    {id:'res_5',property_id:'prop_1',guest_id:'guest_5',check_in:'2026-05-25',check_out:'2026-05-30',nights:5,total:900000,status:'pending',payment_status:'pending',notes:''}
+    // Past — completed (provides realistic history)
+    {id:'res_1',property_id:'prop_1',guest_id:'guest_1',check_in:offsetDate(-22),check_out:offsetDate(-18),nights:4,total:720000,status:'completed',payment_status:'paid',notes:''},
+    {id:'res_2',property_id:'prop_4',guest_id:'guest_6',check_in:offsetDate(-15),check_out:offsetDate(-10),nights:5,total:2400000,status:'completed',payment_status:'paid',notes:'Familia, pidió cuna'},
+    {id:'res_3',property_id:'prop_5',guest_id:'guest_4',check_in:offsetDate(-8),check_out:offsetDate(-5),nights:3,total:420000,status:'completed',payment_status:'paid',notes:'Viaje de negocios'},
+    // Now / soon — active stays driving Occupancy KPI
+    {id:'res_4',property_id:'prop_2',guest_id:'guest_2',check_in:offsetDate(-2),check_out:offsetDate(3),nights:5,total:1250000,status:'checked_in',payment_status:'paid',notes:'Llegó ayer'},
+    {id:'res_5',property_id:'prop_3',guest_id:'guest_7',check_in:offsetDate(0),check_out:offsetDate(4),nights:4,total:1280000,status:'checked_in',payment_status:'partial',notes:'Pagó 60%, falta saldo'},
+    {id:'res_6',property_id:'prop_1',guest_id:'guest_3',check_in:offsetDate(1),check_out:offsetDate(4),nights:3,total:540000,status:'confirmed',payment_status:'paid',notes:''},
+    // Upcoming — fills funnel
+    {id:'res_7',property_id:'prop_4',guest_id:'guest_5',check_in:offsetDate(6),check_out:offsetDate(11),nights:5,total:2400000,status:'confirmed',payment_status:'partial',notes:'Cumpleaños — pidieron decoración'},
+    {id:'res_8',property_id:'prop_2',guest_id:'guest_4',check_in:offsetDate(12),check_out:offsetDate(17),nights:5,total:1250000,status:'pending',payment_status:'pending',notes:'Esperando confirmación de pago'},
+    {id:'res_9',property_id:'prop_5',guest_id:'guest_1',check_in:offsetDate(18),check_out:offsetDate(20),nights:2,total:280000,status:'pending',payment_status:'pending',notes:''},
+    {id:'res_10',property_id:'prop_1',guest_id:'guest_6',check_in:offsetDate(25),check_out:offsetDate(28),nights:3,total:540000,status:'pending',payment_status:'pending',notes:''}
   ];
-  
-  DATA.finances=[
-    {id:'fin_1',type:'income',category:'Reservación',amount:540000,date:'2026-05-01',property_id:'prop_1',description:'Apartamento El Poblado'},
-    {id:'fin_2',type:'expense',category:'Limpieza',amount:120000,date:'2026-05-02',property_id:'prop_1',description:'Limpieza profunda'},
-    {id:'fin_3',type:'income',category:'Reservación',amount:750000,date:'2026-05-03',property_id:'prop_2',description:'Casa Santa Marta'},
-    {id:'fin_4',type:'expense',category:'Mantenimiento',amount:250000,date:'2026-05-03',property_id:'prop_2',description:'Reparación de puerta'},
-    {id:'fin_5',type:'income',category:'Reservación',amount:360000,date:'2026-04-28',property_id:'prop_1',description:'Apartamento El Poblado'},
-    {id:'fin_6',type:'expense',category:'Servicios',amount:80000,date:'2026-04-20',property_id:'prop_1',description:'Agua y electricidad'},
-    {id:'fin_7',type:'income',category:'Reservación',amount:500000,date:'2026-04-15',property_id:'prop_2',description:'Casa Santa Marta'},
-    {id:'fin_8',type:'expense',category:'Limpieza',amount:100000,date:'2026-04-15',property_id:'prop_2',description:'Limpieza'},
-    {id:'fin_9',type:'income',category:'Reservación',amount:540000,date:'2026-04-10',property_id:'prop_1',description:'Apartamento El Poblado'},
-    {id:'fin_10',type:'expense',category:'Marketing',amount:50000,date:'2026-04-05',property_id:'prop_1',description:'Publicidad en redes'}
-  ];
-  
+
+  // Finances spread over the last 12 months so the chart looks alive
+  DATA.finances=[];
+  const finCategories={
+    income:[{cat:'Reservación',descTpl:p=>'Reserva '+p.name}],
+    expense:[
+      {cat:'Limpieza',desc:'Limpieza profunda',amtRange:[90000,150000]},
+      {cat:'Servicios',desc:'Agua y electricidad',amtRange:[60000,140000]},
+      {cat:'Mantenimiento',desc:'Reparaciones menores',amtRange:[80000,260000]},
+      {cat:'Marketing',desc:'Publicidad en redes',amtRange:[40000,90000]}
+    ]
+  };
+  let finId=1;
+  for(let m=11;m>=0;m--){
+    // 2-4 income entries per month (one per active property usually)
+    const incomeCount=2+Math.floor(Math.random()*3);
+    for(let i=0;i<incomeCount;i++){
+      const p=DATA.properties[Math.floor(Math.random()*DATA.properties.length)];
+      const seasonal=(m<3||m>8)?1.15:0.9; // mild seasonal bump
+      const amt=Math.round((p.price_per_night*(3+Math.floor(Math.random()*5))*seasonal)/1000)*1000;
+      DATA.finances.push({id:'fin_'+(finId++),type:'income',category:'Reservación',amount:amt,date:offsetMonth(m),property_id:p.id,description:'Reserva '+p.name.split(' - ')[0]});
+    }
+    // 2-3 expenses per month
+    const expCount=2+Math.floor(Math.random()*2);
+    for(let i=0;i<expCount;i++){
+      const p=DATA.properties[Math.floor(Math.random()*DATA.properties.length)];
+      const cat=finCategories.expense[Math.floor(Math.random()*finCategories.expense.length)];
+      const amt=Math.round((cat.amtRange[0]+Math.random()*(cat.amtRange[1]-cat.amtRange[0]))/1000)*1000;
+      DATA.finances.push({id:'fin_'+(finId++),type:'expense',category:cat.cat,amount:amt,date:offsetMonth(m),property_id:p.id,description:cat.desc});
+    }
+  }
+
   DATA.config={business_name:'Mi Negocio de Hospedaje',owner_name:'Juan Empresario',phone:'+573001234567',email:'contacto@example.com',whatsapp_link:'https://wa.me/573001234567'};
 }
 
@@ -1242,13 +1280,8 @@ function initSampleData(){
     setTimeout(function(){bar.classList.add('show')},100);
   },8000);
 
-  // 4. Track premium tab clicks for GA4
-  document.querySelectorAll('.locked-overlay .btn-unlock').forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(typeof gtag==='function')gtag('event','premium_tab_click',{event_category:'conversion',event_label:btn.closest('.tab-premium').id});
-      if(typeof fbq==='function')fbq('track','Lead',{content_name:'Demo Premium Tab',value:65000,currency:'COP'});
-    });
-  });
+  // 4. (Removed) Premium tab paywall — now demo allows full read/interact access.
+  //    Lead capture happens via the floating WA bar and timed modal above.
 })();
 </script>
 
