@@ -1,517 +1,938 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hospedy — Gestiona tu negocio de alquiler sin complicaciones</title>
-  <meta name="description" content="Sistema de gestión para anfitriones de alquileres cortos en Colombia. Propiedades, reservaciones, finanzas y mensajes WhatsApp en un solo lugar. Desde $65.000 COP/mes.">
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NNL4DXRC');</script>
-  <!-- End Google Tag Manager -->
-  <!-- Meta Pixel -->
-  <script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-  document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  fbq('init','1326561165947277');
-  fbq('track','PageView');
-  </script>
-  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1326561165947277&ev=PageView&noscript=1"/></noscript>
-  <!-- End Meta Pixel -->
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-B4KQMPSFXC"></script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-B4KQMPSFXC');
-  </script>
-  <!-- End GA4 -->
-  <style>
-*{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue',sans-serif;background:#faf8f5;color:#3d3225;line-height:1.6}
-.container{max-width:1100px;margin:0 auto;padding:0 20px}
-a{color:#2eaa7b;text-decoration:none}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospedy — Gestiona tu alquiler sin caos</title>
+<meta name="description" content="Sistema de gestión para anfitriones colombianos de alquileres cortos. Anti-doble reserva, mensajes WhatsApp, finanzas por propiedad. Desde $65.000 COP/mes.">
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NNL4DXRC');</script>
+<!-- End Google Tag Manager -->
+<!-- GA4 hardcoded (set up before GTM) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-B4KQMPSFXC"></script>
+<script>
+window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-B4KQMPSFXC');
+</script>
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','1326561165947277');
+fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1326561165947277&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Warm-soft palette in OKLCH, anchored on Hospedy green */
+  --bg:        oklch(97% 0.018 70);     /* warm cream */
+  --surface:   oklch(99% 0.008 70);     /* paper */
+  --surface-2: oklch(94% 0.014 70);     /* tinted card */
+  --fg:        oklch(22% 0.02 50);      /* warm ink */
+  --muted:     oklch(50% 0.018 50);
+  --border:    oklch(89% 0.014 70);
+  --border-strong: oklch(78% 0.012 70);
+  --accent:    oklch(58% 0.13 155);     /* Hospedy green, slightly deepened */
+  --accent-tint: oklch(94% 0.04 155);   /* soft green wash */
+  --accent-ink: oklch(28% 0.08 155);    /* dark green for text on tint */
+  --flourish:  oklch(60% 0.14 38);      /* terracota, used 1–2 times max */
+  --ink-dark:  oklch(20% 0.02 240);     /* sidebar dark */
 
-/* NAV */
-.nav-bar{position:sticky;top:0;background:rgba(250,248,245,0.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(0,0,0,0.05);z-index:100;padding:14px 0}
-.nav-inner{display:flex;justify-content:space-between;align-items:center}
-.logo{font-size:22px;font-weight:bold;color:#2eaa7b}
-.nav-links{display:flex;gap:28px;align-items:center}
-.nav-links a{color:#3d3225;font-size:13px;font-weight:500;transition:color 0.2s}
-.nav-links a:hover{color:#2eaa7b}
-.nav-cta{display:flex;gap:10px;align-items:center}
-.btn-demo{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;border:1.5px solid #2eaa7b;color:#2eaa7b;background:transparent;cursor:pointer;transition:all 0.2s}
-.btn-demo:hover{background:#f0f8f4}
-.btn-access{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;background:#2eaa7b;color:white;border:none;cursor:pointer;transition:all 0.2s;text-decoration:none}
-.btn-access:hover{background:#228559}
-.mobile-menu{display:none;background:none;border:none;font-size:24px;cursor:pointer;color:#3d3225}
-.mobile-nav{display:none;flex-direction:column;gap:16px;padding:20px;background:#faf8f5;border-bottom:1px solid #e8e3db}
-.mobile-nav.open{display:flex}
-.mobile-nav a{font-size:15px;color:#3d3225;font-weight:500}
+  --font-display: 'Fraunces', 'Iowan Old Style', Georgia, serif;
+  --font-body:    'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 
-/* HERO */
-#hero{padding:80px 0 60px;text-align:center}
-.hero-badge{display:inline-block;background:rgba(46,170,123,0.1);color:#2eaa7b;padding:6px 16px;border-radius:20px;font-size:13px;font-weight:600;margin-bottom:24px}
-#hero h1{font-size:44px;line-height:1.15;color:#1a1a1a;margin-bottom:20px;max-width:700px;margin-left:auto;margin-right:auto}
-#hero h1 span{color:#2eaa7b}
-.hero-sub{font-size:17px;color:#666;max-width:560px;margin:0 auto 36px;line-height:1.7}
-.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:40px}
-.btn-lg{padding:15px 36px;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-block;text-align:center;text-decoration:none;border:none}
-.btn-green{background:#2eaa7b;color:white}.btn-green:hover{background:#228559;transform:translateY(-2px)}
-.btn-outline{background:white;color:#2eaa7b;border:2px solid #2eaa7b}.btn-outline:hover{background:#f0f8f4}
-.hero-trust{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:13px;color:#999;margin-top:20px}
-.hero-trust span{display:flex;align-items:center;gap:6px}
+  --r-sm: 8px;
+  --r-md: 12px;
+  --r-lg: 16px;
+  --r-xl: 22px;
 
-/* COMPARISON */
-#comparison{padding:80px 0;background:white}
-.comparison-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:800px;margin:0 auto;border-radius:12px;overflow:hidden;border:1px solid #e8e3db}
-.comp-col{padding:36px 32px}
-.comp-col.old{background:#fdf5f0}
-.comp-col.new{background:#f0f8f4}
-.comp-col h3{font-size:16px;margin-bottom:20px;display:flex;align-items:center;gap:8px}
-.comp-col ul{list-style:none}
-.comp-col ul li{padding:10px 0;font-size:14px;color:#555;display:flex;align-items:flex-start;gap:10px;border-bottom:1px solid rgba(0,0,0,0.05)}
-.comp-col ul li:last-child{border:none}
-.comp-col.old li::before{content:"✕";color:#d35;font-weight:700;font-size:13px}
-.comp-col.new li::before{content:"✓";color:#2eaa7b;font-weight:700;font-size:15px}
-.comp-bottom{text-align:center;padding:24px;background:#faf8f5;border-top:1px solid #e8e3db}
-.comp-bottom p{font-size:15px;color:#3d3225;font-weight:500}
-
-/* FEATURES */
-#features{padding:80px 0;background:#faf8f5}
-.section-title{text-align:center;font-size:32px;color:#1a1a1a;margin-bottom:12px}
-.section-sub{text-align:center;font-size:15px;color:#888;margin-bottom:50px;max-width:500px;margin-left:auto;margin-right:auto}
-.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
-.feature-card{background:white;padding:28px;border-radius:12px;border:1px solid #e8e3db;transition:transform 0.2s,box-shadow 0.2s}
-.feature-card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(46,170,123,0.08)}
-.feature-card .fi{font-size:28px;margin-bottom:12px}
-.feature-card h3{font-size:16px;margin-bottom:8px;color:#1a1a1a}
-.feature-card p{font-size:13px;color:#777;line-height:1.7}
-.feature-new{display:inline-block;background:#2eaa7b;color:white;font-size:10px;padding:2px 8px;border-radius:10px;font-weight:700;margin-left:6px;vertical-align:middle}
-
-/* PREVIEW */
-#preview{padding:80px 0;background:white}
-.preview-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-.pv-card{background:#faf8f5;border-radius:12px;overflow:hidden;border:1px solid #e8e3db;transition:all 0.2s}
-.pv-card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,0.06)}
-.pv-img{height:140px;display:flex;align-items:center;justify-content:center;font-size:44px}
-.pv-img.dash{background:linear-gradient(135deg,#2eaa7b,#228559);color:white}
-.pv-img.prop{background:linear-gradient(135deg,#f0f8f4,#d8ede2);color:#2eaa7b}
-.pv-img.res{background:linear-gradient(135deg,#fff5f0,#fce0d6);color:#e05555}
-.pv-img.fin{background:linear-gradient(135deg,#f0f5ff,#dce8f8);color:#3b82f6}
-.pv-img.msg{background:linear-gradient(135deg,#f0fff4,#d5f5e3);color:#25D366}
-.pv-body{padding:18px}
-.pv-body h4{font-size:15px;margin-bottom:6px;color:#1a1a1a}
-.pv-body p{font-size:12px;color:#888;line-height:1.6;margin-bottom:14px}
-.pv-btn{display:block;text-align:center;padding:10px;border:1.5px solid #2eaa7b;color:#2eaa7b;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:transparent;width:100%;transition:all 0.2s}
-.pv-btn:hover{background:#f0f8f4}
-
-/* STATS */
-#stats{padding:80px 0;background:linear-gradient(135deg,#f5f3ef,#ebe5db)}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:32px}
-.stat-card{background:white;padding:32px 24px;border-radius:12px;text-align:center;border:1px solid #d9cfc6}
-.stat-num{font-size:40px;font-weight:800;color:#2eaa7b}
-.stat-label{font-size:14px;color:#666;margin-top:6px}
-.stat-src{font-size:11px;color:#aaa;margin-top:8px}
-.stats-close{text-align:center;font-size:16px;color:#3d3225;font-weight:500;max-width:500px;margin:0 auto}
-
-/* PRICING */
-#pricing{padding:80px 0;background:white}
-.pricing-wrap{max-width:520px;margin:0 auto}
-.price-card{background:#faf8f5;border:2px solid #2eaa7b;border-radius:16px;padding:44px 36px;text-align:center;position:relative;overflow:hidden}
-.price-card::before{content:"Más popular";position:absolute;top:18px;right:-30px;background:#2eaa7b;color:white;font-size:11px;font-weight:700;padding:4px 40px;transform:rotate(45deg)}
-.price-name{font-size:20px;font-weight:600;margin-bottom:16px}
-.price-amount{font-size:48px;font-weight:800;color:#2eaa7b}
-.price-period{font-size:14px;color:#888;margin-bottom:24px}
-.price-roi{background:rgba(46,170,123,0.08);padding:14px;border-radius:10px;font-size:13px;color:#2eaa7b;font-weight:500;margin-bottom:24px;line-height:1.5}
-.price-list{text-align:left;margin-bottom:28px;border-top:1px solid #e8e3db;border-bottom:1px solid #e8e3db;padding:20px 0}
-.price-list li{list-style:none;padding:8px 0;font-size:14px;color:#3d3225;display:flex;align-items:center;gap:10px}
-.price-list li::before{content:"✓";color:#2eaa7b;font-weight:700;font-size:16px}
-.price-cta{margin-bottom:16px}
-.price-cta a{display:block;padding:16px;background:#2eaa7b;color:white;border-radius:10px;font-size:16px;font-weight:600;text-decoration:none;transition:all 0.2s}
-.price-cta a:hover{background:#228559;transform:translateY(-2px)}
-.price-note{font-size:12px;color:#999;line-height:1.6}
-
-/* SOCIAL PROOF */
-#proof{padding:60px 0;background:#faf8f5}
-.proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-.proof-card{background:white;padding:24px;border-radius:12px;border:1px solid #e8e3db}
-.proof-text{font-size:14px;color:#555;line-height:1.7;font-style:italic;margin-bottom:16px}
-.proof-author{font-size:13px;font-weight:600;color:#3d3225}
-.proof-role{font-size:12px;color:#999}
-
-/* FAQ */
-#faq{padding:80px 0;background:white}
-.faq-wrap{max-width:700px;margin:0 auto}
-.acc-item{background:#faf8f5;border:1px solid #e8e3db;border-radius:10px;margin-bottom:12px;overflow:hidden}
-.acc-head{padding:18px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px;color:#1a1a1a;transition:background 0.2s}
-.acc-head:hover{background:#f0e8df}
-.acc-arrow{color:#2eaa7b;font-size:18px;transition:transform 0.3s}
-.acc-item.open .acc-arrow{transform:rotate(180deg)}
-.acc-body{max-height:0;overflow:hidden;transition:max-height 0.3s;padding:0 20px}
-.acc-item.open .acc-body{max-height:400px;padding:0 20px 18px}
-.acc-body p{color:#666;font-size:14px;line-height:1.8}
-
-/* CTA BAND */
-#cta-band{padding:60px 0;background:linear-gradient(135deg,#2eaa7b,#1f9268);text-align:center;color:white}
-#cta-band h2{font-size:28px;margin-bottom:12px}
-#cta-band p{font-size:15px;opacity:0.9;margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto}
-.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
-.btn-white{padding:14px 32px;background:white;color:#2eaa7b;border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,0.15)}
-.btn-ghost{padding:14px 32px;background:transparent;color:white;border:2px solid rgba(255,255,255,0.5);border-radius:10px;font-size:15px;font-weight:600;text-decoration:none;cursor:pointer;transition:all 0.2s}
-.btn-ghost:hover{border-color:white;background:rgba(255,255,255,0.1)}
-
-/* FOOTER */
-footer{background:#1e2a3a;color:white;padding:40px 0 20px}
-.foot-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px;margin-bottom:30px}
-.foot-col h4{font-size:14px;margin-bottom:12px;opacity:0.9}
-.foot-col p,.foot-col a{font-size:13px;color:rgba(255,255,255,0.7);line-height:1.8;display:block}
-.foot-col a:hover{color:white}
-.foot-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:16px;text-align:center;font-size:12px;color:rgba(255,255,255,0.5)}
-
-@media(max-width:768px){
-  .nav-links{display:none}.mobile-menu{display:block}.nav-cta{display:none}
-  #hero h1{font-size:30px}
-  .hero-sub{font-size:15px}
-  .hero-cta{flex-direction:column;align-items:center}
-  .btn-lg{width:100%;max-width:320px}
-  .comparison-grid{grid-template-columns:1fr}
-  .section-title{font-size:26px}
-  .stats-grid{grid-template-columns:1fr}
-  .price-amount{font-size:36px}
-  .foot-grid{grid-template-columns:1fr}
-  .proof-grid{grid-template-columns:1fr}
-  #cta-band h2{font-size:22px}
-  .cta-btns{flex-direction:column;align-items:center}
+  --shadow-card: 0 1px 0 oklch(89% 0.014 70 / .6), 0 8px 24px -16px oklch(20% 0.02 60 / .12);
+  --shadow-hero: 0 20px 60px -28px oklch(20% 0.02 60 / .25), 0 4px 12px -4px oklch(20% 0.02 60 / .06);
 }
-  </style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);background:var(--bg);color:var(--fg);line-height:1.55;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,svg{display:block;max-width:100%}
+a{color:var(--accent);text-decoration:none}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.eyebrow{font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-tint);padding:6px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:6px}
+.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+
+/* === NAV === */
+.nav{position:sticky;top:0;z-index:80;background:oklch(97% 0.018 70 / 0.85);backdrop-filter:saturate(180%) blur(14px);-webkit-backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--border)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:24px}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:-0.01em;color:var(--fg)}
+.brand-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent),oklch(48% 0.13 155));display:grid;place-items:center;color:#fff}
+.brand-mark svg{width:18px;height:18px}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--fg);font-size:14px;font-weight:500;opacity:.78;transition:opacity .15s}
+.nav-links a:hover{opacity:1}
+.nav-cta{display:flex;gap:10px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--font-body);font-weight:600;font-size:14px;line-height:1;padding:10px 18px;border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;text-decoration:none;white-space:nowrap;transition:transform .15s, box-shadow .15s, background .15s}
+.btn-ghost{background:transparent;color:var(--fg);border-color:var(--border-strong)}
+.btn-ghost:hover{background:var(--surface)}
+.btn-primary{background:var(--accent);color:#fff;box-shadow:0 1px 0 oklch(48% 0.13 155),0 4px 14px -6px oklch(50% 0.13 155 / .5)}
+.btn-primary:hover{background:oklch(54% 0.14 155);transform:translateY(-1px)}
+.btn-lg{font-size:15px;padding:14px 26px;border-radius:var(--r-lg)}
+.btn svg{width:16px;height:16px}
+.mobile-toggle{display:none;background:none;border:1px solid var(--border-strong);border-radius:8px;padding:8px;cursor:pointer}
+.mobile-toggle svg{width:20px;height:20px;color:var(--fg)}
+.mobile-nav{display:none;flex-direction:column;gap:8px;padding:14px 0 18px;border-bottom:1px solid var(--border)}
+.mobile-nav.open{display:flex}
+.mobile-nav a{padding:10px 0;font-weight:500;color:var(--fg)}
+.mobile-nav .btn{justify-content:center}
+
+/* === HERO === */
+#hero{padding:64px 0 96px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:64px;align-items:center}
+.hero-copy{max-width:560px}
+.hero-copy h1{font-family:var(--font-display);font-weight:500;font-size:clamp(40px,5vw,62px);line-height:1.02;letter-spacing:-0.025em;margin-top:20px;color:var(--fg)}
+.hero-copy h1 em{font-style:italic;color:var(--accent-ink);font-weight:500}
+.hero-sub{margin-top:22px;font-size:18px;line-height:1.55;color:var(--muted);max-width:520px}
+.hero-cta{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+.hero-trust{display:flex;flex-wrap:wrap;gap:20px;margin-top:28px;font-size:13px;color:var(--muted)}
+.hero-trust span{display:flex;align-items:center;gap:6px}
+.hero-trust svg{width:14px;height:14px;color:var(--accent)}
+
+/* Dashboard mockup — single decisive flourish */
+.mockup{position:relative;background:var(--surface);border-radius:var(--r-xl);border:1px solid var(--border);box-shadow:var(--shadow-hero);overflow:hidden;font-size:13px}
+.mockup::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,oklch(94% 0.04 155 / .35));pointer-events:none}
+.mock-window{display:flex;min-height:430px}
+.mock-side{width:170px;background:var(--ink-dark);color:oklch(70% 0.012 240);padding:18px 14px;display:flex;flex-direction:column;gap:4px;font-size:12px}
+.mock-side .mock-brand{font-family:var(--font-display);font-weight:600;color:#fff;font-size:15px;letter-spacing:-0.01em;padding:0 6px 14px;margin-bottom:6px;border-bottom:1px solid oklch(28% 0.02 240)}
+.mock-nav{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:8px;color:oklch(75% 0.01 240);position:relative}
+.mock-nav.active{background:oklch(28% 0.02 240);color:#fff;font-weight:500}
+.mock-nav.active::before{content:"";position:absolute;left:-14px;top:8px;bottom:8px;width:3px;background:var(--accent);border-radius:0 3px 3px 0}
+.mock-nav svg{width:14px;height:14px;flex:none;opacity:.85}
+.mock-main{flex:1;padding:22px 26px;background:var(--surface);display:flex;flex-direction:column;gap:16px;min-width:0}
+.mock-h{display:flex;justify-content:space-between;align-items:baseline}
+.mock-h h3{font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:-0.01em}
+.mock-h .mock-date{font-size:11px;color:var(--muted)}
+.mock-alerts{display:flex;flex-direction:column;gap:8px}
+.mock-alert{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--r-md);font-size:12px;border:1px solid transparent}
+.mock-alert.success{background:var(--accent-tint);color:var(--accent-ink);border-color:oklch(85% 0.06 155)}
+.mock-alert.info{background:oklch(95% 0.024 235);color:oklch(35% 0.1 240);border-color:oklch(85% 0.04 235)}
+.mock-alert .mock-pill{margin-left:auto;background:#fff;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600}
+.mock-alert.success .mock-pill{background:var(--accent);color:#fff}
+.mock-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.mock-kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:12px}
+.mock-kpi .l{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:0.06em}
+.mock-kpi .v{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.01em;margin-top:4px;font-variant-numeric:tabular-nums}
+.mock-kpi .s{font-size:10px;color:var(--muted);margin-top:2px}
+.mock-kpi.is-accent{background:var(--accent-tint);border-color:oklch(82% 0.08 155)}
+.mock-kpi.is-accent .v{color:var(--accent-ink)}
+.mock-chart{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:14px}
+.mock-chart-title{font-size:12px;color:var(--muted);font-weight:600;margin-bottom:10px}
+.mock-bars{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;align-items:end;height:72px}
+.mock-bar{background:var(--accent);border-radius:3px 3px 0 0;opacity:.85;position:relative}
+.mock-bar.gh{background:oklch(78% 0.04 38);opacity:.7}
+.mock-bar-grp{display:flex;gap:2px;height:100%;align-items:end}
+.mock-bar-grp > div{flex:1;border-radius:3px 3px 0 0}
+.mock-x{display:grid;grid-template-columns:repeat(12,1fr);gap:6px;margin-top:6px;font-size:9px;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+
+/* === PROBLEM / SOLUTION === */
+#problem{padding:96px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.section-head{max-width:680px;margin:0 auto 56px;text-align:center}
+.section-head h2{font-family:var(--font-display);font-weight:500;font-size:clamp(30px,3.6vw,44px);line-height:1.08;letter-spacing:-0.02em;margin-top:14px;color:var(--fg)}
+.section-head p{margin-top:14px;color:var(--muted);font-size:17px;line-height:1.55}
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:920px;margin:0 auto}
+.compare-col{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;position:relative}
+.compare-col.cold{background:oklch(96% 0.018 50)}
+.compare-col.warm{background:var(--accent-tint);border-color:oklch(82% 0.08 155)}
+.compare-col h3{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;margin-bottom:18px;display:flex;align-items:center;gap:10px;color:var(--fg)}
+.compare-col h3 .tag{font-family:var(--font-body);font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;text-transform:uppercase;letter-spacing:0.06em}
+.compare-col.cold .tag{background:#fff;color:oklch(45% 0.06 30);border:1px solid oklch(88% 0.03 30)}
+.compare-col.warm .tag{background:var(--accent);color:#fff}
+.compare-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.compare-list li{display:flex;align-items:flex-start;gap:12px;font-size:15px;line-height:1.55;color:var(--fg)}
+.compare-list .ico{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;margin-top:2px}
+.compare-col.cold .ico{background:oklch(88% 0.04 30);color:oklch(45% 0.08 30)}
+.compare-col.warm .ico{background:var(--accent);color:#fff}
+.compare-list .ico svg{width:11px;height:11px}
+.compare-foot{text-align:center;margin-top:32px;font-size:15px;color:var(--muted)}
+.compare-foot b{color:var(--fg);font-weight:600}
+
+/* === FEATURES === */
+#features{padding:104px 0;background:var(--bg)}
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:0 auto}
+.feature{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:28px;transition:transform .2s, box-shadow .2s;position:relative}
+.feature:hover{transform:translateY(-2px);box-shadow:var(--shadow-card)}
+.feature .icon-wrap{width:42px;height:42px;border-radius:var(--r-md);background:var(--accent-tint);color:var(--accent-ink);display:grid;place-items:center;margin-bottom:18px}
+.feature .icon-wrap svg{width:22px;height:22px;stroke-width:1.6}
+.feature h3{font-family:var(--font-display);font-weight:600;font-size:18px;letter-spacing:-0.01em;color:var(--fg);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.feature .badge-new{font-family:var(--font-body);font-size:10px;font-weight:700;padding:3px 7px;border-radius:6px;background:var(--accent);color:#fff;letter-spacing:0.04em}
+.feature p{font-size:14.5px;line-height:1.6;color:var(--muted)}
+
+/* === PRODUCT PREVIEW === */
+#preview{padding:104px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.preview-tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-bottom:36px}
+.preview-tab{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--muted);background:transparent;border:1px solid var(--border);padding:9px 18px;border-radius:999px;cursor:pointer;transition:all .15s}
+.preview-tab:hover{color:var(--fg);border-color:var(--border-strong)}
+.preview-tab.active{background:var(--ink-dark);color:#fff;border-color:var(--ink-dark)}
+.preview-stage{max-width:1080px;margin:0 auto}
+.preview-pane{display:none;animation:fadeUp .35s ease}
+.preview-pane.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.preview-frame{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-xl);padding:18px;box-shadow:var(--shadow-card)}
+.preview-frame .pf-head{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.preview-frame .pf-dot{width:10px;height:10px;border-radius:50%;background:var(--border-strong)}
+.preview-frame .pf-title{margin-left:14px;font-size:12px;color:var(--muted);font-family:var(--font-body)}
+.preview-cta{text-align:center;margin-top:36px}
+.preview-cta a{color:var(--accent-ink);font-weight:600;font-size:14px;display:inline-flex;align-items:center;gap:6px}
+.preview-cta a svg{width:14px;height:14px;transition:transform .15s}
+.preview-cta a:hover svg{transform:translateX(3px)}
+
+/* Property cards inside preview */
+.pp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.pp-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px}
+.pp-card .pp-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pp-name{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em}
+.pp-city{font-size:11px;color:var(--muted);margin-bottom:10px}
+.pp-price{font-family:var(--font-display);font-size:22px;font-weight:600;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.pp-price small{font-family:var(--font-body);font-size:11px;color:var(--muted);font-weight:400}
+.pp-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.pp-tag{font-size:10px;padding:3px 8px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-weight:500}
+
+/* Reservations table */
+.pr-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--surface);border-radius:var(--r-md);overflow:hidden;border:1px solid var(--border)}
+.pr-table thead th{text-align:left;padding:10px 14px;background:var(--bg);font-size:11px;text-transform:uppercase;letter-spacing:0.06em;color:var(--muted);font-weight:600;border-bottom:1px solid var(--border)}
+.pr-table td{padding:12px 14px;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}
+.pr-table tr:last-child td{border-bottom:none}
+.pr-pill{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:600;letter-spacing:0.02em}
+.pr-pill.ok{background:var(--accent-tint);color:var(--accent-ink)}
+.pr-pill.warn{background:oklch(92% 0.06 80);color:oklch(40% 0.1 60)}
+.pr-pill.now{background:oklch(92% 0.04 240);color:oklch(35% 0.1 240)}
+
+/* Messages preview */
+.pm-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:14px;align-items:start}
+.pm-templates{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;gap:6px}
+.pm-tpl{padding:10px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:13px;cursor:default}
+.pm-tpl.active{background:var(--accent-tint);border-color:oklch(82% 0.08 155);color:var(--accent-ink);font-weight:500}
+.pm-tpl .pm-sub{font-size:11px;color:var(--muted);margin-top:2px;font-weight:400}
+.pm-preview{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px;font-size:13.5px;line-height:1.65;color:var(--fg);font-family:var(--font-body);white-space:pre-line}
+.pm-preview .pm-h{font-family:var(--font-display);font-size:15px;font-weight:600;margin-bottom:10px;letter-spacing:-0.01em}
+
+/* Finances */
+.pf-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.pf-stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);padding:18px}
+.pf-stat .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:600}
+.pf-stat .v{font-family:var(--font-display);font-size:26px;font-weight:600;margin-top:6px;letter-spacing:-0.01em;font-variant-numeric:tabular-nums}
+.pf-stat.income .v{color:var(--accent-ink)}
+.pf-stat.expense .v{color:oklch(48% 0.13 28)}
+.pf-stat.profit .v{color:var(--fg)}
+
+/* === STATS === */
+#stats{padding:96px 0;background:var(--bg)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;max-width:1100px;margin:0 auto}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);padding:32px 28px}
+.stat-num{font-family:var(--font-display);font-size:54px;font-weight:500;letter-spacing:-0.03em;color:var(--accent-ink);line-height:1;font-variant-numeric:tabular-nums}
+.stat-label{margin-top:14px;font-size:15px;line-height:1.5;color:var(--fg);font-weight:500}
+.stat-source{margin-top:10px;font-size:12px;color:var(--muted)}
+.stat-source a{color:var(--muted);text-decoration:underline;text-underline-offset:2px}
+
+/* === PRICING === */
+#pricing{padding:104px 0;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.price-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:18px;max-width:920px;margin:0 auto;align-items:start}
+.price-card{background:var(--surface);border:1px solid var(--accent);border-radius:var(--r-xl);padding:36px;position:relative;box-shadow:var(--shadow-card)}
+.price-card::before{content:"Plan único";position:absolute;top:18px;right:18px;background:var(--accent);color:#fff;font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;letter-spacing:0.06em;text-transform:uppercase}
+.price-name{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-0.015em;color:var(--fg)}
+.price-tag{margin-top:14px;display:flex;align-items:baseline;gap:6px}
+.price-amount{font-family:var(--font-display);font-size:56px;font-weight:500;letter-spacing:-0.035em;color:var(--fg);line-height:1;font-variant-numeric:tabular-nums}
+.price-period{font-size:14px;color:var(--muted)}
+.price-roi{margin-top:14px;padding:12px 14px;background:var(--accent-tint);border-radius:var(--r-md);font-size:13px;line-height:1.5;color:var(--accent-ink)}
+.price-list{list-style:none;margin:22px 0;padding:20px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:11px}
+.price-list li{display:flex;align-items:flex-start;gap:10px;font-size:14.5px;color:var(--fg)}
+.price-list .check{flex:none;width:18px;height:18px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;margin-top:1px}
+.price-list .check svg{width:10px;height:10px}
+.price-card .btn{width:100%;padding:16px}
+.price-card .price-note{margin-top:14px;font-size:12px;color:var(--muted);text-align:center;line-height:1.5}
+
+.anchor-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r-xl);padding:32px}
+.anchor-card .anchor-eyebrow{font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted)}
+.anchor-card h3{font-family:var(--font-display);font-size:22px;font-weight:600;letter-spacing:-0.015em;margin-top:10px;color:var(--fg);line-height:1.2}
+.anchor-list{list-style:none;margin-top:20px;display:flex;flex-direction:column;gap:14px}
+.anchor-row{display:flex;justify-content:space-between;align-items:baseline;gap:14px;padding-bottom:12px;border-bottom:1px dashed var(--border)}
+.anchor-row:last-child{border-bottom:none;padding-bottom:0}
+.anchor-row .what{font-size:14px;color:var(--fg);line-height:1.4}
+.anchor-row .what small{display:block;color:var(--muted);font-size:12px;margin-top:2px}
+.anchor-row .cost{font-family:var(--font-display);font-weight:600;font-size:17px;color:var(--flourish);font-variant-numeric:tabular-nums;white-space:nowrap}
+.anchor-total{margin-top:18px;padding-top:18px;border-top:2px solid var(--fg);display:flex;justify-content:space-between;align-items:baseline}
+.anchor-total .what{font-family:var(--font-display);font-weight:600;font-size:16px}
+.anchor-total .cost{font-family:var(--font-display);font-weight:600;font-size:24px;color:var(--flourish)}
+.anchor-foot{margin-top:16px;font-size:12px;color:var(--muted);line-height:1.5}
+
+/* === FAQ === */
+#faq{padding:104px 0;background:var(--bg)}
+.faq-wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:10px}
+.acc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;transition:border-color .2s}
+.acc[open]{border-color:var(--border-strong)}
+.acc summary{padding:20px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:500;font-size:16px;color:var(--fg);list-style:none}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .acc-icon{flex:none;width:22px;height:22px;border-radius:50%;background:var(--accent-tint);color:var(--accent-ink);display:grid;place-items:center;transition:transform .25s}
+.acc summary .acc-icon svg{width:11px;height:11px}
+.acc[open] summary .acc-icon{transform:rotate(45deg)}
+.acc-body{padding:0 22px 20px;color:var(--muted);font-size:14.5px;line-height:1.65}
+.acc-body p+p{margin-top:10px}
+
+/* === CTA BAND === */
+#cta-band{padding:96px 0;background:linear-gradient(180deg,var(--accent),oklch(50% 0.14 155))}
+.cta-inner{text-align:center;max-width:600px;margin:0 auto;color:#fff}
+.cta-inner h2{font-family:var(--font-display);font-weight:500;font-size:clamp(28px,3.4vw,42px);line-height:1.08;letter-spacing:-0.02em}
+.cta-inner p{margin-top:14px;font-size:17px;opacity:.9;line-height:1.55}
+.cta-btns{margin-top:30px;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.btn-white{background:#fff;color:var(--accent-ink)}
+.btn-white:hover{background:oklch(96% 0.018 70)}
+.btn-outline-w{background:transparent;color:#fff;border:1px solid oklch(100% 0 0 / .45)}
+.btn-outline-w:hover{background:oklch(100% 0 0 / .1);border-color:#fff}
+
+/* === FOOTER === */
+footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;font-size:14px}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:32px;margin-bottom:40px}
+.foot-col h4{font-family:var(--font-body);font-size:12px;text-transform:uppercase;letter-spacing:0.08em;color:#fff;font-weight:600;margin-bottom:14px}
+.foot-col a{display:block;color:oklch(75% 0.01 240);text-decoration:none;padding:5px 0;font-size:14px;transition:color .15s}
+.foot-col a:hover{color:#fff}
+.foot-brand{font-family:var(--font-display);font-size:20px;color:#fff;font-weight:600;letter-spacing:-0.01em;margin-bottom:10px;display:flex;align-items:center;gap:10px}
+.foot-tag{font-size:13px;line-height:1.6;color:oklch(70% 0.01 240);max-width:280px}
+.foot-bottom{border-top:1px solid oklch(28% 0.02 240);padding-top:22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;font-size:12px;color:oklch(60% 0.01 240)}
+
+/* === RESPONSIVE === */
+@media (max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:36px}
+  .hero-copy{max-width:none}
+  .mockup{max-width:680px;margin:0 auto}
+  .compare{grid-template-columns:1fr}
+  .feature-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:1fr}
+  .stat-card{padding:24px}
+  .stat-num{font-size:44px}
+  .price-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:24px}
+}
+@media (max-width:680px){
+  .nav-links,.nav-cta{display:none}
+  .mobile-toggle{display:inline-flex}
+  #hero{padding:48px 0 64px}
+  .mock-side{display:none}
+  .mock-window{min-height:0}
+  .mock-main{padding:16px}
+  .mock-kpis{grid-template-columns:repeat(2,1fr)}
+  .feature-grid{grid-template-columns:1fr}
+  .pp-grid{grid-template-columns:1fr}
+  .pf-stats{grid-template-columns:1fr 1fr 1fr}
+  .pm-grid{grid-template-columns:1fr}
+  .pr-table{font-size:11.5px}
+  .pr-table th:nth-child(3),.pr-table td:nth-child(3){display:none}
+  #problem,#features,#preview,#stats,#pricing,#faq,#cta-band{padding:72px 0}
+  .foot-grid{grid-template-columns:1fr}
+}
+
+/* sr-only */
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
 </head>
 <body>
-<!-- Google Tag Manager (noscript) -->
+<!-- GTM noscript -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NNL4DXRC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
 
-<!-- NAV -->
-<header class="nav-bar">
+<!-- =============== NAV =============== -->
+<header class="nav">
   <div class="container nav-inner">
-    <div class="logo">🏠 Hospedy</div>
-    <div class="nav-links">
+    <a href="#hero" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+      </span>
+      Hospedy
+    </a>
+    <nav class="nav-links" aria-label="Principal">
       <a href="#features">Funcionalidades</a>
       <a href="#preview">Plataforma</a>
-      <a href="#pricing">Precios</a>
-      <a href="#faq">FAQ</a>
-    </div>
+      <a href="#pricing">Precio</a>
+      <a href="#faq">Preguntas</a>
+    </nav>
     <div class="nav-cta">
-      <button class="btn-demo" onclick="window.open('demo.html','_blank')">Probar Demo</button>
-      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-access">Obtener Acceso</a>
+      <a href="/demo.html" target="_blank" rel="noopener" class="btn btn-ghost">Probar demo</a>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-primary">Obtener acceso</a>
     </div>
-    <button class="mobile-menu" onclick="document.getElementById('mob-nav').classList.toggle('open')">☰</button>
+    <button class="mobile-toggle" aria-label="Abrir menú" aria-expanded="false" onclick="var n=document.getElementById('mob-nav');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'))">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
   </div>
-  <div class="mobile-nav" id="mob-nav">
-    <a href="#features" onclick="this.parentElement.classList.remove('open')">Funcionalidades</a>
-    <a href="#pricing" onclick="this.parentElement.classList.remove('open')">Precios</a>
-    <a href="#faq" onclick="this.parentElement.classList.remove('open')">FAQ</a>
-    <a href="demo.html" target="_blank" style="color:#2eaa7b;font-weight:600">Probar Demo</a>
-    <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" style="background:#2eaa7b;color:white;padding:12px;border-radius:8px;text-align:center;font-weight:600">Obtener Acceso</a>
+  <div class="container">
+    <div class="mobile-nav" id="mob-nav">
+      <a href="#features">Funcionalidades</a>
+      <a href="#preview">Plataforma</a>
+      <a href="#pricing">Precio</a>
+      <a href="#faq">Preguntas</a>
+      <a href="/demo.html" target="_blank" rel="noopener" class="btn btn-ghost">Probar demo</a>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-primary">Obtener acceso</a>
+    </div>
   </div>
 </header>
 
-<!-- HERO -->
+<!-- =============== HERO =============== -->
 <section id="hero">
-  <div class="container">
-    <div class="hero-badge">Hecho para anfitriones colombianos</div>
-    <h1>Deja de manejar tu alquiler con <span>WhatsApp y cuadernos</span></h1>
-    <p class="hero-sub">Gestiona propiedades, reservaciones, huéspedes y finanzas desde un solo lugar. Simple, organizado y hecho para ti.</p>
-    <div class="hero-cta">
-      <button class="btn-lg btn-green" onclick="window.open('demo.html','_blank')">Probar Demo Gratis</button>
-      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-lg btn-outline">Obtener Acceso — $65.000/mes</a>
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <span class="eyebrow"><span class="dot"></span>Hecho en Colombia, para anfitriones</span>
+      <h1>Tu alquiler corto, <em>sin caos</em> ni dobles reservas.</h1>
+      <p class="hero-sub">Hospedy reemplaza tus cuadernos, hojas de Excel y mensajes sueltos de WhatsApp por un sistema que ya entiende cómo se administra hospedaje en Colombia.</p>
+      <div class="hero-cta">
+        <a href="/demo.html" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+          Probar demo gratis
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+        <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Obtener acceso — $65.000/mes</a>
+      </div>
+      <div class="hero-trust">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Sin instalaciones</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Funciona en el celular</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Pago por Bre-B</span>
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Cancela cuando quieras</span>
+      </div>
     </div>
-    <div class="hero-trust">
-      <span>✓ Sin instalaciones</span>
-      <span>✓ Funciona en celular</span>
-      <span>✓ Pago por Bre-B</span>
-      <span>✓ Soporte WhatsApp</span>
+
+    <!-- Dashboard mockup — the single decisive flourish -->
+    <div class="mockup" role="img" aria-label="Vista previa del dashboard de Hospedy mostrando ocupación, reservaciones e ingresos">
+      <div class="mock-window">
+        <aside class="mock-side">
+          <div class="mock-brand">Hospedy</div>
+          <div class="mock-nav active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+            Dashboard
+          </div>
+          <div class="mock-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l9-8 9 8"/><path d="M5 11v9h14v-9"/></svg>
+            Propiedades
+          </div>
+          <div class="mock-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="7" r="3"/><path d="M3 21c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M21 21c0-2-2-4-4-4"/></svg>
+            Huéspedes
+          </div>
+          <div class="mock-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/></svg>
+            Reservaciones
+          </div>
+          <div class="mock-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+            Mensajes
+          </div>
+          <div class="mock-nav">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            Finanzas
+          </div>
+        </aside>
+        <div class="mock-main">
+          <div class="mock-h">
+            <h3>Dashboard</h3>
+            <span class="mock-date">lunes, 25 mayo 2026</span>
+          </div>
+          <div class="mock-alerts">
+            <div class="mock-alert success">
+              <strong>Hoy llega Thomas Müller</strong> a Loft Centro Histórico — Cartagena
+              <span class="mock-pill">Bienvenida</span>
+            </div>
+            <div class="mock-alert info">
+              Mañana llega <strong>María Martínez</strong> al Apartamento El Poblado
+              <span class="mock-pill">Preparar</span>
+            </div>
+          </div>
+          <div class="mock-kpis">
+            <div class="mock-kpi"><div class="l">Ocupación</div><div class="v">84%</div><div class="s">5 propiedades</div></div>
+            <div class="mock-kpi is-accent"><div class="l">Ingresos mes</div><div class="v">$4.2M</div><div class="s">Utilidad $3.6M</div></div>
+            <div class="mock-kpi"><div class="l">Pagos pendientes</div><div class="v">3</div><div class="s">$2.6M por cobrar</div></div>
+            <div class="mock-kpi"><div class="l">Reservas activas</div><div class="v">7</div><div class="s">12 huéspedes</div></div>
+          </div>
+          <div class="mock-chart">
+            <div class="mock-chart-title">Ingresos vs gastos · últimos 12 meses</div>
+            <div class="mock-bars" aria-hidden="true">
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:42%"></div><div class="mock-bar gh" style="height:14%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:55%"></div><div class="mock-bar gh" style="height:18%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:48%"></div><div class="mock-bar gh" style="height:16%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:62%"></div><div class="mock-bar gh" style="height:20%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:70%"></div><div class="mock-bar gh" style="height:22%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:58%"></div><div class="mock-bar gh" style="height:18%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:50%"></div><div class="mock-bar gh" style="height:15%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:65%"></div><div class="mock-bar gh" style="height:21%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:78%"></div><div class="mock-bar gh" style="height:24%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:72%"></div><div class="mock-bar gh" style="height:22%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:88%"></div><div class="mock-bar gh" style="height:28%"></div></div>
+              <div class="mock-bar-grp"><div class="mock-bar" style="height:95%"></div><div class="mock-bar gh" style="height:30%"></div></div>
+            </div>
+            <div class="mock-x"><span>jun</span><span>jul</span><span>ago</span><span>sep</span><span>oct</span><span>nov</span><span>dic</span><span>ene</span><span>feb</span><span>mar</span><span>abr</span><span>may</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- COMPARISON: Hospedy vs tu método actual -->
-<section id="comparison">
+<!-- =============== PROBLEM / SOLUTION =============== -->
+<section id="problem">
   <div class="container">
-    <h2 class="section-title">Hospedy vs tu método actual</h2>
-    <p class="section-sub">Lo que cambias cuando dejas el Excel y los mensajes desordenados</p>
-    <div class="comparison-grid">
-      <div class="comp-col old">
-        <h3>Sin Hospedy</h3>
-        <ul>
-          <li>Buscando la clave WiFi en WhatsApp cada vez que llega alguien</li>
-          <li>Reservas cruzadas porque no actualizaste el calendario</li>
-          <li>Sumando ingresos y gastos a mano en Excel</li>
-          <li>Olvidando enviar la bienvenida al huésped</li>
-          <li>Sin saber cuánto ganas realmente por propiedad</li>
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Antes vs después</span>
+      <h2>Estás administrando un negocio<br>como si fuera un favor.</h2>
+      <p>WhatsApp para mensajes, Excel para cuentas, un cuaderno para reservas. Funciona hasta que se cruza una fecha o se te olvida un check-in. Hospedy ordena todo en un solo lugar — sin pedirte que aprendas software.</p>
+    </div>
+    <div class="compare">
+      <div class="compare-col cold">
+        <h3>Sin Hospedy <span class="tag">El método actual</span></h3>
+        <ul class="compare-list">
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Buscas la clave del WiFi en WhatsApp cada vez que llega un huésped</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Una reserva cruzada porque no actualizaste el calendario de Airbnb</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Sumas ingresos y gastos a mano cuando te pide cuentas tu contador</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Olvidas mandar la bienvenida y el huésped llega y no sabe a dónde ir</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>No sabes con certeza cuánto ganas realmente por propiedad cada mes</li>
         </ul>
       </div>
-      <div class="comp-col new">
-        <h3>Con Hospedy</h3>
-        <ul>
-          <li>WiFi, código de puerta e instrucciones se envían con un clic</li>
-          <li>Validación anti-doble reserva + sincronización con Airbnb/Booking</li>
-          <li>Dashboard con ingresos, gastos y utilidad en tiempo real</li>
-          <li>Recordatorios automáticos de check-in con mensaje WhatsApp listo</li>
-          <li>Indicadores por propiedad: tarifa promedio, ocupación, huésped top</li>
+      <div class="compare-col warm">
+        <h3>Con Hospedy <span class="tag">Tu negocio organizado</span></h3>
+        <ul class="compare-list">
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>WiFi, código de puerta e instrucciones se mandan con un solo clic por WhatsApp</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Bloqueo anti-doble reserva + sincronización iCal con Airbnb y Booking cada hora</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Dashboard con ingresos, gastos y utilidad en tiempo real — exportas CSV en un clic</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Recordatorios automáticos de check-in con el mensaje de WhatsApp ya listo</li>
+          <li><span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Indicadores por propiedad: tarifa promedio, ocupación, propiedad más rentable</li>
         </ul>
       </div>
     </div>
-    <div class="comp-bottom">
-      <p>Todo esto por <strong style="color:#2eaa7b">$65.000 COP/mes</strong> — menos de lo que cuesta una limpieza</p>
-    </div>
+    <p class="compare-foot">Todo eso por <b>$65.000 COP/mes</b> — menos de lo que cuesta una limpieza profunda.</p>
   </div>
 </section>
 
-<!-- FEATURES -->
+<!-- =============== FEATURES =============== -->
 <section id="features">
   <div class="container">
-    <h2 class="section-title">Todo lo que necesitas, nada que no</h2>
-    <p class="section-sub">Funcionalidades prácticas para el día a día de tu negocio</p>
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="fi">🏡</div>
-        <h3>Gestión de Propiedades</h3>
-        <p>WiFi, código de puerta, amenidades, instrucciones de check-in, y links directos a tus anuncios en Airbnb, Booking y más.</p>
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Qué hace por ti</span>
+      <h2>Todo lo que necesitas.<br>Nada que no.</h2>
+      <p>Hospedy no es un Airbnb ni un PMS hotelero gigante. Es exactamente lo que un anfitrión colombiano con 1 a 10 propiedades necesita para no perder un peso.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><rect x="10" y="14" width="4" height="6"/></svg></div>
+        <h3>Gestión de propiedades</h3>
+        <p>WiFi, código de puerta, amenidades, instrucciones de check-in, links directos a Airbnb y Booking. Una sola ficha que está siempre al día.</p>
       </div>
-      <div class="feature-card">
-        <div class="fi">📅</div>
-        <h3>Reservaciones Inteligentes</h3>
-        <p>Anti-doble reserva automática. El sistema bloquea fechas que se cruzan antes de que cometas un error costoso.</p>
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/><path d="M9 14h2"/><path d="M13 14h2"/></svg></div>
+        <h3>Reservaciones inteligentes</h3>
+        <p>El sistema bloquea fechas cruzadas antes de que cometas el error costoso de una doble reserva. Estados, pagos y notas en una sola tabla.</p>
       </div>
-      <div class="feature-card">
-        <div class="fi">🔄</div>
-        <h3>Sincronización iCal <span class="feature-new">NUEVO</span></h3>
-        <p>Conecta los calendarios de Airbnb y Booking. Las fechas bloqueadas se importan automáticamente cada hora.</p>
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10"/><path d="M20.5 15a9 9 0 0 1-14.9 3.4L1 14"/></svg></div>
+        <h3>Sincronización iCal <span class="badge-new">NUEVO</span></h3>
+        <p>Conecta Airbnb y Booking en segundos. Las fechas bloqueadas en esas plataformas se reflejan en Hospedy cada hora, automáticamente.</p>
       </div>
-      <div class="feature-card">
-        <div class="fi">💬</div>
-        <h3>Mensajes WhatsApp</h3>
-        <p>Ficha de bienvenida con WiFi, dirección, código de puerta y amenidades. Un clic y se envía por WhatsApp.</p>
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg></div>
+        <h3>Mensajes por WhatsApp</h3>
+        <p>Plantillas de bienvenida, confirmación, recordatorio de pago y agradecimiento. Eliges al huésped y se manda con un clic — sin copiar y pegar.</p>
       </div>
-      <div class="feature-card">
-        <div class="fi">💰</div>
-        <h3>Control Financiero</h3>
-        <p>Ingresos, gastos y utilidad por propiedad. Exporta reportes CSV para tu contador con un clic.</p>
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Control financiero</h3>
+        <p>Ingresos, gastos y utilidad por propiedad. Filtros por fecha y categoría. Exportación a CSV en un clic para que tu contador no te llame más.</p>
       </div>
-      <div class="feature-card">
-        <div class="fi">🔔</div>
-        <h3>Recordatorios <span class="feature-new">NUEVO</span></h3>
-        <p>Alertas de check-in de hoy y mañana en tu dashboard. Nunca más olvidas enviar la bienvenida.</p>
+      <div class="feature">
+        <div class="icon-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <h3>Recordatorios <span class="badge-new">NUEVO</span></h3>
+        <p>Alertas de check-in y check-out de hoy y mañana en tu dashboard. Nunca más olvidas mandar la bienvenida ni preparar la propiedad a tiempo.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- PREVIEW -->
+<!-- =============== PRODUCT PREVIEW =============== -->
 <section id="preview">
   <div class="container">
-    <h2 class="section-title">Conoce la plataforma</h2>
-    <p class="section-sub">Explora cada sección del demo interactivo</p>
-    <div class="preview-grid">
-      <div class="pv-card"><div class="pv-img dash">📊</div><div class="pv-body"><h4>Dashboard</h4><p>KPIs de ocupación, ingresos, pagos pendientes, alertas de check-in y gráfico de tendencia.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
-      <div class="pv-card"><div class="pv-img prop">🏡</div><div class="pv-body"><h4>Propiedades</h4><p>Tarjetas con todos los detalles: WiFi, código puerta, amenidades, links a Airbnb/Booking, iCal.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
-      <div class="pv-card"><div class="pv-img res">📅</div><div class="pv-body"><h4>Reservaciones</h4><p>Tabla con estados, filtros por propiedad y estado, validación anti-doble reserva automática.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
-      <div class="pv-card"><div class="pv-img fin">💰</div><div class="pv-body"><h4>Finanzas</h4><p>Ingresos y gastos por propiedad, utilidad neta, filtros por fecha, exportación CSV.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
-      <div class="pv-card"><div class="pv-img msg">💬</div><div class="pv-body"><h4>Mensajes</h4><p>Plantillas de bienvenida, confirmación, recordatorio y agradecimiento. Envío directo por WhatsApp.</p><button class="pv-btn" onclick="window.open('demo.html','_blank')">Ver Demo</button></div></div>
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Cómo se ve por dentro</span>
+      <h2>Conoce la plataforma.<br>O mejor, pruébala.</h2>
+      <p>Cuatro pestañas, sin instalación. Tú decides si quieres explorar el demo completo o ver primero un vistazo aquí.</p>
+    </div>
+    <div class="preview-tabs" role="tablist">
+      <button class="preview-tab active" data-tab="props" role="tab" aria-selected="true">Propiedades</button>
+      <button class="preview-tab" data-tab="res" role="tab" aria-selected="false">Reservaciones</button>
+      <button class="preview-tab" data-tab="msg" role="tab" aria-selected="false">Mensajes</button>
+      <button class="preview-tab" data-tab="fin" role="tab" aria-selected="false">Finanzas</button>
+    </div>
+    <div class="preview-stage">
+
+      <!-- Propiedades -->
+      <div class="preview-pane active" data-pane="props">
+        <div class="preview-frame">
+          <div class="pf-head">
+            <div class="pf-dot" style="background:oklch(72% 0.15 25)"></div>
+            <div class="pf-dot" style="background:oklch(78% 0.14 80)"></div>
+            <div class="pf-dot" style="background:oklch(70% 0.14 145)"></div>
+            <div class="pf-title">hospedy.co/app/properties</div>
+          </div>
+          <div class="pp-grid">
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Apartamento El Poblado</div><div class="pp-city">Medellín · 2 hab · max 4</div></div></div>
+              <div class="pp-price">$180.000 <small>/noche</small></div>
+              <div class="pp-tags"><span class="pp-tag">WiFi</span><span class="pp-tag">A/C</span><span class="pp-tag">Cocina</span><span class="pp-tag">TV</span></div>
+            </div>
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Casa Frente al Mar</div><div class="pp-city">Santa Marta · 3 hab · max 6</div></div></div>
+              <div class="pp-price">$250.000 <small>/noche</small></div>
+              <div class="pp-tags"><span class="pp-tag">Piscina</span><span class="pp-tag">WiFi</span><span class="pp-tag">Hamaca</span><span class="pp-tag">Cocina</span></div>
+            </div>
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Loft Centro Histórico</div><div class="pp-city">Cartagena · 1 hab · max 2</div></div></div>
+              <div class="pp-price">$320.000 <small>/noche</small></div>
+              <div class="pp-tags"><span class="pp-tag">Balcón</span><span class="pp-tag">A/C</span><span class="pp-tag">WiFi</span></div>
+            </div>
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Finca con Piscina</div><div class="pp-city">Salento · 4 hab · max 10</div></div></div>
+              <div class="pp-price">$480.000 <small>/noche</small></div>
+              <div class="pp-tags"><span class="pp-tag">Piscina</span><span class="pp-tag">Jacuzzi</span><span class="pp-tag">BBQ</span></div>
+            </div>
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Apartaestudio Chapinero</div><div class="pp-city">Bogotá · 1 hab · max 2</div></div></div>
+              <div class="pp-price">$140.000 <small>/noche</small></div>
+              <div class="pp-tags"><span class="pp-tag">Escritorio</span><span class="pp-tag">WiFi</span><span class="pp-tag">Cocina</span></div>
+            </div>
+            <div class="pp-card">
+              <div class="pp-row"><div><div class="pp-name">Tu próxima propiedad</div><div class="pp-city">Sin límite de propiedades en el plan</div></div></div>
+              <div class="pp-price" style="color:var(--muted)">+</div>
+              <div class="pp-tags"><span class="pp-tag">Sin restricciones</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reservaciones -->
+      <div class="preview-pane" data-pane="res">
+        <div class="preview-frame">
+          <div class="pf-head">
+            <div class="pf-dot" style="background:oklch(72% 0.15 25)"></div>
+            <div class="pf-dot" style="background:oklch(78% 0.14 80)"></div>
+            <div class="pf-dot" style="background:oklch(70% 0.14 145)"></div>
+            <div class="pf-title">hospedy.co/app/reservations</div>
+          </div>
+          <table class="pr-table">
+            <thead>
+              <tr><th>Propiedad</th><th>Huésped</th><th>Check-in</th><th>Noches</th><th>Total</th><th>Estado</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Loft Centro Histórico</td><td>Thomas Müller</td><td>25/05/2026</td><td>4</td><td>$1.280.000</td><td><span class="pr-pill now">En curso</span></td></tr>
+              <tr><td>Casa Frente al Mar</td><td>Juan García López</td><td>23/05/2026</td><td>5</td><td>$1.250.000</td><td><span class="pr-pill now">En curso</span></td></tr>
+              <tr><td>Apartamento El Poblado</td><td>María Martínez</td><td>26/05/2026</td><td>3</td><td>$540.000</td><td><span class="pr-pill ok">Confirmada</span></td></tr>
+              <tr><td>Finca con Piscina</td><td>Carlos Pérez Sánchez</td><td>31/05/2026</td><td>5</td><td>$2.400.000</td><td><span class="pr-pill ok">Confirmada</span></td></tr>
+              <tr><td>Casa Frente al Mar</td><td>Sarah Johnson</td><td>06/06/2026</td><td>5</td><td>$1.250.000</td><td><span class="pr-pill warn">Pendiente</span></td></tr>
+              <tr><td>Apartaestudio Chapinero</td><td>Miguel Rodríguez</td><td>12/06/2026</td><td>2</td><td>$280.000</td><td><span class="pr-pill warn">Pendiente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Mensajes -->
+      <div class="preview-pane" data-pane="msg">
+        <div class="preview-frame">
+          <div class="pf-head">
+            <div class="pf-dot" style="background:oklch(72% 0.15 25)"></div>
+            <div class="pf-dot" style="background:oklch(78% 0.14 80)"></div>
+            <div class="pf-dot" style="background:oklch(70% 0.14 145)"></div>
+            <div class="pf-title">hospedy.co/app/messages</div>
+          </div>
+          <div class="pm-grid">
+            <div class="pm-templates">
+              <div class="pm-tpl active">Ficha de bienvenida<div class="pm-sub">WiFi, dirección, código puerta</div></div>
+              <div class="pm-tpl">Confirmación<div class="pm-sub">Fechas, total, referencia</div></div>
+              <div class="pm-tpl">Recordatorio check-in<div class="pm-sub">Instrucciones de llegada</div></div>
+              <div class="pm-tpl">Recordatorio pago<div class="pm-sub">Saldo pendiente</div></div>
+              <div class="pm-tpl">Agradecimiento<div class="pm-sub">Post-checkout, pedir reseña</div></div>
+            </div>
+            <div class="pm-preview">
+<div class="pm-h">¡Bienvenido, Thomas! 🌿</div>Te confirmo tu llegada al Loft Centro Histórico — Cartagena.
+
+Dirección: Calle del Estanco del Aguardiente #5-15
+Doña Marta te recibe en planta baja.
+
+WiFi: LoftCartagena
+Clave: caribe2026
+
+Código puerta: 1521
+
+Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Finanzas -->
+      <div class="preview-pane" data-pane="fin">
+        <div class="preview-frame">
+          <div class="pf-head">
+            <div class="pf-dot" style="background:oklch(72% 0.15 25)"></div>
+            <div class="pf-dot" style="background:oklch(78% 0.14 80)"></div>
+            <div class="pf-dot" style="background:oklch(70% 0.14 145)"></div>
+            <div class="pf-title">hospedy.co/app/finances</div>
+          </div>
+          <div class="pf-stats">
+            <div class="pf-stat income"><div class="l">Ingresos</div><div class="v">$4.240.000</div></div>
+            <div class="pf-stat expense"><div class="l">Gastos</div><div class="v">$612.000</div></div>
+            <div class="pf-stat profit"><div class="l">Utilidad</div><div class="v">$3.628.000</div></div>
+          </div>
+          <table class="pr-table">
+            <thead><tr><th>Fecha</th><th>Categoría</th><th>Propiedad</th><th style="text-align:right">Monto</th></tr></thead>
+            <tbody>
+              <tr><td>22/05/2026</td><td>Reservación</td><td>Finca con Piscina</td><td style="text-align:right;color:var(--accent-ink);font-weight:600">+$2.400.000</td></tr>
+              <tr><td>17/05/2026</td><td>Marketing</td><td>Finca con Piscina</td><td style="text-align:right;color:oklch(48% 0.13 28);font-weight:600">−$51.000</td></tr>
+              <tr><td>13/05/2026</td><td>Reservación</td><td>Apartamento El Poblado</td><td style="text-align:right;color:var(--accent-ink);font-weight:600">+$540.000</td></tr>
+              <tr><td>06/05/2026</td><td>Limpieza</td><td>Apartaestudio Chapinero</td><td style="text-align:right;color:oklch(48% 0.13 28);font-weight:600">−$141.000</td></tr>
+              <tr><td>05/05/2026</td><td>Reservación</td><td>Casa Frente al Mar</td><td style="text-align:right;color:var(--accent-ink);font-weight:600">+$1.250.000</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+    <div class="preview-cta">
+      <a href="/demo.html" target="_blank" rel="noopener">Probar el demo interactivo con datos reales <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
+<!-- =============== STATS =============== -->
 <section id="stats">
   <div class="container">
-    <h2 class="section-title">El mejor momento para organizar tu negocio</h2>
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>El momento es ahora</span>
+      <h2>El mercado de alojamiento corto<br>en Colombia está despierto.</h2>
+    </div>
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-num">6.3M</div>
         <div class="stat-label">Turistas internacionales llegaron a Colombia en 2025</div>
-        <div class="stat-src">Fuente: MinComercio</div>
+        <div class="stat-source"><a href="https://www.mincit.gov.co/prensa/noticias/turismo" target="_blank" rel="noopener nofollow">Fuente: MinComercio</a></div>
       </div>
       <div class="stat-card">
         <div class="stat-num">+25%</div>
-        <div class="stat-label">Creció el mercado de alojamientos de corta estancia</div>
-        <div class="stat-src">Fuente: DANE</div>
+        <div class="stat-label">Creció el mercado de alojamientos de corta estancia en el último año</div>
+        <div class="stat-source"><a href="https://www.dane.gov.co/" target="_blank" rel="noopener nofollow">Fuente: DANE</a></div>
       </div>
       <div class="stat-card">
         <div class="stat-num">$3.2M</div>
-        <div class="stat-label">Ingreso promedio mensual de un Airbnb en ciudades principales</div>
-        <div class="stat-src">Fuente: The Latin Investor</div>
+        <div class="stat-label">Ingreso promedio mensual de un Airbnb en las principales ciudades</div>
+        <div class="stat-source"><a href="https://www.thelatininvestor.com/" target="_blank" rel="noopener nofollow">Fuente: The Latin Investor</a></div>
       </div>
     </div>
-    <p class="stats-close">Con $3.2M de ingreso promedio, $65.000 en organización es el 2% de lo que ganas. La pregunta no es si puedes pagarlo, sino cuánto estás perdiendo sin organizarte.</p>
   </div>
 </section>
 
-<!-- PRICING -->
+<!-- =============== PRICING =============== -->
 <section id="pricing">
   <div class="container">
-    <h2 class="section-title">Un precio justo para tu negocio</h2>
-    <p class="section-sub">Menos de lo que cuesta una limpieza. Todo incluido.</p>
-    <div class="pricing-wrap">
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Precio justo, sin trucos</span>
+      <h2>Un solo plan.<br>Todo incluido.</h2>
+      <p>Menos de lo que cuesta una limpieza. Sin contratos, sin tarjeta de crédito, sin restricciones por número de propiedades.</p>
+    </div>
+    <div class="price-grid">
       <div class="price-card">
         <div class="price-name">Hospedy Completo</div>
-        <div class="price-amount">$65.000</div>
-        <div class="price-period">COP / mes</div>
-        <div class="price-roi">Una sola doble-reserva evitada te ahorra más de 10 meses de Hospedy</div>
-        <ul class="price-list">
-          <li>Propiedades ilimitadas</li>
-          <li>Huéspedes ilimitados</li>
-          <li>Anti-doble reserva + iCal sync</li>
-          <li>Finanzas con reportes CSV</li>
-          <li>Mensajes WhatsApp con un clic</li>
-          <li>Recordatorios de check-in</li>
-          <li>Indicadores de negocio</li>
-          <li>Soporte directo por WhatsApp</li>
-        </ul>
-        <div class="price-cta">
-          <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS.%20Mi%20nombre%20es%20">Obtener Acceso</a>
+        <div class="price-tag">
+          <span class="price-amount">$65.000</span>
+          <span class="price-period">COP / mes</span>
         </div>
-        <p class="price-note">Pago mensual por Bre-B (Bancolombia). Te compartimos el QR por WhatsApp. Cancela cuando quieras, sin penalidades.</p>
+        <div class="price-roi">Una sola doble-reserva evitada paga más de 10 meses de Hospedy.</div>
+        <ul class="price-list">
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Propiedades y huéspedes ilimitados</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Anti-doble reserva + sincronización iCal</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Finanzas por propiedad + reportes CSV</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Plantillas WhatsApp con un clic</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Recordatorios automáticos de check-in</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Indicadores de negocio por propiedad</li>
+          <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Soporte directo por WhatsApp</li>
+        </ul>
+        <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Obtener acceso ahora</a>
+        <div class="price-note">Pago mensual por Bre-B (Bancolombia). Te compartimos el QR por WhatsApp.</div>
       </div>
+
+      <aside class="anchor-card" aria-label="Costo de seguir como hoy">
+        <span class="anchor-eyebrow">Lo que estás pagando hoy</span>
+        <h3>Y lo más caro no es el software — es no tenerlo.</h3>
+        <ul class="anchor-list">
+          <li class="anchor-row"><div class="what">Una doble reserva al año<small>Reembolso + reseña negativa + reposición</small></div><div class="cost">$420.000</div></li>
+          <li class="anchor-row"><div class="what">Horas armando reportes a mano<small>~3 h/mes a tu tarifa</small></div><div class="cost">$540.000</div></li>
+          <li class="anchor-row"><div class="what">Reservas perdidas por respuestas lentas<small>1 reserva/mes promedio</small></div><div class="cost">$300.000</div></li>
+          <li class="anchor-row"><div class="what">Huéspedes mal recibidos<small>Tip menor, reseña 4 estrellas en vez de 5</small></div><div class="cost">$180.000</div></li>
+        </ul>
+        <div class="anchor-total"><div class="what">Costo oculto anual</div><div class="cost">≈ $1.4M</div></div>
+        <p class="anchor-foot">Estimaciones conservadoras basadas en patrones típicos de un anfitrión con 2 a 5 propiedades. Hospedy cuesta $780.000 al año.</p>
+      </aside>
     </div>
   </div>
 </section>
 
-<!-- SOCIAL PROOF -->
-<section id="proof">
-  <div class="container">
-    <h2 class="section-title">Lo que dicen nuestros primeros usuarios</h2>
-    <div class="proof-grid">
-      <div class="proof-card">
-        <p class="proof-text">"Antes manejaba todo por WhatsApp y me pasó dos veces que crucé reservas. Con Hospedy eso no vuelve a pasar."</p>
-        <div class="proof-author">Anfitrión en Medellín</div>
-        <div class="proof-role">2 propiedades en El Poblado</div>
-      </div>
-      <div class="proof-card">
-        <p class="proof-text">"Lo que más me gusta es enviar la bienvenida con WiFi y código de puerta en un solo clic. Mis huéspedes quedan encantados."</p>
-        <div class="proof-author">Anfitrión en Santa Marta</div>
-        <div class="proof-role">Casa vacacional en Rodadero</div>
-      </div>
-      <div class="proof-card">
-        <p class="proof-text">"Por fin sé cuánto gano realmente por cada propiedad. El reporte para mi contador lo descargo en 2 segundos."</p>
-        <div class="proof-author">Anfitrión en Cartagena</div>
-        <div class="proof-role">3 apartamentos en Bocagrande</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
+<!-- =============== FAQ =============== -->
 <section id="faq">
   <div class="container">
-    <h2 class="section-title">Preguntas Frecuentes</h2>
+    <div class="section-head">
+      <span class="eyebrow"><span class="dot"></span>Lo que más nos preguntan</span>
+      <h2>Preguntas frecuentes</h2>
+    </div>
     <div class="faq-wrap">
-      <div class="acc-item open">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Qué es Hospedy?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>Hospedy es un sistema de gestión diseñado para anfitriones de alquileres cortos en Colombia. Administra propiedades, huéspedes, reservaciones y finanzas desde un solo lugar, sin instalar nada.</p></div>
-      </div>
-      <div class="acc-item">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Cuánto cuesta y cómo pago?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>$65.000 COP al mes. Pagas por Bre-B (Bancolombia): nos escribes por WhatsApp, te compartimos el QR, y listo. Cancela cuando quieras, sin penalidades ni contratos.</p></div>
-      </div>
-      <div class="acc-item">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Mis datos están seguros?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>Sí. Usamos base de datos PostgreSQL con Row Level Security. Cada usuario solo ve sus propios datos. Nadie más — ni siquiera otros usuarios de Hospedy — puede acceder a tu información.</p></div>
-      </div>
-      <div class="acc-item">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Puedo conectar mis calendarios de Airbnb y Booking?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>Sí. Hospedy importa calendarios iCal de Airbnb y Booking automáticamente. Las fechas bloqueadas en esas plataformas se reflejan en Hospedy para evitar dobles reservas.</p></div>
-      </div>
-      <div class="acc-item">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Funciona en el celular?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>Sí. La interfaz es responsive y funciona en celular, tablet y computador. No necesitas descargar una app — todo en tu navegador.</p></div>
-      </div>
-      <div class="acc-item">
-        <div class="acc-head" onclick="this.parentElement.classList.toggle('open')"><span>¿Puedo probar antes de pagar?</span><span class="acc-arrow">▼</span></div>
-        <div class="acc-body"><p>Sí. Tenemos un demo interactivo donde puedes explorar todas las funcionalidades con datos de ejemplo. Pruébalo sin registro ni compromiso.</p></div>
-      </div>
+      <details class="acc" open>
+        <summary>¿Qué es Hospedy?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Un sistema de gestión (PMS) diseñado para anfitriones colombianos de alquileres cortos. Administra propiedades, huéspedes, reservaciones y finanzas desde un solo lugar, sin instalar nada en tu computador ni en tu celular.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Cuánto cuesta y cómo pago?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>$65.000 COP al mes. Pagas por Bre-B (Bancolombia): nos escribes por WhatsApp, te compartimos el QR y listo. Cancelas cuando quieras, sin penalidades ni contratos.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Hay límite de propiedades?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>No. Propiedades, huéspedes y reservaciones son ilimitados en el plan completo. Puedes tener 1 o 30 — el precio es el mismo.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Mis datos están seguros?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Sí. Usamos PostgreSQL con Row Level Security en Supabase. Cada cuenta sólo ve sus propios datos; ningún otro usuario de Hospedy puede acceder a tu información. Backups diarios automáticos.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Puedo conectar Airbnb y Booking?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Sí. Hospedy importa los calendarios iCal de Airbnb y Booking automáticamente. Las fechas bloqueadas en esas plataformas se reflejan en Hospedy cada hora, sin que tengas que hacer nada manual.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Cómo migro mis datos actuales?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>La forma más común: nos mandas tu Excel actual por WhatsApp y te ayudamos a importarlo. También puedes cargar todo manualmente — la curva de aprendizaje es de 20 minutos. No hay datos viejos que sean obligatorios para empezar.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Funciona en el celular?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Sí, todo Hospedy es responsive — funciona en celular, tablet y computador, en cualquier navegador. No necesitas descargar nada, abre la página y listo. La mayoría de nuestros usuarios administran su negocio desde el celular en el día a día.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Qué pasa si me arrepiento o no me funciona?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Cancelas por WhatsApp el mismo día. No hay penalidades, no hay contratos. Tus datos se pueden exportar a CSV antes de cancelar para que te queden en tu poder.</p></div>
+      </details>
+      <details class="acc">
+        <summary>¿Tienen soporte? ¿Cómo respondo si tengo un problema?<span class="acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span></summary>
+        <div class="acc-body"><p>Soporte directo por WhatsApp al +57 311 322 5050. Te responde una persona, no un bot. En horario hábil (Bogotá) la respuesta promedio es de menos de 1 hora.</p></div>
+      </details>
     </div>
   </div>
 </section>
 
-<!-- CTA BAND -->
+<!-- =============== CTA BAND =============== -->
 <section id="cta-band">
-  <div class="container">
-    <h2>Organiza tu negocio hoy mismo</h2>
-    <p>Prueba el demo sin compromiso o escríbenos para obtener acceso completo</p>
+  <div class="container cta-inner">
+    <h2>Organiza tu hospedaje hoy mismo.</h2>
+    <p>Prueba el demo sin compromiso o escríbenos para activar tu cuenta. Lo que tardes en decidir es lo único que te cuesta.</p>
     <div class="cta-btns">
-      <button class="btn-white" onclick="window.open('demo.html','_blank')">Probar Demo Gratis</button>
-      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" class="btn-ghost">Obtener Acceso — $65.000/mes</a>
+      <a href="/demo.html" target="_blank" rel="noopener" class="btn btn-white btn-lg">Probar demo gratis</a>
+      <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-outline-w btn-lg">Obtener acceso — $65.000/mes</a>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- =============== FOOTER =============== -->
 <footer>
   <div class="container">
     <div class="foot-grid">
       <div class="foot-col">
-        <h4>🏠 Hospedy</h4>
-        <p>Gestiona tu negocio de alquiler sin complicaciones. Hecho para anfitriones colombianos.</p>
+        <div class="foot-brand">
+          <span class="brand-mark" style="background:#fff" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="oklch(48% 0.13 155)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+          </span>
+          Hospedy
+        </div>
+        <p class="foot-tag">Sistema de gestión hecho para anfitriones colombianos de alquileres cortos. Hospedaje organizado, sin caos.</p>
       </div>
       <div class="foot-col">
         <h4>Producto</h4>
         <a href="#features">Funcionalidades</a>
-        <a href="#pricing">Precios</a>
-        <a href="demo.html" target="_blank">Demo</a>
-        <a href="#faq">FAQ</a>
+        <a href="#preview">Plataforma</a>
+        <a href="#pricing">Precio</a>
+        <a href="/demo.html" target="_blank" rel="noopener">Demo</a>
       </div>
       <div class="foot-col">
-        <h4>Contacto</h4>
-        <p>soporte@hospedy.co</p>
-        <a href="https://wa.me/573113225050?text=Hola!%20Tengo%20una%20pregunta%20sobre%20Hospedy">WhatsApp: +57 311 322 5050</a>
+        <h4>Soporte</h4>
+        <a href="#faq">Preguntas frecuentes</a>
+        <a href="https://wa.me/573113225050?text=Hola!%20Tengo%20una%20pregunta%20sobre%20Hospedy" target="_blank" rel="noopener">WhatsApp +57 311 322 5050</a>
+        <a href="mailto:soporte@hospedy.co">soporte@hospedy.co</a>
+      </div>
+      <div class="foot-col">
+        <h4>Empresa</h4>
+        <a href="#hero">Hospedy</a>
+        <a href="#stats">Mercado</a>
       </div>
     </div>
-    <div class="foot-bottom">© 2026 Hospedy. Hecho con cariño en Colombia.</div>
+    <div class="foot-bottom">
+      <span>© 2026 Hospedy. Hecho con cuidado en Colombia.</span>
+      <span>v2.0</span>
+    </div>
   </div>
 </footer>
 
-<!-- Conversion Event Tracking -->
+<!-- =============== JS =============== -->
 <script>
-// Track demo clicks
-document.querySelectorAll('[onclick*="demo.html"],.btn-demo,.pv-btn').forEach(function(el){
-  el.addEventListener('click',function(){
-    fbq('track','ViewContent',{content_name:'Demo',content_category:'engagement'});
-    window.dataLayer=window.dataLayer||[];
-    window.dataLayer.push({event:'demo_click'});
+// Tabs in product preview
+(function(){
+  var tabs=document.querySelectorAll('.preview-tab');
+  var panes=document.querySelectorAll('.preview-pane');
+  tabs.forEach(function(t){
+    t.addEventListener('click',function(){
+      var name=t.getAttribute('data-tab');
+      tabs.forEach(function(x){x.classList.toggle('active',x===t);x.setAttribute('aria-selected',x===t)});
+      panes.forEach(function(p){p.classList.toggle('active',p.getAttribute('data-pane')===name)});
+      if(typeof gtag==='function')gtag('event','preview_tab_switch',{event_category:'engagement',event_label:name});
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'preview_tab_switch',tab:name});
+    });
   });
-});
-// Track WhatsApp (purchase intent) clicks
-document.querySelectorAll('a[href*="wa.me/573113225050"],.btn-access').forEach(function(el){
-  el.addEventListener('click',function(){
-    fbq('track','Lead',{content_name:'WhatsApp Contact',value:65000,currency:'COP'});
-    window.dataLayer=window.dataLayer||[];
-    window.dataLayer.push({event:'whatsapp_lead'});
+})();
+
+// Conversion event tracking
+(function(){
+  // Demo clicks
+  document.querySelectorAll('a[href*="/demo.html"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      if(typeof fbq==='function')fbq('track','ViewContent',{content_name:'Demo',content_category:'engagement'});
+      if(typeof gtag==='function')gtag('event','demo_click',{event_category:'engagement'});
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'demo_click'});
+    });
   });
-});
-// Track pricing section scroll
-var pricingTracked=false;
-var observer=new IntersectionObserver(function(entries){
-  entries.forEach(function(entry){
-    if(entry.isIntersecting&&!pricingTracked){
-      pricingTracked=true;
-      fbq('track','ViewContent',{content_name:'Pricing',content_category:'consideration'});
-      window.dataLayer.push({event:'pricing_viewed'});
-    }
+  // WhatsApp clicks = Lead
+  document.querySelectorAll('a[href*="wa.me/573113225050"]').forEach(function(el){
+    el.addEventListener('click',function(){
+      if(typeof fbq==='function')fbq('track','Lead',{content_name:'WhatsApp Contact',value:65000,currency:'COP'});
+      if(typeof gtag==='function')gtag('event','whatsapp_lead',{event_category:'conversion',value:65000,currency:'COP'});
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'whatsapp_lead',link_text:(el.textContent||'').trim().slice(0,60)});
+    });
   });
-},{threshold:0.5});
-var pricingEl=document.getElementById('pricing');
-if(pricingEl)observer.observe(pricingEl);
+  // Pricing in-view
+  var pricingTracked=false;
+  if('IntersectionObserver' in window){
+    var obs=new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting&&!pricingTracked){
+          pricingTracked=true;
+          if(typeof fbq==='function')fbq('track','ViewContent',{content_name:'Pricing',content_category:'consideration'});
+          if(typeof gtag==='function')gtag('event','pricing_viewed',{event_category:'engagement'});
+          window.dataLayer=window.dataLayer||[];
+          window.dataLayer.push({event:'pricing_viewed'});
+        }
+      });
+    },{threshold:0.45});
+    var pricingEl=document.getElementById('pricing');
+    if(pricingEl)obs.observe(pricingEl);
+  }
+})();
 </script>
 <!-- Vercel Web Analytics + Speed Insights -->
 <script defer src="/_vercel/insights/script.js"></script>
