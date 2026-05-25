@@ -397,6 +397,44 @@ footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;
   .foot-grid{grid-template-columns:1fr}
 }
 
+/* === LEAD CAPTURE MODAL === */
+.lead-overlay{position:fixed;inset:0;background:oklch(20% 0.02 60 / .55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;animation:fadeIn .2s ease}
+.lead-overlay.open{display:flex}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.lead-modal{background:var(--surface);border-radius:var(--r-xl);max-width:440px;width:100%;padding:32px;box-shadow:0 24px 60px -20px oklch(20% 0.02 60 / .35);position:relative;animation:slideUp .25s cubic-bezier(.2,.8,.2,1)}
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.lead-modal h3{font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:-0.015em;color:var(--fg);margin-bottom:6px}
+.lead-modal .lead-sub{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.55}
+.lead-close{position:absolute;top:16px;right:16px;background:transparent;border:none;width:32px;height:32px;border-radius:8px;cursor:pointer;display:grid;place-items:center;color:var(--muted);transition:background .15s}
+.lead-close:hover{background:var(--bg);color:var(--fg)}
+.lead-close svg{width:18px;height:18px}
+.lead-field{margin-bottom:14px}
+.lead-field label{display:block;font-size:13px;font-weight:500;color:var(--fg);margin-bottom:6px}
+.lead-field label .req{color:var(--flourish);margin-left:2px}
+.lead-field label .opt{color:var(--muted);font-weight:400;margin-left:6px;font-size:12px}
+.lead-input{width:100%;padding:11px 14px;border:1px solid var(--border-strong);border-radius:var(--r-md);background:var(--surface);color:var(--fg);font-family:var(--font-body);font-size:15px;transition:border .15s,box-shadow .15s}
+.lead-input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+.lead-input::placeholder{color:oklch(70% 0.014 60)}
+.lead-input-prefix{display:flex;align-items:stretch;border:1px solid var(--border-strong);border-radius:var(--r-md);overflow:hidden;background:var(--surface);transition:border .15s,box-shadow .15s}
+.lead-input-prefix:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-tint)}
+.lead-input-prefix .pre{padding:11px 12px;background:var(--bg);color:var(--muted);font-size:14px;font-weight:500;border-right:1px solid var(--border);display:flex;align-items:center}
+.lead-input-prefix input{flex:1;padding:11px 14px;border:none;background:transparent;outline:none;font-family:var(--font-body);font-size:15px;color:var(--fg);min-width:0}
+.lead-consent{display:flex;align-items:flex-start;gap:10px;margin:18px 0 6px;font-size:12.5px;line-height:1.55;color:var(--muted)}
+.lead-consent input{flex:none;margin-top:2px;width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+.lead-consent label{cursor:pointer;flex:1}
+.lead-consent a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px}
+.lead-error{display:none;background:oklch(96% 0.04 28);color:oklch(38% 0.12 28);padding:10px 12px;border-radius:8px;font-size:13px;margin:8px 0;border:1px solid oklch(86% 0.06 28)}
+.lead-error.show{display:block}
+.lead-submit{width:100%;justify-content:center;margin-top:18px;padding:14px}
+.lead-submit:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.lead-skip{display:block;text-align:center;margin-top:12px;font-size:13px;color:var(--muted);background:transparent;border:none;cursor:pointer;width:100%;padding:6px}
+.lead-skip:hover{color:var(--fg);text-decoration:underline;text-underline-offset:2px}
+.lead-success{text-align:center;padding:8px 0}
+.lead-success .lead-check{width:60px;height:60px;border-radius:50%;background:var(--accent-tint);color:var(--accent);display:grid;place-items:center;margin:0 auto 18px}
+.lead-success .lead-check svg{width:32px;height:32px;stroke-width:2.5}
+.lead-success h3{margin-bottom:8px}
+.lead-success p{font-size:14.5px;color:var(--muted);line-height:1.55}
+
 /* sr-only */
 .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 </style>
@@ -452,7 +490,7 @@ footer{background:var(--ink-dark);color:oklch(75% 0.01 240);padding:56px 0 28px;
           Probar demo gratis
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </a>
-        <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-ghost btn-lg">Obtener acceso — $65.000/mes</a>
+        <button type="button" class="btn btn-ghost btn-lg" data-lead-cta="hero">Obtener acceso — $65.000/mes</button>
       </div>
       <div class="hero-trust">
         <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Sin instalaciones</span>
@@ -955,7 +993,7 @@ Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
           <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Indicadores de negocio por propiedad</li>
           <li><span class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>Soporte directo por WhatsApp</li>
         </ul>
-        <a href="https://wa.me/573113225050?text=Hola!%20Quiero%20obtener%20acceso%20a%20Hospedy%20PMS" target="_blank" rel="noopener" class="btn btn-primary btn-lg">Obtener acceso ahora</a>
+        <button type="button" class="btn btn-primary btn-lg" data-lead-cta="pricing">Obtener acceso ahora</button>
         <div class="price-note">Pago mensual por Bre-B (Bancolombia). Te compartimos el QR por WhatsApp.</div>
       </div>
 
@@ -1236,6 +1274,240 @@ Cualquier cosa por aquí. ¡Disfruta la ciudad!</div>
   }
 })();
 </script>
+<!-- =============== LEAD CAPTURE MODAL =============== -->
+<div class="lead-overlay" id="lead-overlay" role="dialog" aria-modal="true" aria-labelledby="lead-title" aria-hidden="true">
+  <div class="lead-modal">
+    <button class="lead-close" type="button" aria-label="Cerrar" id="lead-close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div id="lead-form-view">
+      <h3 id="lead-title">Vamos a hablar.</h3>
+      <p class="lead-sub">Déjanos tus datos y te respondemos por WhatsApp en menos de 1 hora hábil. Cero spam, palabra.</p>
+      <form id="lead-form" novalidate>
+        <div class="lead-field">
+          <label for="lead-name">Tu nombre <span class="req">*</span></label>
+          <input class="lead-input" id="lead-name" name="name" type="text" autocomplete="name" required placeholder="Como te dicen tus huéspedes">
+        </div>
+        <div class="lead-field">
+          <label for="lead-phone">WhatsApp <span class="req">*</span></label>
+          <div class="lead-input-prefix">
+            <span class="pre">+57</span>
+            <input id="lead-phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" required maxlength="10" placeholder="3001234567">
+          </div>
+        </div>
+        <div class="lead-field">
+          <label for="lead-email">Email <span class="opt">(opcional)</span></label>
+          <input class="lead-input" id="lead-email" name="email" type="email" autocomplete="email" placeholder="tucorreo@example.com">
+        </div>
+        <div class="lead-error" id="lead-error" role="alert"></div>
+        <div class="lead-consent">
+          <input type="checkbox" id="lead-consent" name="consent" required>
+          <label for="lead-consent">Autorizo a Hospedy a contactarme y tratar mis datos para responder mi solicitud, según la <a href="/privacidad.html" target="_blank" rel="noopener">política de privacidad</a>.</label>
+        </div>
+        <button type="submit" class="btn btn-primary lead-submit" id="lead-submit">
+          <span id="lead-submit-text">Continuar por WhatsApp</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <button type="button" class="lead-skip" id="lead-skip">No me interesa dejar datos — abrir WhatsApp directo</button>
+      </form>
+    </div>
+    <div id="lead-success-view" class="lead-success" style="display:none">
+      <div class="lead-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+      <h3>¡Listo, te abrimos WhatsApp!</h3>
+      <p>Si no se abrió automáticamente, <a id="lead-wa-fallback" href="#" target="_blank" rel="noopener" style="color:var(--accent-ink);text-decoration:underline">haz clic aquí</a>. Te respondemos en máximo 1 hora hábil.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Lead capture script -->
+<script>
+(function(){
+  // === Supabase config — replace with your project values ===
+  // The anon key is safe to expose client-side: it only allows the INSERT
+  // operation enforced by the RLS policy on landing_leads.
+  var SUPABASE_URL = window.HOSPEDY_SUPABASE_URL || '';
+  var SUPABASE_KEY = window.HOSPEDY_SUPABASE_KEY || '';
+
+  var WA_BASE = 'https://wa.me/573113225050';
+  function buildWaUrl(name, phone){
+    var msg = 'Hola! Soy '+(name||'').trim()+', quiero obtener acceso a Hospedy PMS.';
+    if(phone) msg += ' Mi WhatsApp es +57'+phone;
+    return WA_BASE + '?text=' + encodeURIComponent(msg);
+  }
+
+  function readUTM(){
+    var p = new URLSearchParams(window.location.search);
+    return {
+      utm_source: p.get('utm_source') || '',
+      utm_medium: p.get('utm_medium') || '',
+      utm_campaign: p.get('utm_campaign') || ''
+    };
+  }
+
+  function trackLead(source, name, phone, email){
+    var payload = {event:'whatsapp_lead', source:source, captured:true};
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(payload);
+    if(typeof gtag === 'function'){
+      gtag('event','whatsapp_lead',{event_category:'conversion', value:65000, currency:'COP', source:source});
+    }
+    if(typeof fbq === 'function'){
+      fbq('track','Lead',{content_name:'Form WhatsApp Lead', content_category:source, value:65000, currency:'COP'});
+    }
+  }
+
+  function saveLeadToSupabase(data){
+    if(!SUPABASE_URL || !SUPABASE_KEY){
+      // No backend configured yet — log and continue (graceful fallback)
+      console.info('[Hospedy] Supabase not configured, lead not stored:', data);
+      return Promise.resolve({ok:false, reason:'no-config'});
+    }
+    return fetch(SUPABASE_URL.replace(/\/$/,'') + '/rest/v1/landing_leads', {
+      method:'POST',
+      headers:{
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type':'application/json',
+        'Prefer':'return=minimal'
+      },
+      body: JSON.stringify(data)
+    }).then(function(r){
+      if(!r.ok) return r.text().then(function(t){throw new Error('supabase '+r.status+': '+t)});
+      return {ok:true};
+    });
+  }
+
+  // DOM
+  var overlay = document.getElementById('lead-overlay');
+  if(!overlay) return;
+  var form = document.getElementById('lead-form');
+  var formView = document.getElementById('lead-form-view');
+  var successView = document.getElementById('lead-success-view');
+  var $name = document.getElementById('lead-name');
+  var $phone = document.getElementById('lead-phone');
+  var $email = document.getElementById('lead-email');
+  var $consent = document.getElementById('lead-consent');
+  var $error = document.getElementById('lead-error');
+  var $submit = document.getElementById('lead-submit');
+  var $submitText = document.getElementById('lead-submit-text');
+  var $skip = document.getElementById('lead-skip');
+  var $close = document.getElementById('lead-close');
+  var $waFallback = document.getElementById('lead-wa-fallback');
+  var currentSource = '';
+
+  function showError(msg){
+    $error.textContent = msg;
+    $error.classList.add('show');
+  }
+  function clearError(){ $error.classList.remove('show'); $error.textContent=''; }
+
+  function open(source){
+    currentSource = source || 'unknown';
+    clearError();
+    formView.style.display='';
+    successView.style.display='none';
+    $submitText.textContent='Continuar por WhatsApp';
+    $submit.disabled=false;
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    setTimeout(function(){ $name.focus(); }, 60);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event:'lead_form_opened', source:currentSource});
+    if(typeof gtag === 'function'){
+      gtag('event','lead_form_opened',{event_category:'engagement', source:currentSource});
+    }
+  }
+  function close(){
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+  }
+
+  // Phone allow only digits
+  $phone.addEventListener('input', function(){
+    this.value = this.value.replace(/[^0-9]/g,'').slice(0,10);
+  });
+
+  // Trigger from any CTA
+  document.querySelectorAll('[data-lead-cta]').forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      open(btn.getAttribute('data-lead-cta'));
+    });
+  });
+
+  $close.addEventListener('click', close);
+  overlay.addEventListener('click', function(e){ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  // Skip: open WhatsApp directly without saving
+  $skip.addEventListener('click', function(){
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event:'lead_form_skipped', source:currentSource});
+    if(typeof gtag === 'function'){
+      gtag('event','lead_form_skipped',{event_category:'engagement', source:currentSource});
+    }
+    if(typeof fbq === 'function'){
+      fbq('track','Lead',{content_name:'WhatsApp Skip', content_category:currentSource, value:65000, currency:'COP'});
+    }
+    window.open(buildWaUrl('', ''), '_blank', 'noopener');
+    close();
+  });
+
+  // Submit
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    clearError();
+    var name = $name.value.trim();
+    var phone = $phone.value.trim();
+    var email = $email.value.trim();
+
+    if(!name){ showError('Cuéntanos tu nombre.'); $name.focus(); return; }
+    if(!/^[0-9]{10}$/.test(phone)){ showError('Tu WhatsApp debe tener 10 dígitos (ej: 3001234567).'); $phone.focus(); return; }
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ showError('Ese email no parece válido.'); $email.focus(); return; }
+    if(!$consent.checked){ showError('Para continuar, autoriza el tratamiento de tus datos.'); return; }
+
+    $submit.disabled = true;
+    $submitText.textContent = 'Enviando…';
+
+    var utm = readUTM();
+    var lead = {
+      name: name,
+      phone: '+57' + phone,
+      email: email || null,
+      source: currentSource,
+      consent: true,
+      utm_source: utm.utm_source || null,
+      utm_medium: utm.utm_medium || null,
+      utm_campaign: utm.utm_campaign || null,
+      user_agent: (navigator.userAgent || '').slice(0,300)
+    };
+
+    // Always open WhatsApp — even if backend fails — so we don't lose the active lead.
+    var waUrl = buildWaUrl(name, phone);
+    var win = null;
+
+    saveLeadToSupabase(lead).then(function(res){
+      trackLead(currentSource, name, phone, email);
+      // Show success view
+      formView.style.display='none';
+      successView.style.display='';
+      $waFallback.href = waUrl;
+      // Try to open WhatsApp tab
+      try { win = window.open(waUrl, '_blank', 'noopener'); } catch(err){}
+      // If popup blocked, fallback link is shown in success view
+    }).catch(function(err){
+      console.warn('[Hospedy] lead save failed', err);
+      // Still convert: open WhatsApp anyway
+      trackLead(currentSource, name, phone, email);
+      formView.style.display='none';
+      successView.style.display='';
+      $waFallback.href = waUrl;
+      try { win = window.open(waUrl, '_blank', 'noopener'); } catch(_){}
+    });
+  });
+})();
+</script>
+
 <!-- Vercel Web Analytics + Speed Insights -->
 <script defer src="/_vercel/insights/script.js"></script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
